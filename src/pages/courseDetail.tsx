@@ -8,10 +8,14 @@ import videoicon from "@/assets/video-icon.svg";
 import fcicon from "@/assets/fc-icon.svg";
 import readingicon from "@/assets/reading-icon.svg";
 
+import Navbar from "../components/Navbar"
+import Footer from "../components/Footer"
+
 export default function CourseDetail() {
   return (
     <>
       <div className="flex min-h-screen min-w-screen flex-col">
+        <Navbar />
         <div className="flex min-w-screen">
           <CourseHero />
         </div>
@@ -78,6 +82,8 @@ export default function CourseDetail() {
             isLearn={true}
           />
         </div>
+        <div className="mt-20">
+        <Footer /></div>
       </div>
     </>
   );

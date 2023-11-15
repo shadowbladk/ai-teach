@@ -3,6 +3,7 @@ import Calculus from "../assets/calculuscard.svg"
 import English from "../assets/englishcard.svg"
 
 import Image from "next/image"
+import Link from "next/link"
 
 export default function Card() {
   return (
@@ -11,7 +12,7 @@ export default function Card() {
           display: "flex",
           flexDirection: "row",
           gap: "40px",
-        }}>
+        }}><Link href="/courseDetail" >
       <div
         style={{
           width: "300px",
@@ -24,6 +25,7 @@ export default function Card() {
           gap: "20px",
         }}
       >
+        
         <div
           style={{
             width: "260px",
@@ -44,6 +46,7 @@ export default function Card() {
           <p className="text-base">Mary Jane</p>
         </div>
       </div>
+      </Link>
       <div
         style={{
           width: "300px",
