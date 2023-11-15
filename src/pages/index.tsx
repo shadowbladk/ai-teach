@@ -1,4 +1,4 @@
-import Link from "next/link"
+
 import Image from "next/image"
 
 import HeroPic from "../assets/hero.svg"
@@ -7,11 +7,14 @@ import Feedback from "../assets/feedback.svg"
 import Quiz from "../assets/quiz.svg"
 
 import Card from "../components/Card"
+import Navbar from "../components/Navbar"
+import Footer from "../components/Footer"
 
 function Home() {
   return (
     <>
       <div className="flex min-h-screen flex-col">
+        <Navbar />
         <div className="flex-grow">
           <section className="flex flex-col-reverse items-center justify-center px-60 py-24 gap-14 lg:flex-row">
             <div className="flex flex-col items-center gap-6 text-center">
@@ -53,7 +56,7 @@ function Home() {
               </div>
               <div className="flex flex-col items-center gap-8">
                 <h2 className="text-2xl text-center text-[#4B4B4B] font-semibold">
-                  Give feedback <br/> on your assignment
+                  Give feedback <br /> on your assignment
                 </h2>
                 <Image className="w-[200px]" src={Feedback} alt={"Feedback"} />
               </div>
@@ -66,6 +69,7 @@ function Home() {
             </div>
           </section>
         </div>
+        <Footer />
       </div>
     </>
   )
