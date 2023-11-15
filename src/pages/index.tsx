@@ -1,3 +1,13 @@
+import CourseCard from "@/components/CourseCard.tsx";
+
 export default function Page() {
-    return <h1>Hello, Next.js!</h1>
-  }
+  return (
+    <div className="flex flex-row">
+      <CourseCard
+        imageSrc="python.svg"
+        courseTitle="Python Bootcamp"
+        instructorName="Marry Jane"
+      />
+    </div>
+  );
+}
