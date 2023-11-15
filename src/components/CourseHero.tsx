@@ -14,17 +14,29 @@ const CourseHero = () => {
         <div className="max-w-xs lg:max-w-md">
           <Image src={Python} alt={"Python logo"} />
         </div>
-        <div className="flex flex-col gap-6 lg:pl-6">
-          <h1 className="text-4xl font-extrabold text-primary">EVENT HIVE</h1>
+        <div className="flex flex-col gap-5 lg:pl-6">
+          <h1 className="text-[32px] font-extrabold text-black">
+            Python Bootcamp
+          </h1>
           <div className="flex flex-row">
-            <Image src={readingicon} alt={"Python logo"} />
-            <p className="text-lg"> 15 Reading</p>
-            <Image src={quizicon} alt={"Python logo"} />
-            <p className="text-lg"> 5 Video</p>
-            <Image src={quizicon} alt={"Python logo"} />
-            <Image src={quizicon} alt={"Python logo"} />
+            <div className="flex flex-row items-center mr-5">
+              <Image src={readingicon} alt={"Python logo"} />
+              <p className="text-base font-bold ml-2.5">15 Reading</p>
+            </div>
+            <div className="flex flex-row items-center mr-5">
+              <Image src={quizicon} alt={"Python logo"} />
+              <p className="text-base font-bold ml-2.5"> 5 Video</p>
+            </div>
+            <div className="flex flex-row items-center mr-5">
+              <Image src={videoicon} alt={"Python logo"} />
+              <p className="text-base font-bold ml-2.5"> 5 Video</p>
+            </div>
+            <div className="flex flex-row items-center mr-5">
+              <Image src={fcicon} alt={"Python logo"} />
+              <p className="text-base font-bold ml-2.5"> 5 Video</p>
+            </div>
           </div>
-          <p className="text-lg w-[740px]">
+          <p className="text-lg w-[740px] font-medium">
             Python is a high-level, general-purpose programming language. Its
             design philosophy emphasizes code readability with the use of
             significant indentation. Python is dynamically typed and
