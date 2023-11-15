@@ -6,7 +6,7 @@ import Levelup from "../assets/levelup.svg"
 import Feedback from "../assets/feedback.svg"
 import Quiz from "../assets/quiz.svg"
 
-import Card from "../component/Card"
+import Card from "../components/Card"
 
 function Home() {
   return (
