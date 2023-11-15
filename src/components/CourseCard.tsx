@@ -19,8 +19,8 @@ const CourseCard: React.FC<CourseCardProps> = ({
   instructorName,
 }) => {
   return (
-    <div className="flex flex-row">
-      <Card className="h-[250px]">
+    <>
+      <Card className="border-2">
         <CardHeader floated={false} shadow={false} className="h-20">
           <Image src={imageSrc} alt="course-image" width={260} height={260} />
         </CardHeader>
@@ -29,7 +29,7 @@ const CourseCard: React.FC<CourseCardProps> = ({
           <Typography className="font-medium">{instructorName}</Typography>
         </CardBody>
       </Card>
-    </div>
+    </>
   );
 };
 
