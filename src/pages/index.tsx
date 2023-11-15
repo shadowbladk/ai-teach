@@ -1,4 +1,4 @@
-import CourseCard from "@/components/CourseCard.tsx";
+import CourseCard from "@/components/CourseCard";
 
 export default function Page() {
   return (
