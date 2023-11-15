@@ -10,11 +10,11 @@ import readingicon from "@/assets/reading-icon.svg";
 const CourseHero = () => {
   return (
     <div>
-      <section className="flex flex-col-reverse items-center justify-center px-3 py-12 lg:flex-row bg-white">
+      <section className="flex flex-col w-screen items-center justify-center px-3 py-12 lg:flex-row bg-white">
         <div className="max-w-xs lg:max-w-md">
           <Image src={Python} alt={"Python logo"} />
         </div>
-        <div className="flex flex-col gap-5 lg:pl-6">
+        <div className="flex flex-col gap-6 lg:pl-6">
           <h1 className="text-[32px] font-extrabold text-black">
             Python Bootcamp
           </h1>
@@ -43,6 +43,14 @@ const CourseHero = () => {
             garbage-collected. It supports multiple programming paradigms,
             including structured, object-oriented and functional programming.{" "}
           </p>
+          <div className="flex justify-end">
+            <button className="rounded-lg bg-white min-w-[200px] max-h-10 px-6 py-1 font-semibold mr-5 border-2 border-primary text-black">
+              Reviews
+            </button>
+            <button className="rounded-lg bg-primary min-w-[200px] max-h-10 px-6 py-1 font-semibold text-white">
+              Enroll this course
+            </button>
+          </div>
         </div>
       </section>
     </div>
