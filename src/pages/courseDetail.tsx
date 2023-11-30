@@ -7,83 +7,78 @@ import quizicon from "@/assets/quiz-icon.svg";
 import videoicon from "@/assets/video-icon.svg";
 import fcicon from "@/assets/fc-icon.svg";
 import readingicon from "@/assets/reading-icon.svg";
+import Python from "@/assets/python.svg";
 
-import Navbar from "../components/Navbar"
-import Footer from "../components/Footer"
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 
 export default function CourseDetail() {
+  const courseData = [
+    { type: "video", title: "Introduction to Python", isLearn: true },
+    { type: "reading", title: "Keywords and Identifiers", isLearn: true },
+    { type: "reading", title: "Statements and Comment", isLearn: true },
+    { type: "reading", title: "Python Variables", isLearn: false },
+    { type: "reading", title: "Python Datatype", isLearn: true },
+    { type: "video", title: "Python Datatype", isLearn: true },
+    { type: "video", title: "Python Type Conversion", isLearn: false },
+    { type: "quiz", title: "Quiz 1 - Review Chapter 1", isLearn: true },
+    { type: "flashcard", title: "Flashcard - Chapter 1", isLearn: true },
+  ];
+
+  const courseHeroData = {
+    courseName: "Python Bootcamp",
+    coursePicture: Python,
+    courseDescription:
+      "Python is a high-level, general-purpose programming language. Its design philosophy emphasizes code readability with the use of significant indentation. Python is dynamically typed and garbage-collected. It supports multiple programming paradigms, including structured, object-oriented and functional programming. ",
+    reading: 15,
+    video: 5,
+    quiz: 3,
+    flashcard: 3,
+  };
+
+  const getIconUrl = (type: any) => {
+    switch (type) {
+      case "video":
+        return videoicon;
+      case "reading":
+        return readingicon;
+      case "quiz":
+        return quizicon;
+      case "flashcard":
+        return fcicon;
+      default:
+        return;
+    }
+  };
+
   return (
     <>
-      <div className="flex min-h-screen min-w-screen flex-col">
+      <div className="flex flex-col w-screen">
         <Navbar />
-        <div className="flex min-w-screen">
-          <CourseHero />
+        <div className="flex w-screen">
+          <CourseHero {...courseHeroData} />
         </div>
-        <div className="flex flex-row items-center justify-center mt-20">
-          <div className="mx-10">
-            <Round />
-          </div>
-          <div className="mx-10">
-            <Round />
-          </div>
-          <div className="mx-10">
-            <Round />
-          </div>
-        </div>
-        <div className="pt-10">
-          <h1 className="text-[32px] font-extrabold text-black text-center">
+        <div className="p-6">
+          <h1 className="text-2xl font-extrabold text-black text-center">
             Introduction
           </h1>
         </div>
-        <div className="pt-10">
-          <CourseBox
-            imageUrl={videoicon}
-            title="Introduction to Python"
-            isLearn={true}
-          />
-          <CourseBox
-            imageUrl={readingicon}
-            title="Keywords and Identifiers"
-            isLearn={true}
-          />
-          <CourseBox
-            imageUrl={readingicon}
-            title="Statements and Comment"
-            isLearn={true}
-          />
-          <CourseBox
-            imageUrl={readingicon}
-            title="Python Variables"
-            isLearn={false}
-          />
-          <CourseBox
-            imageUrl={readingicon}
-            title="Python Datatype"
-            isLearn={true}
-          />
-          <CourseBox
-            imageUrl={videoicon}
-            title="Python Datatype"
-            isLearn={true}
-          />
-          <CourseBox
-            imageUrl={videoicon}
-            title="Python Type Conversion"
-            isLearn={false}
-          />
-          <CourseBox
-            imageUrl={quizicon}
-            title="Quiz 1 - Review Chapter 1"
-            isLearn={true}
-          />
-          <CourseBox
-            imageUrl={fcicon}
-            title="Flashcard - Chapter 1"
-            isLearn={true}
-          />
+        <></>
+        <div className="w-full justify-center px-6">
+          <div className="max-w-[720px] mx-auto flex flex-wrap justify-center">
+            {courseData.map((course, index) => (
+              <CourseBox
+                key={index}
+                imageUrl={getIconUrl(course.type)}
+                title={course.title}
+                isLearn={course.isLearn}
+              />
+            ))}
+          </div>
         </div>
         <div className="mt-20">
-        <Footer /></div>
+          <Footer />
+        </div>
       </div>
     </>
   );
