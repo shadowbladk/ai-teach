@@ -1,14 +1,13 @@
-
 import Image from "next/image"
 
-import HeroPic from "../assets/hero.svg"
-import Levelup from "../assets/levelup.svg"
-import Feedback from "../assets/feedback.svg"
-import Quiz from "../assets/quiz.svg"
+import HeroPic from "@/assets/hero.svg"
+import Levelup from "@/assets/levelup.svg"
+import Feedback from "@/assets/feedback.svg"
+import Quiz from "@/assets/quiz.svg"
 
-import Card from "../components/Card"
-import Navbar from "../components/Navbar"
-import Footer from "../components/Footer"
+import RecommendedCourse from "@/components/RecommendedCourse"
+import Navbar from "@/components/Navbar"
+import Footer from "@/components/Footer"
 
 function Home() {
   return (
@@ -16,7 +15,7 @@ function Home() {
       <div className="flex min-h-screen flex-col">
         <Navbar />
         <div className="flex-grow">
-          <section className="flex flex-col-reverse items-center justify-center px-60 py-24 gap-14 lg:flex-row">
+          <section className="flex flex-col-reverse items-center justify-center px-4 py-24 gap-14 lg:flex-row">
             <div className="flex flex-col items-center gap-6 text-center">
               <h1 className="text-[32px] font-extrabold text-primary">
                 AI TEACH
@@ -40,33 +39,38 @@ function Home() {
             <h1 className="text-[32px] font-extrabold text-primary">
               Recommended Course
             </h1>
-
-            <Card />
+            <RecommendedCourse />
           </section>
-          <section className="flex flex-col items-center justify-center px-24 py-20 gap-14">
+          <section className="flex flex-col items-center justify-center px-24 py-20 gap-12">
             <h1 className="text-[32px] font-extrabold text-primary">
               Our Platform
             </h1>
-            <div className="flex flex-row items-center gap-28">
-              <div className="flex flex-col items-center gap-8">
-                <h2 className="text-2xl text-[#4B4B4B] font-semibold">
+            <div className="grid grid-cols-1 gap-12 md:gap-y-16 md:grid-cols-4 md:gap-x-32 lg:max-w-7xl lg:grid-cols-6 lg:gap-16 xl:gap-28">
+              <div className="lg:grid-col items-center gap-8 hidden lg:col-span-2 lg:col-start-1 lg:mt-12 lg:grid">
+                <h2 className="text-2xl text-center text-[#4B4B4B] font-semibold">
                   Level up your skill
                 </h2>
                 <Image className="w-[200px]" src={Levelup} alt={"Level up"} />
               </div>
-              <div className="flex flex-col items-center gap-8">
+              <div className="flex flex-col items-center gap-4 md:gap-8 md:col-span-2 md:col-start-2 md:justify-self-center lg:col-start-3">
                 <h2 className="text-2xl text-center text-[#4B4B4B] font-semibold">
                   Give feedback <br /> on your assignment
                 </h2>
-                <Image className="w-[200px]" src={Feedback} alt={"Feedback"} />
+                <Image className="w-[160px] md:w-[200px]" src={Feedback} alt={"Feedback"} />
               </div>
-              <div className="flex flex-col items-center gap-8">
-                <h2 className="text-2xl text-[#4B4B4B] font-semibold">
+              <div className="flex flex-col items-center gap-4 md:gap-8  md:col-span-2 lg:hidden ">
+                <h2 className="text-2xl text-center text-[#4B4B4B] font-semibold">
+                  Level up your skill
+                </h2>
+                <Image className="w-[160px] md:w-[200px]" src={Levelup} alt={"Level up"} />
+              </div>
+              <div className="flex flex-col items-center gap-4 md:gap-8 md:col-span-2 lg:mt-12">
+                <h2 className="text-2xl text-center text-[#4B4B4B] font-semibold">
                   Review with quiz
                 </h2>
-                <Image className="w-[200px]" src={Quiz} alt={"Quiz"} />
+                <Image className="w-[160px] md:w-[200px]" src={Quiz} alt={"Quiz"} />
               </div>
-            </div>
+            </div> 
           </section>
         </div>
         <Footer />

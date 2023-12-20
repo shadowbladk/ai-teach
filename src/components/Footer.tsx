@@ -1,7 +1,7 @@
 import Image from "next/image"
 
-import AITeach from "../assets/aiteach-white.svg"
-import Profile from "../assets/profile-icon.svg"
+import AITeach from "@/assets/aiteach-white.svg"
+import Profile from "@/assets/profile-icon.svg"
 
 const Navbar = () => {
   return (
