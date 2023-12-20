@@ -1,13 +1,13 @@
 import Image from "next/image"
 
-import HeroPic from "../assets/hero.svg"
-import Levelup from "../assets/levelup.svg"
-import Feedback from "../assets/feedback.svg"
-import Quiz from "../assets/quiz.svg"
+import HeroPic from "@/assets/hero.svg"
+import Levelup from "@/assets/levelup.svg"
+import Feedback from "@/assets/feedback.svg"
+import Quiz from "@/assets/quiz.svg"
 
-import RecommendedCourse from "../components/RecommendedCourse"
-import Navbar from "../components/Navbar"
-import Footer from "../components/Footer"
+import RecommendedCourse from "@/components/RecommendedCourse"
+import Navbar from "@/components/Navbar"
+import Footer from "@/components/Footer"
 
 function Home() {
   return (

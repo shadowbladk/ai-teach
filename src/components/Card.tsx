@@ -1,4 +1,4 @@
-import Python from "../assets/pythoncard.svg"
+import Python from "@/assets/pythoncard.svg"
 
 import Image from "next/image"
 import Link from "next/link"

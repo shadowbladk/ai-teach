@@ -2,9 +2,9 @@ import { useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
 
-import Menu from "../assets/menu.svg"
-import AITeach from "../assets/aiteach.svg"
-import Profile from "../assets/profile-icon.svg"
+import Menu from "@/assets/menu.svg"
+import AITeach from "@/assets/aiteach.svg"
+import Profile from "@/assets/profile-icon.svg"
 
 const Navbar = () => {
   const [navbar, setNavbar] = useState(false)
