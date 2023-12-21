@@ -67,12 +67,25 @@ const CourseHero: React.FC<CourseHeroProps> = ({
             {courseDescription}
           </p>
           <div className="w-full flex grid-row-2 gap-5 justify-center lg:justify-end">
+<<<<<<< Updated upstream
             <button className="rounded-lg bg-white max-h-10 px-6 py-1 border-2 border-primary text-xs font-semibold text-black lg:text-sm">
               Reviews
             </button>
             <button className="rounded-lg bg-primary max-h-10 px-6 py-1 text-xs font-semibold text-white lg:text-sm">
               Enroll course
             </button>
+=======
+            <Link href="/courseReview">
+              <button className="rounded-lg bg-white max-h-10 px-6 py-1 border-2 border-primary text-xs font-semibold text-black lg:text-sm">
+                Reviews
+              </button>
+            </Link>
+            <Link href="/courseDetail">
+              <button className="rounded-lg bg-primary max-h-10 px-6 py-1 text-xs font-semibold text-white lg:text-sm">
+                Enroll course
+              </button>
+            </Link>
+>>>>>>> Stashed changes
           </div>
         </div>
       </section>
