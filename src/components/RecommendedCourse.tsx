@@ -16,7 +16,8 @@ export default function RecommendedCourse() {
           //   transform: `translateX(-${curr * 100}%)`,
           // }}
         >
-          <div className="flex flex-row gap-12">
+           <div className="grid grid-cols-1 gap-8 lg:grid-cols-4 lg:gap-x-16 xl:max-w-7xl xl:grid-cols-6 xl:gap-12">
+          {/* <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-12"> */}
             <Link href="/courseDetail">
               <div
                 style={{
