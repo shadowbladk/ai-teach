@@ -6,6 +6,7 @@ import Feedback from "@/assets/feedback.svg"
 import Quiz from "@/assets/quiz.svg"
 
 import RecommendedCourse from "@/components/RecommendedCourse"
+import Slider from "@/components/Slider"
 import Navbar from "@/components/Navbar"
 import Footer from "@/components/Footer"
 
@@ -36,13 +37,14 @@ function Home() {
           </section>
 
           <section className="flex flex-col items-center justify-center px-24 py-20 bg-white gap-14">
-            <h1 className="text-[32px] font-extrabold text-primary">
+            <h1 className="text-[32px] font-extrabold text-center text-primary">
               Recommended Course
             </h1>
-            <RecommendedCourse />
+            <Slider />
+            {/* <RecommendedCourse /> */}
           </section>
           <section className="flex flex-col items-center justify-center px-24 py-20 gap-12">
-            <h1 className="text-[32px] font-extrabold text-primary">
+            <h1 className="text-[32px] font-extrabold text-center text-primary">
               Our Platform
             </h1>
             <div className="grid grid-cols-1 gap-12 md:gap-y-16 md:grid-cols-4 md:gap-x-32 lg:max-w-7xl lg:grid-cols-6 lg:gap-16 xl:gap-28">
