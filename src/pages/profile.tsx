@@ -9,7 +9,7 @@ import Footer from "@/components/Footer"
 
 import Card from "@/components/Card"
 
-// import Slider from "@/components/Slider2"
+import Slider from "@/components/Slider2"
 
 function profile() {
   const [toggle, setToggle] = useState(false)
@@ -41,11 +41,10 @@ function profile() {
               </div>
             </div>
           </section>
-          <section>
-{/* <Slider /> */}
+          <section className="bg-white">
+            <Slider />
           </section>
-          <section className="flex flex-col justify-center py-12 px-12 sm:px-20 xl:px-28 bg-white gap-8">
-            
+          <section className="flex flex-col justify-center py-12 px-12 sm:px-20 xl:px-28 gap-8">
             <div className="mt-6 mb-10 flex flex-row justify-center">
               <button
                 onClick={() => setToggle(true)}
@@ -71,10 +70,10 @@ function profile() {
               </button>
             </div>
             <div className="mb-8 grid grid-cols-1 gap-8 place-self-center lg:max-w-7xl lg:grid-cols-2 xl:grid-cols-3">
-                <Card />
-                <Card />
-                <Card />
-                <Card />
+              <Card />
+              <Card />
+              <Card />
+              <Card />
             </div>
           </section>
         </div>
