@@ -24,14 +24,14 @@ export default function CourseDetail() {
         <div className="flex w-screen">
           <CourseHero {...courseHeroData} />
         </div>
-        <div className="p-6">
+        <div className="p-6 items-center justify-between">
           <h1 className="text-2xl font-extrabold text-black text-center">
             Course Review
           </h1>
-          <div className="text-center">
+        </div>
+        <div className="w-full justify-center px-6">
             <TextBox />
           </div>
-        </div>
         <div className="mt-20">
           <Footer />
         </div>
