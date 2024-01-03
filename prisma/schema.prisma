@@ -43,11 +43,11 @@ model Attachment {
   name String
   url  String @db.Text
 
-  curentId String
-  course   Course @relation(fields: [curentId], references: [id], onDelete: Cascade)
+  courseId String
+  course   Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@index([curentId])
+  @@index([courseId])
 }
