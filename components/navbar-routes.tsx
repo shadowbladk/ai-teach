@@ -14,7 +14,7 @@ export const NavbarRoutes = () => {
   const isChapterPage = pathname?.includes("/chapter");
 
   return (
-    <div className="flex gab-x-2 ml-auto">
+    <div className="flex gap-x-2 ml-auto">
       {isInstutorPage || isChapterPage ? (
         <Link href="/">
           <Button size="sm" variant="ghost">
