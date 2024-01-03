@@ -5,7 +5,6 @@ import Levelup from "@/assets/levelup.svg"
 import Feedback from "@/assets/feedback.svg"
 import Quiz from "@/assets/quiz.svg"
 
-import RecommendedCourse from "@/components/RecommendedCourse"
 import Slider from "@/components/CourseSlider"
 import Navbar from "@/components/Navbar"
 import Footer from "@/components/Footer"
@@ -41,7 +40,6 @@ function Home() {
               Recommended Course
             </h1>
             <Slider />
-            {/* <RecommendedCourse /> */}
           </section>
           <section className="flex flex-col items-center justify-center px-24 py-20 gap-12">
             <h1 className="text-[32px] font-extrabold text-center text-primary">
