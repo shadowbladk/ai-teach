@@ -27,11 +27,8 @@ const Slider = () => {
   const [canGoNext, setCanGoNext] = useState(true)
 
   const handleSlideChange = (swiper: any) => {
-    // Check if the swiper is at the beginning or end
     const isBeginning = swiper.isBeginning
     const isEnd = swiper.isEnd
-
-    // You can perform actions based on the current position
 
     if (isBeginning) {
       setCanGoPrev(false)
