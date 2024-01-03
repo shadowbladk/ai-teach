@@ -5,8 +5,7 @@ import Levelup from "@/assets/levelup.svg"
 import Feedback from "@/assets/feedback.svg"
 import Quiz from "@/assets/quiz.svg"
 
-import RecommendedCourse from "@/components/RecommendedCourse"
-import Slider from "@/components/Slider"
+import Slider from "@/components/CourseSlider"
 import Navbar from "@/components/Navbar"
 import Footer from "@/components/Footer"
 
@@ -36,12 +35,11 @@ function Home() {
             </div>
           </section>
 
-          <section className="flex flex-col items-center justify-center px-24 py-20 bg-white gap-14">
+          <section className="flex flex-col items-center justify-center px-24 py-16 bg-white gap-12">
             <h1 className="text-[32px] font-extrabold text-center text-primary">
               Recommended Course
             </h1>
             <Slider />
-            {/* <RecommendedCourse /> */}
           </section>
           <section className="flex flex-col items-center justify-center px-24 py-20 gap-12">
             <h1 className="text-[32px] font-extrabold text-center text-primary">
@@ -58,21 +56,33 @@ function Home() {
                 <h2 className="text-2xl text-center text-[#4B4B4B] font-semibold">
                   Give feedback <br /> on your assignment
                 </h2>
-                <Image className="w-[160px] md:w-[200px]" src={Feedback} alt={"Feedback"} />
+                <Image
+                  className="w-[160px] md:w-[200px]"
+                  src={Feedback}
+                  alt={"Feedback"}
+                />
               </div>
               <div className="flex flex-col items-center gap-4 md:gap-8  md:col-span-2 lg:hidden ">
                 <h2 className="text-2xl text-center text-[#4B4B4B] font-semibold">
                   Level up your skill
                 </h2>
-                <Image className="w-[160px] md:w-[200px]" src={Levelup} alt={"Level up"} />
+                <Image
+                  className="w-[160px] md:w-[200px]"
+                  src={Levelup}
+                  alt={"Level up"}
+                />
               </div>
               <div className="flex flex-col items-center gap-4 md:gap-8 md:col-span-2 lg:mt-12">
                 <h2 className="text-2xl text-center text-[#4B4B4B] font-semibold">
                   Review with quiz
                 </h2>
-                <Image className="w-[160px] md:w-[200px]" src={Quiz} alt={"Quiz"} />
+                <Image
+                  className="w-[160px] md:w-[200px]"
+                  src={Quiz}
+                  alt={"Quiz"}
+                />
               </div>
-            </div> 
+            </div>
           </section>
         </div>
         <Footer />
