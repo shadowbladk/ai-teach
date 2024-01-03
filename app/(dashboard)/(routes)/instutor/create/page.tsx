@@ -5,6 +5,8 @@ import axios from "axios";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
+import toast from "react-hot-toast";
 
 import {
   Form,
@@ -17,8 +19,7 @@ import {
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import Link from "next/link";
-import toast from "react-hot-toast";
+
 
 const formSchema = z.object({
   title: z.string().min(1, {
@@ -52,7 +53,7 @@ const CreatePage = () => {
         <h1 className="text-2xl">Name your course</h1>
         <p className="text-sm text-slate-600">
           What would you like to name your course? Don't worry, you can change
-          this late.
+          this later.
         </p>
         <Form {...form}>
           <form
