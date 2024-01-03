@@ -2,12 +2,12 @@ import React from "react";
 import Image from "next/image";
 
 interface CourseBoxProps {
-  imageUrl?: string;
-  title?: string;
-  isLearn?: boolean;
+  imageUrl: string;
+  title: string;
+  isLearn: boolean;
 }
 
-const CourseBox: React.FC<CourseBoxProps> = ({ imageUrl, title, isLearn }) => {
+const CourseBox = ({ imageUrl, title, isLearn }: CourseBoxProps) => {
   const boxColor = isLearn ? "bg-[#B99EC8]" : "bg-white";
   return (
     <div

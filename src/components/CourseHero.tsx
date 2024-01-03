@@ -1,4 +1,3 @@
-import Link from "next/link";
 import Image from "next/image";
 
 import quizicon from "@/assets/quiz-icon.svg";
@@ -7,24 +6,28 @@ import fcicon from "@/assets/fc-icon.svg";
 import readingicon from "@/assets/reading-icon.svg";
 
 interface CourseHeroProps {
-  courseName?: string;
+  courseName: string;
   coursePicture: string;
-  courseDescription?: string;
-  reading?: number;
-  video?: number;
-  quiz?: number;
-  flashcard?: number;
+  courseDescription: string;
+  reading: number;
+  video: number;
+  quiz: number;
+  flashcard: number;
+  onReviewTabClick: () => void; // Add this line
+  onCourseDetailTabClick: () => void; // Add this line
 }
 
-const CourseHero: React.FC<CourseHeroProps> = ({
+const CourseHero = ({
+  courseName,
+  coursePicture,
+  courseDescription,
   reading,
   video,
   quiz,
   flashcard,
-  courseName,
-  coursePicture,
-  courseDescription,
-}) => {
+  onReviewTabClick, // Add this line
+  onCourseDetailTabClick, // Add this line
+}: CourseHeroProps) => {
   return (
     <div>
       <section className="flex flex-col w-screen items-center justify-center p-6 lg:flex-row bg-white">
@@ -67,16 +70,18 @@ const CourseHero: React.FC<CourseHeroProps> = ({
             {courseDescription}
           </p>
           <div className="w-full flex grid-row-2 gap-5 justify-center lg:justify-end">
-            <Link href="/courseReview">
-              <button className="rounded-lg bg-white max-h-10 px-6 py-1 border-2 border-primary text-xs font-semibold text-black lg:text-sm">
-                Reviews
-              </button>
-            </Link>
-            <Link href="/courseDetail">
-              <button className="rounded-lg bg-primary max-h-10 px-6 py-1 text-xs font-semibold text-white lg:text-sm">
-                Enroll course
-              </button>
-            </Link>
+            <button
+              className="rounded-lg bg-white max-h-10 px-6 py-1 border-2 border-primary text-xs font-semibold text-black lg:text-sm"
+              onClick={onReviewTabClick}
+            >
+              Reviews
+            </button>
+            <button
+              className="rounded-lg bg-primary max-h-10 px-6 py-1 text-xs font-semibold text-white lg:text-sm"
+              onClick={onCourseDetailTabClick}
+            >
+              Enroll course
+            </button>
           </div>
         </div>
       </section>

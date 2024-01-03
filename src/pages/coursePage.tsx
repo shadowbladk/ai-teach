@@ -1,59 +1,46 @@
-import Link from "next/link";
+import React, { useState } from "react";
 import CourseHero from "@/components/CourseHero";
-import Round from "@/components/Round";
 import CourseBox from "@/components/CourseBox";
-
-import quizicon from "@/assets/quiz-icon.svg";
-import videoicon from "@/assets/video-icon.svg";
-import fcicon from "@/assets/fc-icon.svg";
-import readingicon from "@/assets/reading-icon.svg";
-import Python from "@/assets/python.svg";
+import CourseDetail from "@/components/CourseDetail";
 
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import Python from "@/assets/python.svg";
+import CourseReview from "@/components/CourseReview";
 
-export default function CourseDetail() {
-  const getIconUrl = (type: any) => {
-    switch (type) {
-      case "video":
-        return videoicon;
-      case "reading":
-        return readingicon;
-      case "quiz":
-        return quizicon;
-      case "flashcard":
-        return fcicon;
-      default:
-        return;
-    }
+export default function CoursePage() {
+  const [activeTab, setActiveTab] = useState("courseDetail");
+
+  const handleReviewTabClick = () => {
+    setActiveTab("review");
   };
-  const uniqueSections = Array.from(
-    new Set(courseData.coursedata.map((item) => item.section))
-  );
+
+  const handleCourseDetailTabClick = () => {
+    setActiveTab("courseDetail");
+  };
   return (
     <>
       <div className="flex flex-col w-screen">
         <Navbar />
         <div className="flex w-screen">
-          <CourseHero {...courseData} />
+          <CourseHero
+            {...courseData}
+            onReviewTabClick={handleReviewTabClick}
+            onCourseDetailTabClick={handleCourseDetailTabClick}
+          />
         </div>
-        <div className="p-6">
-          <h1 className="text-2xl font-extrabold text-black text-center">
-            Introduction
-          </h1>
-        </div>
-        <></>
-        <div className="w-full justify-center px-6">
-          <div className="max-w-[720px] mx-auto flex flex-wrap justify-center">
-            {courseData.coursedata.map((course, index) => (
-              <CourseBox
-                key={index}
-                imageUrl={getIconUrl(course.type)}
-                title={course.title}
-                isLearn={course.isLearn}
-              />
-            ))}
-          </div>
+        <div></div>
+        <div>
+          {activeTab === "review" && (
+            <div>
+              <CourseReview />
+            </div>
+          )}
+          {activeTab === "courseDetail" && (
+            <div>
+              <CourseDetail courseData={courseData} />
+            </div>
+          )}
         </div>
         <div className="mt-20">
           <Footer />
