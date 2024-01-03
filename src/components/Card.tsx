@@ -7,19 +7,7 @@ export default function Card() {
   return (
     <>
       <Link href="/courseDetail">
-        <div
-          style={{
-            width: "300px",
-            height: "300px",
-            border: "2px solid #DDDDDD",
-            borderRadius: "10px",
-            padding: "20px",
-            display: "flex",
-            flexDirection: "column",
-            gap: "20px",
-            backgroundColor: "#FFFFFF",
-          }}
-        >
+        <div className="w-[300px] h-[300px] p-4 flex flex-col gap-4 border-2 border-[#DDDDDD] rounded-xl bg-white">
           <div
             style={{
               width: "260px",
