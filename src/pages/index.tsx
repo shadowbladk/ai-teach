@@ -36,7 +36,7 @@ function Home() {
             </div>
           </section>
 
-          <section className="flex flex-col items-center justify-center px-24 py-20 bg-white gap-14">
+          <section className="flex flex-col items-center justify-center px-24 py-16 bg-white gap-12">
             <h1 className="text-[32px] font-extrabold text-center text-primary">
               Recommended Course
             </h1>
