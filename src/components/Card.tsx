@@ -17,6 +17,7 @@ export default function Card() {
             display: "flex",
             flexDirection: "column",
             gap: "20px",
+            backgroundColor: "#FFFFFF",
           }}
         >
           <div
