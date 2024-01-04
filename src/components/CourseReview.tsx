@@ -1,4 +1,4 @@
-import SearchBox from "@/components/SearchBox";
+import TextBox from "@/components/TextBox";
 
 const CourseReview = () => {
   return (
@@ -9,7 +9,7 @@ const CourseReview = () => {
         </h1>
       </div>
       <div className="flex justify-center">
-        <SearchBox />
+        <TextBox />
       </div>
     </>
   );
