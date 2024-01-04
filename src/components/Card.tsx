@@ -1,12 +1,12 @@
-import Python from "@/assets/pythoncard.svg"
+import Python from "@/assets/pythoncard.svg";
 
-import Image from "next/image"
-import Link from "next/link"
+import Image from "next/image";
+import Link from "next/link";
 
 export default function Card() {
   return (
     <>
-      <Link href="/courseDetail">
+      <Link href="/coursePage">
         <div className="w-[300px] h-[300px] p-4 flex flex-col gap-4 border-2 border-[#DDDDDD] rounded-xl bg-white">
           <div
             style={{
@@ -30,5 +30,5 @@ export default function Card() {
         </div>
       </Link>
     </>
-  )
+  );
 }

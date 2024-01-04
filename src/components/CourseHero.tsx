@@ -1,54 +1,86 @@
-import Link from "next/link";
 import Image from "next/image";
 
-import Python from "@/assets/python.svg";
 import quizicon from "@/assets/quiz-icon.svg";
 import videoicon from "@/assets/video-icon.svg";
 import fcicon from "@/assets/fc-icon.svg";
 import readingicon from "@/assets/reading-icon.svg";
 
-const CourseHero = () => {
+interface CourseHeroProps {
+  courseName: string;
+  coursePicture: string;
+  courseDescription: string;
+  reading: number;
+  video: number;
+  quiz: number;
+  flashcard: number;
+  onReviewTabClick: () => void; // Add this line
+  onCourseDetailTabClick: () => void; // Add this line
+}
+
+const CourseHero = ({
+  courseName,
+  coursePicture,
+  courseDescription,
+  reading,
+  video,
+  quiz,
+  flashcard,
+  onReviewTabClick, // Add this line
+  onCourseDetailTabClick, // Add this line
+}: CourseHeroProps) => {
   return (
     <div>
-      <section className="flex flex-col w-screen items-center justify-center px-3 py-12 lg:flex-row bg-white">
+      <section className="flex flex-col w-screen items-center justify-center p-6 lg:flex-row bg-white">
         <div className="max-w-xs lg:max-w-md">
-          <Image src={Python} alt={"Python logo"} />
+          {coursePicture && (
+            <Image
+              src={coursePicture}
+              alt={"${courseName} Image"}
+              className="rounded-full"
+              width={150}
+              height={150}
+            />
+          )}
         </div>
-        <div className="flex flex-col gap-6 lg:pl-6">
-          <h1 className="text-[32px] font-extrabold text-black">
-            Python Bootcamp
-          </h1>
-          <div className="flex flex-row">
-            <div className="flex flex-row items-center mr-5">
+        <div className="flex flex-col gap-5 items-center justify-center lg:px-6 lg:items-start">
+          <h1 className="text-2xl font-extrabold text-black ">{courseName}</h1>
+          <div className="flex grid-rows-4 gap-5 md:flex-row">
+            <div className="flex flex-col gap-1 items-center lg:gap-2 sm:flex-row">
               <Image src={readingicon} alt={"Python logo"} />
-              <p className="text-base font-bold ml-2.5">15 Reading</p>
+              <p className="text-sm font-semibold">{reading}</p>
+              <p className="text-sm font-semibold">Reading</p>
             </div>
-            <div className="flex flex-row items-center mr-5">
+            <div className="flex flex-col gap-1 items-center lg:gap-2 sm:flex-row">
               <Image src={quizicon} alt={"Python logo"} />
-              <p className="text-base font-bold ml-2.5"> 5 Video</p>
+              <p className="text-sm font-semibold">{video}</p>
+              <p className="text-sm font-semibold">Video</p>
             </div>
-            <div className="flex flex-row items-center mr-5">
+            <div className="flex flex-col gap-1 items-center lg:gap-2 sm:flex-row">
               <Image src={videoicon} alt={"Python logo"} />
-              <p className="text-base font-bold ml-2.5"> 5 Video</p>
+              <p className="text-sm font-semibold">{quiz}</p>
+              <p className="text-sm font-semibold">quizzes</p>
             </div>
-            <div className="flex flex-row items-center mr-5">
+            <div className="flex flex-col gap-1 items-center lg:gap-2 sm:flex-row">
               <Image src={fcicon} alt={"Python logo"} />
-              <p className="text-base font-bold ml-2.5"> 5 Video</p>
+              <p className="text-sm font-semibold">{flashcard}</p>
+              <p className="text-sm font-semibold">Flashcards</p>
             </div>
           </div>
-          <p className="text-lg w-[740px] font-medium">
-            Python is a high-level, general-purpose programming language. Its
-            design philosophy emphasizes code readability with the use of
-            significant indentation. Python is dynamically typed and
-            garbage-collected. It supports multiple programming paradigms,
-            including structured, object-oriented and functional programming.{" "}
+          <p className="text-sm font-medium text-center lg:max-w-[720px] lg:text-base lg:text-start">
+            {courseDescription}
           </p>
-          <div className="flex justify-end">
-            <button className="rounded-lg bg-white min-w-[200px] max-h-10 px-6 py-1 font-semibold mr-5 border-2 border-primary text-black">
+          <div className="w-full flex grid-row-2 gap-5 justify-center lg:justify-end">
+            <button
+              className="rounded-lg bg-white max-h-10 px-6 py-1 border-2 border-primary text-xs font-semibold text-black lg:text-sm"
+              onClick={onReviewTabClick}
+            >
               Reviews
             </button>
-            <button className="rounded-lg bg-primary min-w-[200px] max-h-10 px-6 py-1 font-semibold text-white">
-              Enroll this course
+            <button
+              className="rounded-lg bg-primary max-h-10 px-6 py-1 text-xs font-semibold text-white lg:text-sm"
+              onClick={onCourseDetailTabClick}
+            >
+              Enroll course
             </button>
           </div>
         </div>
