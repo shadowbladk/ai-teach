@@ -55,7 +55,7 @@ const CourseIdPage = async ({ params }: { params: { courseId: string } }) => {
           </span>
         </div>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-16">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-16">
         <div>
           <div className="flex items-center gap-x-2">
             <IconBadge icon={LayoutGrid} />
@@ -78,11 +78,11 @@ const CourseIdPage = async ({ params }: { params: { courseId: string } }) => {
             <IconBadge icon={ListChecks} />
             <h2 className="text-xl">Chapter</h2>
           </div>
-          <div className="flex items-center gap-x-2">
+          {/* <div className="flex items-center gap-x-2">
             <IconBadge icon={File} />
             <h2 className="text-xl">Resources & Attachments</h2>
           </div>
-          <AttchmentForm initialData={course} courseId={course.id} />
+          <AttchmentForm initialData={course} courseId={course.id} /> */}
         </div>
       </div>
     </div>
