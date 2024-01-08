@@ -32,9 +32,11 @@ const Navbar = () => {
           }`}
         >
           <ul className="justify-center space-y-8 text-center md:flex md:space-x-12 md:space-y-0 ">
+          <Link href="/exploreCourse">
             <li className="text-base font-semibold hover:text-secondary">
               Explore Course
             </li>
+            </Link>
 
             <li className="text-base font-semibold hover:text-secondary">
               My Learning
