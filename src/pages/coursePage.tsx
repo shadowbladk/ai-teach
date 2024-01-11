@@ -20,31 +20,30 @@ export default function CoursePage() {
   };
   return (
     <>
-      <div className="flex flex-col w-screen">
+      <div className="flex min-h-screen flex-col">
         <Navbar />
-        <div className="flex w-screen">
-          <CourseHero
-            {...courseData}
-            onReviewTabClick={handleReviewTabClick}
-            onCourseDetailTabClick={handleCourseDetailTabClick}
-          />
+        <div className="flex-grow min-h-screen">
+          <div>
+            <CourseHero
+              {...courseData}
+              onReviewTabClick={handleReviewTabClick}
+              onCourseDetailTabClick={handleCourseDetailTabClick}
+            />
+          </div>
+          <div className="pb-16 flex flex-col h-full">
+            {activeTab === "review" && (
+              <div>
+                <CourseReview />
+              </div>
+            )}
+            {activeTab === "courseDetail" && (
+              <div>
+                <CourseDetail courseData={courseData} />
+              </div>
+            )}
+          </div>
         </div>
-        <div></div>
-        <div>
-          {activeTab === "review" && (
-            <div>
-              <CourseReview />
-            </div>
-          )}
-          {activeTab === "courseDetail" && (
-            <div>
-              <CourseDetail courseData={courseData} />
-            </div>
-          )}
-        </div>
-        <div className="mt-20">
-          <Footer />
-        </div>
+        <Footer />
       </div>
     </>
   );
