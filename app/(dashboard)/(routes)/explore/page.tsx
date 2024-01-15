@@ -1,7 +1,16 @@
-const ExplorePage = () => {
+import { db } from "@/lib/db";
+import { Categories } from "./_components/categories";
+
+const ExplorePage = async () => {
+  const categories = await db.category.findMany({
+    orderBy: {
+      name: "asc",
+    },
+  });
+
   return (
-    <div>
-      <h1>Explore</h1>
+    <div className="p-6">
+      <Categories items={categories} />
     </div>
   );
 };
