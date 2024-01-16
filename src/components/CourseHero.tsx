@@ -43,7 +43,9 @@ const CourseHero = ({
           )}
         </div>
         <div className="flex flex-col gap-5 items-center justify-center lg:px-6 lg:items-start">
-          <h1 className="text-2xl font-extrabold text-black ">{courseName}</h1>
+          <h1 className="text-xl font-extrabold text-black md:text-2xl">
+            {courseName}
+          </h1>
           <div className="flex grid-rows-4 gap-5 md:flex-row">
             <div className="flex flex-col gap-1 items-center lg:gap-2 sm:flex-row">
               <Image src={readingicon} alt={"Python logo"} />

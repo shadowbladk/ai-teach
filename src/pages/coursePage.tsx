@@ -20,7 +20,7 @@ export default function CoursePage() {
   };
   return (
     <>
-      <div className="flex min-h-screen flex-col">
+      <div className="flex min-h-screen flex-col overflow-x-hidden">
         <Navbar />
         <div className="flex-grow min-h-screen">
           <div>
