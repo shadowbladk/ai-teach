@@ -10,6 +10,8 @@ import Feedback from "@/assets/feedback.svg"
 import Quiz from "@/assets/quiz.svg"
 
 import Slider from "@/components/CourseSlider"
+import QuestionCard from "@/components/QuestionCard";
+import AnswerBox from "@/components/AnswerBox";
 
 function quiz() {
     const [toggle, setToggle] = useState(false)
@@ -19,6 +21,7 @@ function quiz() {
       <div className="flex min-h-screen flex-col">
         <Navbar />
         <div className="flex-grow">
+          <div className="container mx-auto justify-center max-w-[900px] ">
           <section className="flex flex-col items-center justify-center px-23 py-16 gap-12">
             <h1 className="text-[32px] font-extrabold text-center text-black">
               Quiz
@@ -31,12 +34,22 @@ function quiz() {
                 Question 1/10
               </p>
             </div>
-            <div className="flex flex-col w-full max-w-[900px] py-6 gap-12">
-            <h1 className="text-[32px] font-extrabold text-left text-black">
-              Quiz
-            </h1>
+            <div className="flex flex-col w-full justify-center">
+              <QuestionCard>
+              </QuestionCard>
+            </div>
+            <div className="flex flex-col">
+            <div className="flex flex-col w-full lg:flex-row items-center justify-between">
+              <AnswerBox answer="Defining user-defined functions"></AnswerBox>
+              <AnswerBox answer="Naming variables and objects"></AnswerBox>
+            </div>
+            <div className="flex flex-col w-full lg:flex-row items-center justify-between">
+              <AnswerBox answer="Identifying syntax errors in code"></AnswerBox>
+              <AnswerBox answer="Signifying reserved words"></AnswerBox>
+            </div>
             </div>
           </section>
+          </div>
         </div>
         <Footer />
       </div>
