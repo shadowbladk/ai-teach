@@ -2,7 +2,8 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["fullTextSearch", "fullTextIndex"]
 }
 
 datasource db {
@@ -25,11 +26,13 @@ model Course {
 
   chapters    Chapter[]
   attachments Attachment[]
+  enrollment  Enrollment[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   @@index([categoryId])
+  @@index([title])
 }
 
 model Category {
@@ -57,7 +60,7 @@ model Chapter {
   id          String  @id @default(uuid())
   title       String
   description String? @db.Text
-  videoUrl     String? @db.Text
+  videoUrl    String? @db.Text
   isPublished Boolean @default(false)
 
   muxData MuxData?
@@ -96,4 +99,17 @@ model UserProgress {
 
   @@unique([userId, chapterId])
   @@index([chapterId])
+}
+
+model Enrollment {
+  id     String @id @default(uuid())
+  userId String
+
+  courseId String
+  course   Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([courseId])
 }
