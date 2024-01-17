@@ -65,7 +65,7 @@ const CreatePage = () => {
               name="title"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Corse title</FormLabel>
+                  <FormLabel>Course title</FormLabel>
                   <FormControl>
                     <Input
                       disabled={isSubmitting}
