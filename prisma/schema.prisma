@@ -61,6 +61,7 @@ model Chapter {
   title       String
   description String? @db.Text
   videoUrl    String? @db.Text
+  position Int
   isPublished Boolean @default(false)
 
   muxData MuxData?
@@ -70,7 +71,7 @@ model Chapter {
 
   userProgress UserProgress[]
 
-  craetedAt DateTime @default(now())
+  createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   @@index([courseId])
