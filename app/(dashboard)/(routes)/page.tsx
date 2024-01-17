@@ -14,23 +14,17 @@ export default function Home() {
               <h2 className="text-2xl font-medium">
                 Explore course and level up your skill
               </h2>
-              {/* <Link href="/register"> */}
               <div className="rounded-md border-primary border-2 px-11 py-2 text-base font-bold text-primary shadow-sm">
                 Join Us
               </div>
               {/* </Link> */}
             </div>
-            <div className="max-w-xs lg:max-w-md">
-              {/* <Image src={HeroPic} alt={"Hero Pic"} /> */}
-            </div>
           </section>
 
-          <section className="flex flex-col items-center justify-center px-24 py-20 bg-white gap-14">
+          <section className="flex flex-col items-center justify-center px-24 py-16 bg-white gap-12">
             <h1 className="text-[32px] font-extrabold text-center text-primary">
               Recommended Course
             </h1>
-            {/* <Slider /> */}
-            {/* <RecommendedCourse /> */}
           </section>
           <section className="flex flex-col items-center justify-center px-24 py-20 gap-12">
             <h1 className="text-[32px] font-extrabold text-center text-primary">
@@ -41,30 +35,53 @@ export default function Home() {
                 <h2 className="text-2xl text-center text-[#4B4B4B] font-semibold">
                   Level up your skill
                 </h2>
-                {/* <Image className="w-[200px]" src={Levelup} alt={"Level up"} /> */}
+                <Image
+                  className="w-[200px]"
+                  src="levelup.svg"
+                  alt={"Level up"}
+                  width={200}
+                  height={200}
+                />
               </div>
               <div className="flex flex-col items-center gap-4 md:gap-8 md:col-span-2 md:col-start-2 md:justify-self-center lg:col-start-3">
                 <h2 className="text-2xl text-center text-[#4B4B4B] font-semibold">
                   Give feedback <br /> on your assignment
                 </h2>
-                {/* <Image className="w-[160px] md:w-[200px]" src={Feedback} alt={"Feedback"} /> */}
+                <Image
+                  className="w-[160px] md:w-[200px]"
+                  src="feedback.svg"
+                  alt={"Feedback"}
+                  height={200}
+                  width={200}
+                />
               </div>
               <div className="flex flex-col items-center gap-4 md:gap-8  md:col-span-2 lg:hidden ">
                 <h2 className="text-2xl text-center text-[#4B4B4B] font-semibold">
                   Level up your skill
                 </h2>
-                {/* <Image className="w-[160px] md:w-[200px]" src={Levelup} alt={"Level up"} /> */}
+                <Image
+                  className="w-[160px] md:w-[200px]"
+                  src="levelup.svg"
+                  alt={"Level up"}
+                  height={200}
+                  width={200}
+                />
               </div>
               <div className="flex flex-col items-center gap-4 md:gap-8 md:col-span-2 lg:mt-12">
                 <h2 className="text-2xl text-center text-[#4B4B4B] font-semibold">
                   Review with quiz
                 </h2>
-                {/* <Image className="w-[160px] md:w-[200px]" src={Quiz} alt={"Quiz"} /> */}
+                <Image
+                  className="w-[160px] md:w-[200px]"
+                  src="quiz.svg"
+                  alt={"Quiz"}
+                  height={200}
+                  width={200}
+                />
               </div>
-            </div> 
+            </div>
           </section>
         </div>
-        {/* <Footer /> */}
       </div>
     </>
   );
