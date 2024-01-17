@@ -36,7 +36,6 @@ const CourseDetail = ({ courseData }: { courseData: CourseData }) => {
           Introduction
         </h1>
       </div>
-      <></>
       <div className="w-full justify-center px-6">
         <div className="max-w-[720px] mx-auto flex flex-wrap justify-center">
           {courseData.coursedata.map((course, index) => (

@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { Button } from "@/components/ui/button";
 
 import quizicon from "@/assets/quiz-icon.svg";
 import videoicon from "@/assets/video-icon.svg";
@@ -72,18 +73,12 @@ const CourseHero = ({
             {courseDescription}
           </p>
           <div className="w-full flex grid-row-2 gap-5 justify-center lg:justify-end">
-            <button
-              className="rounded-lg bg-white max-h-10 px-6 py-1 border-2 border-primary text-xs font-semibold text-black lg:text-sm"
-              onClick={onReviewTabClick}
-            >
+            <Button variant="outline" onClick={onReviewTabClick}>
               Reviews
-            </button>
-            <button
-              className="rounded-lg bg-primary max-h-10 px-6 py-1 text-xs font-semibold text-white lg:text-sm"
-              onClick={onCourseDetailTabClick}
-            >
+            </Button>
+            <Button variant="default" onClick={onCourseDetailTabClick}>
               Enroll course
-            </button>
+            </Button>
           </div>
         </div>
       </section>
