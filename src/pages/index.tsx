@@ -6,6 +6,7 @@ import Feedback from "@/assets/feedback.svg"
 import Quiz from "@/assets/quiz.svg"
 
 import Slider from "@/components/CourseSlider"
+import Chat from "@/components/Chat"
 import Navbar from "@/components/Navbar"
 import Footer from "@/components/Footer"
 
@@ -84,6 +85,7 @@ function Home() {
               </div>
             </div>
           </section>
+          <Chat />
         </div>
         <Footer />
       </div>
