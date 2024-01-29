@@ -2,7 +2,7 @@ import { useState, useEffect } from "react"
 
 import Image from "next/image"
 
-import Profile from "@/assets/profile-icon.svg"
+import AIChatBtn from "@/assets/ai-chat-btn.svg"
 import Close from "@/assets/close-chat.svg"
 import Search from "@/assets/search.svg"
 
@@ -30,7 +30,7 @@ const Chat = () => {
     <>
       <div className="fixed z-20 bottom-[100px] right-[100px]">
         <button onClick={() => setChat(!chat)}>
-          <Image className="w-[60px]" src={Profile} alt={"Profile"} />
+          <Image className="w-[60px]" src={AIChatBtn} alt={"AIChatBtn"} />
         </button>
       </div>
       <div

@@ -1,9 +1,4 @@
-import { useState, useEffect } from "react"
 
-import Image from "next/image"
-
-import Profile from "@/assets/profile-icon.svg"
-import Chat from "@/assets/chat-icon.svg"
 
 const UserChatBox = ({UserText}: {UserText: string}) => {
 
