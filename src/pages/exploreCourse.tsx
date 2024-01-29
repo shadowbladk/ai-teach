@@ -1,6 +1,6 @@
 import Image from "next/image"
 
-import Search from "@/assets/search.svg"
+import Find from "@/assets/find.svg"
 
 import Card from "@/components/Card"
 import Navbar from "@/components/Navbar"
@@ -21,8 +21,8 @@ function ExploreCourse() {
                 className="max-w input-bordered input w-full rounded-md rounded-r-none border-r-0 bg-white pl-4 outline-none"
               />
               <Image
-                src={Search}
-                alt="search"
+                src={Find}
+                alt="find"
                 width={60}
                 height={60}
                 className="rounded-md rounded-l-none cursor-pointer"/>
