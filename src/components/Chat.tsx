@@ -61,12 +61,7 @@ const Chat = () => {
             <div className="grow px-10 pt-10 gap-5 flex flex-col overflow-y-scroll">
               <AIChatBox AIText="Welcome to the Ai Teach! What can I help you with?" />
               {messages.map((message, index) => {
-                return (
-                  <>
-                    <UserChatBox key={index} UserText={message} />
-                    <AIChatBox AIText="Welcome to the Ai Teach! What can I help you with?" />
-                  </>
-                )
+                return <UserChatBox key={index} UserText={message} />
               })}
             </div>
             <div className="relative mx-10 mb-10 mt-5">
