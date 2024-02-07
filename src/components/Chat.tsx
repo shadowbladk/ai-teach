@@ -1,4 +1,7 @@
 import { useState, useEffect } from "react"
+import Draggable from "react-draggable"
+// import Resizable from "./Resizable"
+import { Resizable } from "re-resizable"
 
 import Image from "next/image"
 
@@ -33,45 +36,65 @@ const Chat = () => {
           <Image className="w-[60px]" src={AIChatBtn} alt={"AIChatBtn"} />
         </button>
       </div>
-      <div
-        className={`bg-[#F3F4F4] shadow-md z-10 h-[650px] rounded-md w-[650px] ${
-          chat ? "fixed bottom-[180px] right-[100px]" : "hidden"
-        }`}
-      >
-        <div className="bg-white h-[60px] rounded-t-md flex flex-row items-center px-10">
-          <h3 className="grow text-xl font-semibold">AI Chat</h3>
-          <button onClick={() => setChat(!chat)}>
-          <Image className="w-[16px]" src={Close} alt={"Close"} /></button>
+      <Draggable>
+        <div
+          className={`items-center justify-center bg-[#F3F4F4] shadow-md z-20 rounded-md ${
+            chat ? "fixed  bottom-[180px] right-[100px]" : "hidden"
+          }`}
+        >
+          <Resizable
+            className="flex flex-col"
+            defaultSize={{
+              width: 500,
+              height: 500,
+            }}
+            minHeight={500}
+            minWidth={500}
+          >
+            <div className="bg-white w-full rounded-t-md flex flex-row items-center py-4 px-10 self-start">
+              <h3 className="grow text-xl font-semibold">AI Chat</h3>
+              <button onClick={() => setChat(!chat)}>
+                <Image className="w-[16px]" src={Close} alt={"Close"} />
+              </button>
+            </div>
+
+            <div className="grow px-10 pt-10 gap-5 flex flex-col overflow-y-scroll">
+              <AIChatBox AIText="Welcome to the Ai Teach! What can I help you with?" />
+              {messages.map((message, index) => {
+                return (
+                  <>
+                    <UserChatBox key={index} UserText={message} />
+                    <AIChatBox AIText="Welcome to the Ai Teach! What can I help you with?" />
+                  </>
+                )
+              })}
+            </div>
+            <div className="relative mx-10 mb-10 mt-5">
+              <input
+                type="text"
+                placeholder="Type your question here"
+                className="w-full pr-20 py-5 px-7 text-base bg-white border-gray-300 focus:outline-none border-2 focus:border-primary rounded-md "
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    submit(e)
+                  }
+                }}
+              />
+              <button onClick={submit}>
+                <Image
+                  src={Search}
+                  alt="search"
+                  width={32}
+                  height={32}
+                  className="absolute bottom-5 right-7 rounded-md rounded-l-none cursor-pointer"
+                />
+              </button>
+            </div>
+          </Resizable>
         </div>
-        <div className="p-10 h-[495px] gap-5 flex flex-col overflow-y-scroll">
-          <AIChatBox AIText="Welcome to the Ai Teach! What can I help you with?" />
-          {messages.map((message, index) => {
-            return <UserChatBox key={index} UserText={message} />
-          })}
-        </div>
-        <div className="mx-10 relative">
-          <input
-            type="text"
-            placeholder="Type your question here"
-            className="w-full pr-20 py-5 px-7 text-base bg-white border-gray-300 focus:outline-none border-2 focus:border-primary rounded-md "
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            onKeyDown={(e) => { 
-              if (e.key === "Enter") { 
-                submit(e)
-              }}}
-          />
-          <button onClick={submit}>
-            <Image
-              src={Search}
-              alt="search"
-              width={32}
-              height={32}
-              className="absolute inset-y-1/4 right-7 rounded-md rounded-l-none cursor-pointer"
-            />
-          </button>
-        </div>
-      </div>
+      </Draggable>
     </>
   )
 }
