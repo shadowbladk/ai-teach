@@ -29,14 +29,20 @@ function quiz() {
               {
                 id: "2",
                 question:
-                  "In Java programming, keywords serve a fundamental role in the language. They are used for specific purposes related to the syntax and functionality of Python. Which of the following statements best describes the primary purpose of Python keywords?",
+                  "Which of the following statements correctly declares an empty list in Python?",
                 choices: [
-                  "Defining user-defined functions",
-                  "Naming variables and objects",
-                  "Identifying syntax errors in code",
-                  "Signifying reserved words",
+                  "empty_list = {}",
+                  "empty_list = list()",
+                  "empty_list = []",
+                  "empty_list = [None]",
                 ],
-                answer: "Naming variables and objects",
+                answer: "empty_list = {}",
+              },
+              {
+                id: "3",
+                question: "my_list = [1, 2, 3, 4, 5] print(my_list[2:4])",
+                choices: ["[3, 4]", "[2, 3]", "[1, 2]", "[4, 5]"],
+                answer: "[3, 4]",
               },
             ]}
           />
