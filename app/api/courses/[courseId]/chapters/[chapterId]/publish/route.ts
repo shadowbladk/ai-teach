@@ -42,7 +42,7 @@ export async function PATCH(
       !chapter ||
       !muxData ||
       !chapter.title ||
-      !chapter.description ||
+      // !chapter.description ||
       !chapter.videoUrl
     ) {
       return new NextResponse("Missing required fields", { status: 400 });
