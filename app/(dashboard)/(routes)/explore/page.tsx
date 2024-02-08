@@ -8,14 +8,14 @@ import { CoursesList } from "@/components/courses-list";
 
 import { Categories } from "./_components/categories";
 
-interface ExplorePageProps {
+interface SearchPageProps {
   searchParams: {
     title: string;
     categoryId: string;
   };
 }
 
-const ExplorePage = async ({ searchParams }: ExplorePageProps) => {
+const SearchPage = async ({ searchParams }: SearchPageProps) => {
   const { userId } = auth();
 
   if (!userId) {
@@ -46,4 +46,4 @@ const ExplorePage = async ({ searchParams }: ExplorePageProps) => {
   );
 };
 
-export default ExplorePage;
+export default SearchPage;
