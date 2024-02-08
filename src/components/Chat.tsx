@@ -1,6 +1,5 @@
-import { useState, useEffect } from "react"
+import { useState, useRef } from "react"
 import Draggable from "react-draggable"
-// import Resizable from "./Resizable"
 import { Resizable } from "re-resizable"
 
 import Image from "next/image"
@@ -12,21 +11,38 @@ import Search from "@/assets/search.svg"
 import AIChatBox from "@/components/AIChatBox"
 import UserChatBox from "@/components/UserChatBox"
 
+interface ChatProps {
+  text: string
+  type: string
+}
+
 const Chat = () => {
   const [chat, setChat] = useState(false)
-  const [messages, setMessages] = useState<string[]>([])
-  const [message, setMessage] = useState("")
-  let allMessages: string[] = messages
+  const [messages, setMessages] = useState<ChatProps[]>([])
+  const [message, setMessage] = useState<ChatProps>({ text: "", type: "" })
+  let allMessages: ChatProps[] = messages
+
+  const chatRef = useRef<null | HTMLDivElement>(null)
 
   const submit = async (e: any) => {
-    // console.log(message)
-    // console.log(messages)
-    // console.log(allMessages)
     e.preventDefault()
-    if (message === "") return
+    if (message?.text === "") return
     allMessages.push(message)
     setMessages(allMessages)
-    setMessage("")
+    setMessage({ text: "", type: "" })
+    setTimeout(() => {
+      chatRef.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "end",
+      })
+    }, 100)
+  }
+
+  const scrollToBottom = () => {
+    chatRef.current?.scrollIntoView({
+      behavior: "smooth",
+      block: "end",
+    })
   }
 
   return (
@@ -57,20 +73,26 @@ const Chat = () => {
                 <Image className="w-[16px]" src={Close} alt={"Close"} />
               </button>
             </div>
-
-            <div className="grow px-10 pt-10 gap-5 flex flex-col overflow-y-scroll">
-              <AIChatBox AIText="Welcome to the Ai Teach! What can I help you with?" />
-              {messages.map((message, index) => {
-                return <UserChatBox key={index} UserText={message} />
-              })}
+            <div className="grow px-10 pt-10 overflow-y-scroll">
+              <div className="gap-5 flex flex-col" ref={chatRef}>
+                <AIChatBox AIText="Welcome to the Ai Teach! What can I help you with?" />
+                {messages.map((message, index) => {
+                  if (message.type === "ai") {
+                    return <AIChatBox key={index} AIText={message.text} />
+                  }
+                  return <UserChatBox key={index} UserText={message.text} />
+                })}
+              </div>
             </div>
             <div className="relative mx-10 mb-10 mt-5">
               <input
                 type="text"
                 placeholder="Type your question here"
                 className="w-full pr-20 py-5 px-7 text-base bg-white border-gray-300 focus:outline-none border-2 focus:border-primary rounded-md "
-                value={message}
-                onChange={(e) => setMessage(e.target.value)}
+                value={message?.text}
+                onChange={(e) =>
+                  setMessage({ text: e.target.value, type: "user" })
+                }
                 onKeyDown={(e) => {
                   if (e.key === "Enter") {
                     submit(e)
