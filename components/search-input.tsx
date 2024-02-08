@@ -2,10 +2,11 @@
 
 import qs from "query-string";
 import { Search } from "lucide-react";
-import { Input } from "@/components/ui/input";
 import { useEffect, useState } from "react";
-import { useDebounce } from "@/hooks/use-debounce";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
+
+import { Input } from "@/components/ui/input";
+import { useDebounce } from "@/hooks/use-debounce";
 
 export const SearchInput = () => {
   const [value, setValue] = useState("");
@@ -26,7 +27,7 @@ export const SearchInput = () => {
           title: debouncedValue,
         },
       },
-      { skipNull: true, skipEmptyString: true }
+      { skipEmptyString: true, skipNull: true }
     );
 
     router.push(url);
