@@ -6,6 +6,7 @@ import Feedback from "@/assets/feedback.svg"
 import Quiz from "@/assets/quiz.svg"
 
 import Slider from "@/components/CourseSlider"
+import Chat from "@/components/Chat"
 import Navbar from "@/components/Navbar"
 import Footer from "@/components/Footer"
 
@@ -14,7 +15,7 @@ function Home() {
     <>
       <div className="flex min-h-screen flex-col">
         <Navbar />
-        <div className="flex-grow">
+        <div className="flex-grow static">
           <section className="flex flex-col-reverse items-center justify-center px-4 py-24 gap-14 lg:flex-row">
             <div className="flex flex-col items-center gap-6 text-center">
               <h1 className="text-[32px] font-extrabold text-primary">
@@ -84,6 +85,7 @@ function Home() {
               </div>
             </div>
           </section>
+          <Chat />
         </div>
         <Footer />
       </div>
