@@ -1,11 +1,7 @@
 import React, { useState } from "react";
-import CourseHero from "@/components/CourseHero";
-import CourseDetail from "@/components/CourseDetail";
-import { courseData } from "@/constants";
-
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
-import CourseReview from "@/components/CourseReview";
+import CourseHero from "./_components/course-hero";
+import CourseDetail from "./_components/course-detail";
+import CourseReview from "./_components/course-review";
 
 export default function CoursePage() {
   const [activeTab, setActiveTab] = useState("courseDetail");
@@ -20,7 +16,6 @@ export default function CoursePage() {
   return (
     <>
       <div className="flex min-h-screen flex-col overflow-x-hidden">
-        <Navbar />
         <div className="flex-grow min-h-screen">
           <div>
             <CourseHero
@@ -42,7 +37,6 @@ export default function CoursePage() {
             )}
           </div>
         </div>
-        <Footer />
       </div>
     </>
   );

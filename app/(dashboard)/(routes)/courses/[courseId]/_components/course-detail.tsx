@@ -1,4 +1,4 @@
-import CourseBox from "@/components/CourseBox";
+import CourseBox from "./course-box";
 import React from "react";
 import quizicon from "@/assets/quiz-icon.svg";
 import videoicon from "@/assets/video-icon.svg";
