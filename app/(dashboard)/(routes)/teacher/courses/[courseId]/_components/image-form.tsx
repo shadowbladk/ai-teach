@@ -45,10 +45,10 @@ export const ImageForm = ({
   }
 
   return (
-    <div className="mt-6 border bg-slate-100 rounded-md p-4">
-      <div className="font-medium flex items-center justify-between">
+    <div className="border bg-slate-100 rounded-md p-6 flex flex-col gap-4">
+      <div className="font-medium flex justify-between">
         Course image
-        <Button onClick={toggleEdit} variant="ghost">
+        <Button onClick={toggleEdit} variant="ghost" size="ghost">
           {isEditing && (
             <>Cancel</>
           )}
