@@ -4,18 +4,18 @@ import { redirect } from "next/navigation";
 import { db } from "@/lib/db";
 import { SearchInput } from "@/components/search-input";
 import { getCourses } from "@/actions/get-courses";
-
-import { Categories } from "./_components/categories";
 import { CoursesList } from "@/components/courses-list";
 
-interface ExplorePageProps {
+import { Categories } from "./_components/categories";
+
+interface SearchPageProps {
   searchParams: {
     title: string;
     categoryId: string;
   };
 }
 
-const ExplorePage = async ({ searchParams }: ExplorePageProps) => {
+const SearchPage = async ({ searchParams }: SearchPageProps) => {
   const { userId } = auth();
 
   if (!userId) {
@@ -46,4 +46,4 @@ const ExplorePage = async ({ searchParams }: ExplorePageProps) => {
   );
 };
 
-export default ExplorePage;
+export default SearchPage;

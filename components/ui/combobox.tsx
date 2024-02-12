@@ -19,10 +19,7 @@ import {
 } from "@/components/ui/popover";
 
 interface ComboboxProps {
-  options: {
-    label: string;
-    value: string;
-  }[];
+  options: { label: string; value: string }[];
   value?: string;
   onChange: (value: string) => void;
 }
@@ -47,13 +44,12 @@ export const Combobox = ({ options, value, onChange }: ComboboxProps) => {
       </PopoverTrigger>
       <PopoverContent className="w-full p-0">
         <Command>
-          <CommandInput placeholder="Search framework..." />
+          <CommandInput placeholder="Search option..." />
           <CommandEmpty>No option found.</CommandEmpty>
           <CommandGroup>
             {options.map((option) => (
               <CommandItem
                 key={option.value}
-                value={option.value}
                 onSelect={() => {
                   onChange(option.value === value ? "" : option.value);
                   setOpen(false);
