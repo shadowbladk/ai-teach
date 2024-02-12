@@ -7,8 +7,8 @@ import { Resizable } from "re-resizable"
 import Image from "next/image"
 
 import AIChatBtn from "@/public/ai-chat-btn.svg"
-import Close from "@/public/close-chat.svg"
 import Search from "@/public/search.svg"
+import { X } from "lucide-react";
 
 import { AIChatBox } from "@/components/chat-ai"
 import { UserChatBox } from "@/components/chat-user"
@@ -66,9 +66,7 @@ export const Chat = () => {
           >
             <div className="bg-white w-full rounded-t-md flex flex-row items-center py-4 px-10 self-start">
               <h3 className="grow text-xl font-semibold">AI Chat</h3>
-              <button onClick={() => setChat(!chat)}>
-                <Image className="w-[16px]" src={Close} alt={"Close"} />
-              </button>
+              <X onClick={() => setChat(!chat)}/>
             </div>
             <div className="grow px-10 pt-10 overflow-y-scroll">
               <div className="gap-5 flex flex-col" ref={chatRef}>
