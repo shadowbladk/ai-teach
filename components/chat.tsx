@@ -83,7 +83,7 @@ export const Chat = () => {
               <input
                 type="text"
                 placeholder="Type your question here"
-                className="w-full pr-20 py-5 px-7 text-base bg-white border-gray-300 focus:outline-none border-2 focus:border-primary rounded-md "
+                className="w-full pr-20 py-5 px-7 text-base bg-white border-gray-300 focus:outline-none border-2 focus:border-[#4F46E5] rounded-md "
                 value={message?.text}
                 onChange={(e) =>
                   setMessage({ text: e.target.value, type: "user" })
