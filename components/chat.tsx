@@ -4,11 +4,7 @@ import { useState, useRef } from "react"
 import Draggable from "react-draggable"
 import { Resizable } from "re-resizable"
 
-import Image from "next/image"
-
-import AIChatBtn from "@/public/ai-chat-btn.svg"
-import Search from "@/public/search.svg"
-import { X } from "lucide-react";
+import { X, Send, Bot } from "lucide-react"
 
 import { AIChatBox } from "@/components/chat-ai"
 import { UserChatBox } from "@/components/chat-user"
@@ -43,9 +39,10 @@ export const Chat = () => {
   return (
     <>
       <div className="fixed z-20 bottom-[100px] right-[100px]">
-        <button onClick={() => setChat(!chat)}>
-          <Image className="w-[60px]" src={AIChatBtn} alt={"AIChatBtn"} />
-        </button>
+        <Bot
+          className="w-14 h-14 bg-[#4F46E5] drop-shadow-xl text-white p-3 rounded-full"
+          onClick={() => setChat(!chat)}
+        />
       </div>
       <Draggable>
         <div
@@ -66,7 +63,7 @@ export const Chat = () => {
           >
             <div className="bg-white w-full rounded-t-md flex flex-row items-center py-4 px-10 self-start">
               <h3 className="grow text-xl font-semibold">AI Chat</h3>
-              <X onClick={() => setChat(!chat)}/>
+              <X onClick={() => setChat(!chat)} />
             </div>
             <div className="grow px-10 pt-10 overflow-y-scroll">
               <div className="gap-5 flex flex-col" ref={chatRef}>
@@ -94,15 +91,10 @@ export const Chat = () => {
                   }
                 }}
               />
-              <button onClick={submit}>
-                <Image
-                  src={Search}
-                  alt="search"
-                  width={32}
-                  height={32}
-                  className="absolute bottom-5 right-7 rounded-md rounded-l-none cursor-pointer"
-                />
-              </button>
+              <Send
+                className="w-7 h-7 absolute bottom-5 right-7 text-[#4F46E5]"
+                onClick={submit}
+              />
             </div>
           </Resizable>
         </div>
