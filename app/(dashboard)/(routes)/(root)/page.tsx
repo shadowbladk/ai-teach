@@ -1,39 +1,102 @@
-import { auth } from "@clerk/nextjs";
-import { redirect } from "next/navigation";
-import { CheckCircle, Clock } from "lucide-react";
+import { auth } from "@clerk/nextjs"
+import { redirect } from "next/navigation"
+import { CheckCircle, Clock } from "lucide-react"
 
-import { getDashboardCourses } from "@/actions/get-dashboard-courses";
-import { CoursesList } from "@/components/courses-list";
+import Image from "next/image"
+import HeroPic from "./_components/hero.svg"
+import Levelup from "./_components/levelup.svg"
+import Feedback from "./_components/feedback.svg"
+import Quiz from "./_components/quiz.svg"
 
-import { InfoCard } from "./_components/info-card";
+import { Slider } from "@/components/slider"
+
+import { db } from "@/lib/db"
+import { getCourses } from "@/actions/get-courses"
 
 export default async function Dashboard() {
-  const { userId } = auth();
+  const { userId } = auth()
 
   if (!userId) {
-    return redirect("/");
+    return redirect("/")
   }
 
-  const { completedCourses, coursesInProgress } = await getDashboardCourses(
-    userId
-  );
+  const courses = await getCourses({
+    userId,
+  })
 
   return (
-    <div className="p-6 space-y-4">
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <InfoCard
-          icon={Clock}
-          label="In Progress"
-          numberOfItems={coursesInProgress.length}
-        />
-        <InfoCard
-          icon={CheckCircle}
-          label="Completed"
-          numberOfItems={completedCourses.length}
-          variant="success"
-        />
-      </div>
-      <CoursesList items={[...coursesInProgress, ...completedCourses]} />
-    </div>
-  );
+    <>
+      <section className="flex flex-col-reverse items-center bg-[#F3F4F4] justify-center px-4 py-24 gap-4 lg:gap-14 lg:flex-row">
+        <div className="flex flex-col items-center gap-6 text-center">
+          <h1 className="text-[32px] text-[#4F46E5] font-extrabold">
+            AI TEACH
+          </h1>
+          <h2 className="text-2xl font-medium">
+            Explore course and level up your skill
+          </h2>
+          {/* <Link href="/register"> */}
+          {/* <div className="rounded-md border-primary border-2 px-11 py-2 text-base font-bold text-primary shadow-sm">
+            Join Us
+          </div> */}
+          {/* </Link> */}
+        </div>
+        <div className="max-w-xs xl:max-w-md">
+          <Image src={HeroPic} alt={"Hero Pic"} />
+        </div>
+      </section>
+
+      <section className="flex flex-col items-center justify-center px-24 py-16 gap-12">
+        <h1 className="text-[32px] text-[#4F46E5] font-extrabold text-center">
+          Recommended Course
+        </h1>
+        {/* <div className="w-full"> */}
+        <Slider items={courses} />
+        {/* </div> */}
+      </section>
+
+      <section className="flex flex-col items-center justify-center bg-[#F3F4F4] px-24 py-20 gap-12">
+        <h1 className="text-[32px] text-[#4F46E5] font-extrabold text-center">
+          Our Platform
+        </h1>
+        <div className="grid grid-cols-1 gap-12 lg:gap-y-16 lg:grid-cols-4 lg:gap-x-32 xl:max-w-7xl xl:grid-cols-6 xl:gap-16 2xl:gap-28">
+          <div className="xl:grid-col items-center gap-8 hidden xl:col-span-2 xl:col-start-1 xl:mt-12 xl:grid">
+            <h2 className="text-2xl text-center text-[#4B4B4B] font-semibold">
+              Level up your skill
+            </h2>
+            <Image className="w-[200px]" src={Levelup} alt={"Level up"} />
+          </div>
+          <div className="flex flex-col items-center gap-y-4 lg:gap-y-8 lg:col-span-2 lg:col-start-2 lg:justify-self-center xl:col-start-3">
+            <h2 className="text-2xl text-center text-[#4B4B4B] font-semibold">
+              Give feedback <br /> on your assignment
+            </h2>
+            <Image
+              className="w-[160px] md:w-[200px]"
+              src={Feedback}
+              alt={"Feedback"}
+            />
+          </div>
+          <div className=" xl:hidden grid grid-col items-center gap-y-4 lg:gap-y-8 lg:col-span-2">
+            <h2 className="text-2xl text-center text-[#4B4B4B] font-semibold">
+              Level up your skill2
+            </h2>
+            <Image
+              className="w-[160px] md:w-[200px] justify-self-center"
+              src={Levelup}
+              alt={"Level up"}
+            />
+          </div>
+          <div className="grid grid-col items-center gap-y-4 lg:gap-y-8 lg:col-span-2 xl:mt-12 ">
+            <h2 className="text-2xl text-center text-[#4B4B4B] font-semibold">
+              Review with quiz
+            </h2>
+            <Image
+              className="w-[160px] md:w-[200px] justify-self-center"
+              src={Quiz}
+              alt={"Quiz"}
+            />
+          </div>
+        </div>
+      </section>
+    </>
+  )
 }
