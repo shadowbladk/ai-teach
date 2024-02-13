@@ -61,11 +61,16 @@ export const Slider = ({ items }: CoursesListProps) => {
           onSlideChange={(swiper) => handleSlideChange(swiper)}
           slidesPerView={1}
           breakpoints={{
+            // 640: {
+            //   width: 384,
+            // },
             1024: {
               slidesPerView: 2,
+              width: 672,
             },
             1280: {
               slidesPerView: 3,
+              width: 1042,
             },
           }}
           draggable={true}
