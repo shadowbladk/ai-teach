@@ -10,25 +10,17 @@ interface CourseHeroProps {
   courseName: string;
   coursePicture: string;
   courseDescription: string;
-  reading: number;
-  video: number;
-  quiz: number;
-  flashcard: number;
-  onReviewTabClick: () => void; // Add this line
-  onCourseDetailTabClick: () => void; // Add this line
+  // onReviewTabClick: () => void; // Add this line
+  // onCourseDetailTabClick: () => void; // Add this line
 }
 
 const CourseHero = ({
   courseName,
   coursePicture,
   courseDescription,
-  reading,
-  video,
-  quiz,
-  flashcard,
-  onReviewTabClick, // Add this line
-  onCourseDetailTabClick, // Add this line
-}: CourseHeroProps) => {
+}: // onReviewTabClick, // Add this line
+// onCourseDetailTabClick, // Add this line
+CourseHeroProps) => {
   return (
     <div>
       <section className="flex flex-col w-screen items-center justify-center p-6 lg:flex-row bg-white">
@@ -47,36 +39,36 @@ const CourseHero = ({
           <h1 className="text-xl font-extrabold text-black md:text-2xl">
             {courseName}
           </h1>
-          <div className="flex grid-rows-4 gap-5 md:flex-row">
+          {/* <div className="flex grid-rows-4 gap-5 md:flex-row">
             <div className="flex flex-col gap-1 items-center lg:gap-2 sm:flex-row">
               <Image src={readingicon} alt={"Python logo"} />
-              <p className="text-sm font-semibold">{reading}</p>
+              <p className="text-sm font-semibold"></p>
               <p className="text-sm font-semibold">Reading</p>
             </div>
             <div className="flex flex-col gap-1 items-center lg:gap-2 sm:flex-row">
               <Image src={quizicon} alt={"Python logo"} />
-              <p className="text-sm font-semibold">{video}</p>
+              <p className="text-sm font-semibold"></p>
               <p className="text-sm font-semibold">Video</p>
             </div>
             <div className="flex flex-col gap-1 items-center lg:gap-2 sm:flex-row">
               <Image src={videoicon} alt={"Python logo"} />
-              <p className="text-sm font-semibold">{quiz}</p>
+              <p className="text-sm font-semibold"></p>
               <p className="text-sm font-semibold">quizzes</p>
             </div>
             <div className="flex flex-col gap-1 items-center lg:gap-2 sm:flex-row">
               <Image src={fcicon} alt={"Python logo"} />
-              <p className="text-sm font-semibold">{flashcard}</p>
+              <p className="text-sm font-semibold"></p>
               <p className="text-sm font-semibold">Flashcards</p>
             </div>
-          </div>
+          </div> */}
           <p className="text-sm font-medium text-center lg:max-w-[720px] lg:text-base lg:text-start">
             {courseDescription}
           </p>
           <div className="w-full flex grid-row-2 gap-5 justify-center lg:justify-end">
-            <Button variant="outline" onClick={onReviewTabClick}>
+            {/* <Button variant="outline" onClick={onReviewTabClick}>
               Reviews
-            </Button>
-            <Button variant="default" onClick={onCourseDetailTabClick}>
+            </Button> */}
+            <Button variant="default" /*onClick={onCourseDetailTabClick}*/>
               Enroll course
             </Button>
           </div>
