@@ -10,24 +10,12 @@ interface CourseHeroProps {
   courseName: string;
   coursePicture: string;
   courseDescription: string;
-  reading: number;
-  video: number;
-  quiz: number;
-  flashcard: number;
-  onReviewTabClick: () => void; // Add this line
-  onCourseDetailTabClick: () => void; // Add this line
 }
 
 const CourseHero = ({
   courseName,
   coursePicture,
   courseDescription,
-  reading,
-  video,
-  quiz,
-  flashcard,
-  onReviewTabClick, // Add this line
-  onCourseDetailTabClick, // Add this line
 }: CourseHeroProps) => {
   return (
     <div>
@@ -50,22 +38,18 @@ const CourseHero = ({
           <div className="flex grid-rows-4 gap-5 md:flex-row">
             <div className="flex flex-col gap-1 items-center lg:gap-2 sm:flex-row">
               <Image src={readingicon} alt={"Python logo"} />
-              <p className="text-sm font-semibold">{reading}</p>
               <p className="text-sm font-semibold">Reading</p>
             </div>
             <div className="flex flex-col gap-1 items-center lg:gap-2 sm:flex-row">
               <Image src={quizicon} alt={"Python logo"} />
-              <p className="text-sm font-semibold">{video}</p>
               <p className="text-sm font-semibold">Video</p>
             </div>
             <div className="flex flex-col gap-1 items-center lg:gap-2 sm:flex-row">
               <Image src={videoicon} alt={"Python logo"} />
-              <p className="text-sm font-semibold">{quiz}</p>
               <p className="text-sm font-semibold">quizzes</p>
             </div>
             <div className="flex flex-col gap-1 items-center lg:gap-2 sm:flex-row">
               <Image src={fcicon} alt={"Python logo"} />
-              <p className="text-sm font-semibold">{flashcard}</p>
               <p className="text-sm font-semibold">Flashcards</p>
             </div>
           </div>
@@ -73,12 +57,7 @@ const CourseHero = ({
             {courseDescription}
           </p>
           <div className="w-full flex grid-row-2 gap-5 justify-center lg:justify-end">
-            <Button variant="outline" onClick={onReviewTabClick}>
-              Reviews
-            </Button>
-            <Button variant="default" onClick={onCourseDetailTabClick}>
-              Enroll course
-            </Button>
+            <Button variant="default">Enroll course</Button>
           </div>
         </div>
       </section>

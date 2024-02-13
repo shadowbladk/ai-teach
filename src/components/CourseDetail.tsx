@@ -41,7 +41,6 @@ const CourseDetail = ({ courseData }: { courseData: CourseData }) => {
           {courseData.coursedata.map((course, index) => (
             <CourseBox
               key={index}
-              imageUrl={getIconUrl(course.type)}
               title={course.title}
               isLearn={course.isLearn}
             />
