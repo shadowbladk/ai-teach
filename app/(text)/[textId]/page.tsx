@@ -1,12 +1,9 @@
-import Footer from "@/components/Footer";
-import Navbar from "@/components/Navbar";
-import PdfViewer from "@/components/PdfViewer";
+import PdfViewer from "./_components/pdf-viewer";
 
 export default function text() {
   return (
     <>
       <div className="flex min-h-screen flex-col overflow-x-hidden">
-        <Navbar />
         <div className="flex-grow">
           <section className="flex flex-col w-screen items-center justify-center p-6">
             <h1 className="text-2xl font-extrabold text-black ">
@@ -17,7 +14,6 @@ export default function text() {
             </div>
           </section>
         </div>
-        <Footer />
       </div>
     </>
   );
