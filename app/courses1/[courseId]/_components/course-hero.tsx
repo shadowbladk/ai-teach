@@ -23,7 +23,7 @@ const CourseHero = ({
 CourseHeroProps) => {
   return (
     <div>
-      <section className="flex flex-col w-screen items-center justify-center p-6 lg:flex-row bg-white">
+      <div className="flex flex-col sm:flex-row w-screen items-center justify-center p-6 bg-white">
         <div className="max-w-xs lg:max-w-md">
           {coursePicture && (
             <Image
@@ -73,7 +73,7 @@ CourseHeroProps) => {
             </Button>
           </div>
         </div>
-      </section>
+      </div>
     </div>
   );
 };
