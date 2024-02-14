@@ -12,16 +12,18 @@ const AnswerGroup: React.FunctionComponent<AnswerGroupProps> = ({
   answer,
   submitAnswer,
 }) => {
-  const [selectedChoice, setSelectedChoice] = useState<string>();
+  const [selectedChoice, setSelectedChoice] = useState<string>("");
 
   return (
     <>
       <div>
         {choices.map((choice) => (
           <AnswerBox
-            answer={choice}
             key={choice}
-            chooseChoice={() => setSelectedChoice(choice)}
+            answer={choice}
+            selectedChoice={selectedChoice}
+            onClick={() => setSelectedChoice(choice)}
+            choice={choice}
           />
         ))}
       </div>
