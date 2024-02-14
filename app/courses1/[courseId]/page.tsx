@@ -28,19 +28,9 @@ const CoursePage = async ({ params }: { params: { courseId: string } }) => {
     return redirect("/");
   }
 
-  // const [activeTab, setActiveTab] = useState("courseDetail");
-
-  // const handleReviewTabClick = () => {
-  //   setActiveTab("review");
-  // };
-
-  // const handleCourseDetailTabClick = () => {
-  //   setActiveTab("courseDetail");
-  // };
-
   return (
     <>
-      <div className="flex min-h-screen flex-col overflow-x-hidden">
+      {/* <div className="flex min-h-screen flex-col overflow-x-hidden">
         <div className="flex-grow min-h-screen">
           <div>
             <CourseHero
@@ -57,7 +47,7 @@ const CoursePage = async ({ params }: { params: { courseId: string } }) => {
                 <CourseReview />
               </div>
             )}
-            {activeTab === "courseDetail" && ( */}
+            {activeTab === "courseDetail" && ( 
             <div className="p-6">
               <h1 className="text-2xl font-extrabold text-black text-center">
                 {chapters.title}
@@ -72,10 +62,9 @@ const CoursePage = async ({ params }: { params: { courseId: string } }) => {
                 />
               </div>
             </div>
-            {/* )} */}
           </div>
         </div>
-      </div>
+      </div> */}
     </>
   );
 };
