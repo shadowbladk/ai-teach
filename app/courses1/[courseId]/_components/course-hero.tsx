@@ -23,7 +23,7 @@ const CourseHero = ({
 CourseHeroProps) => {
   return (
     <div>
-      <div className="flex flex-col sm:flex-row w-screen items-center justify-center p-6 bg-white">
+      <div className="flex flex-col md:flex w-screen items-center justify-center p-6 bg-white">
         <div className="max-w-xs lg:max-w-md">
           {coursePicture && (
             <Image
@@ -36,7 +36,7 @@ CourseHeroProps) => {
           )}
         </div>
         <div className="flex flex-col gap-5 items-center justify-center lg:px-6 lg:items-start">
-          <h1 className="text-xl font-extrabold text-black md:text-2xl">
+          <h1 className="text-xl font-extrabold text-blue md:text-2xl">
             {courseName}
           </h1>
           {/* <div className="flex grid-rows-4 gap-5 md:flex-row">
@@ -64,7 +64,7 @@ CourseHeroProps) => {
           <p className="text-sm font-medium text-center lg:max-w-[720px] lg:text-base lg:text-start">
             {courseDescription}
           </p>
-          <div className="w-full flex grid-row-2 gap-5 justify-center lg:justify-end">
+          <div className="w-full flex grid-row-2 gap-5 justify-end">
             {/* <Button variant="outline" onClick={onReviewTabClick}>
               Reviews
             </Button> */}

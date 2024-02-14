@@ -4,7 +4,6 @@ import { db } from "@/lib/db";
 import { redirect } from "next/navigation";
 
 import CourseHero from "./_components/course-hero";
-import CourseBox from "./_components/course-box";
 import CourseReview from "./_components/course-review";
 
 const CoursePage = async ({ params }: { params: { courseId: string } }) => {
@@ -27,6 +26,8 @@ const CoursePage = async ({ params }: { params: { courseId: string } }) => {
   if (!course) {
     return redirect("/");
   }
+
+  // return redirect(`/courses1/${course.id}/chapters/${course.chapters[0].id}`);
 
   return (
     <>

@@ -7,7 +7,7 @@ import { getProgress } from "@/actions/get-progress";
 import { CourseSidebar } from "./_components/course-sidebar";
 import { CourseNavbar } from "./_components/course-navbar";
 import CourseHero from "./_components/course-hero";
-import { ChapterNavbar } from "./_components/chapter-navbar";
+import ChapterNavbar from "./_components/chapter-navbar";
 
 const CourseLayout = async ({
   children,
@@ -53,9 +53,9 @@ const CourseLayout = async ({
 
   return (
     <div className="flex min-h-screen flex-col overflow-x-hidden">
-      {/* <div className="h-[80px] fixed inset-y-0 w-full z-50">
-        <CourseNavbar course={course} progressCount={progressCount} />
-      </div> */}
+      {/* <div className="h-[80px] fixed inset-y-0 w-full z-50"> */}
+      <CourseNavbar course={course} progressCount={progressCount} />
+      {/* </div> */}
       {/* <div className="hidden md:flex h-full w-80 flex-col fixed inset-y-0 z-50">
         <CourseSidebar course={course} progressCount={progressCount} />
       </div> */}
@@ -65,10 +65,9 @@ const CourseLayout = async ({
         coursePicture={course.imageUrl!}
       />
       <ChapterNavbar course={course} />
-      <main className="pt-[80px] h-full">{children}</main>
+      <main className="p-6 h-full">{children}</main>
     </div>
   );
 };
 
 export default CourseLayout;
-
