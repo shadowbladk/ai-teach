@@ -28,8 +28,9 @@ interface CoursesListProps {
 }
 
 export const Slider = ({ items }: CoursesListProps) => {
+  // const [lengthItems, setLengthItems] = useState(items.length)
   const [canGoPrev, setCanGoPrev] = useState(false)
-  const [canGoNext, setCanGoNext] = useState(false)
+  const [canGoNext, setCanGoNext] = useState(items.length > 0 ? true : false)
 
   const handleSlideChange = (swiper: any) => {
     const isBeginning = swiper.isBeginning
