@@ -77,7 +77,7 @@ export default async function Dashboard() {
           </div>
           <div className=" xl:hidden grid grid-col items-center gap-y-4 lg:gap-y-8 lg:col-span-2">
             <h2 className="text-2xl text-center text-[#4B4B4B] font-semibold">
-              Level up your skill2
+              Level up your skill
             </h2>
             <Image
               className="w-[160px] md:w-[200px] justify-self-center"
