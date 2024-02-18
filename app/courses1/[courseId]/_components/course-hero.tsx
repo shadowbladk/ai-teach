@@ -23,19 +23,19 @@ const CourseHero = ({
 CourseHeroProps) => {
   return (
     <div>
-      <div className="flex flex-col md:flex w-screen items-center justify-center p-6 bg-white">
+      <div className="flex flex-col w-screen items-center justify-center p-6 lg:flex-row bg-white">
         <div className="max-w-xs lg:max-w-md">
           {coursePicture && (
             <Image
               src={coursePicture}
               alt={"${courseName} Image"}
-              className="rounded-full"
-              width={150}
-              height={150}
+              className="rounded-xl"
+              width={200}
+              height={200}
             />
           )}
         </div>
-        <div className="flex flex-col gap-5 items-center justify-center lg:px-6 lg:items-start">
+        <div className="flex flex-col gap-5 items-center justify-center p-6 lg:items-start">
           <h1 className="text-xl font-extrabold text-blue md:text-2xl">
             {courseName}
           </h1>
