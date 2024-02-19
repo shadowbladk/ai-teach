@@ -45,26 +45,28 @@ export const QuizAnswerForm = ({
 }: // allAnswers,
 QuizAnswerFormProps) => {
   const [isEditing, setIsEditing] = useState(false)
+  const [question, setQuestion] = useState("")
   const [answers, setAnswers] = useState(Array.from({ length: 4 }, () => ""))
   const [correctAnswer, setCorrectAnswer] = useState<number>()
-  const [allAnswers, setAllAnswers] = useState<ChoiceProps[]>([
-    {
-      value: "choice1",
-      isCorrect: true,
-    },
-    {
-      value: "choice2",
-      isCorrect: false,
-    },
-    {
-      value: "",
-      isCorrect: false,
-    },
-    {
-      value: "choice4",
-      isCorrect: false,
-    },
-  ])
+  // const [allAnswers, setAllAnswers] = useState<ChoiceProps[]>([
+  //   {
+  //     value: "choice1",
+  //     isCorrect: true,
+  //   },
+  //   {
+  //     value: "choice2",
+  //     isCorrect: false,
+  //   },
+  //   {
+  //     value: "",
+  //     isCorrect: false,
+  //   },
+  //   {
+  //     value: "choice4",
+  //     isCorrect: false,
+  //   },
+  // ])
+  const [allAnswers, setAllAnswers] = useState<ChoiceProps[]>([])
 
   const setDefaultAnswer = () => {
     allAnswers?.map((answer, index) => {
@@ -134,34 +136,34 @@ QuizAnswerFormProps) => {
         </Button>
       </div>
 
-      {!isEditing &&
-        (allAnswers ? (
-          <>
-            <Form {...form}>
-              <FormField
-                control={form.control}
-                name="description"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <section className="flex flex-col gap-4">
-                        <p
-                          className={cn(
-                            "text-sm",
-                            !initialData.description && "text-slate-500 italic"
-                          )}
-                        >
-                          {initialData.description || "No question"}
-                        </p>
-                        <div className="font-medium flex justify-between">
-                          Answer
-                        </div>
+      {!isEditing && (
+        <>
+          <Form {...form}>
+            <FormField
+              control={form.control}
+              name="description"
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <section className="flex flex-col gap-4">
+                      <p
+                        className={cn(
+                          "text-sm",
+                          !initialData.description && "text-slate-500 italic"
+                        )}
+                      >
+                        {initialData.description || "No question"}
+                      </p>
+                      <div className="font-medium flex justify-between">
+                        Answer
+                      </div>
+                      {allAnswers.length != 0 ? (
                         <RadioGroup
                           defaultValue={field.value}
                           className="flex flex-col space-y-3"
                           disabled={true}
                         >
-                          {allAnswers.map((answer: any, index: any) => (
+                          {allAnswers?.map((answer: any, index: any) => (
                             <FormItem className="flex flex-row items-center space-x-3 space-y-0">
                               <FormControl>
                                 <RadioGroupItem
@@ -173,17 +175,20 @@ QuizAnswerFormProps) => {
                             </FormItem>
                           ))}
                         </RadioGroup>
-                      </section>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </Form>
-          </>
-        ) : (
-          <p className="text-sm text-slate-500 italic">No answer</p>
-        ))}
+                      ) : (
+                        <p className="text-sm text-slate-500 italic">
+                          No answer
+                        </p>
+                      )}
+                    </section>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </Form>
+        </>
+      )}
       {isEditing && (
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -197,7 +202,8 @@ QuizAnswerFormProps) => {
                       <Textarea
                         disabled={isSubmitting}
                         placeholder="e.g. 'Question... ?'"
-                        {...field}
+                        value={question}
+                        onChange={(e) => setQuestion(e.target.value)}
                       />
                       <div className="font-medium flex justify-between">
                         Answer

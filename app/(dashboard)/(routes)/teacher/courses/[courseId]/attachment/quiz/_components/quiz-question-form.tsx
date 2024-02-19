@@ -95,7 +95,7 @@ export const QuizQuestionForm = ({
                 <FormItem>
                   <FormControl>
                     <Textarea
-                      disabled={isSubmitting}
+                      // disabled={isSubmitting}
                       placeholder="e.g. 'Question... ?'"
                       {...field}
                     />

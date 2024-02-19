@@ -7,15 +7,13 @@ import { IconBadge } from "@/components/icon-badge"
 import { Banner } from "@/components/banner"
 
 import { QuizTitleForm } from "./_components/quiz-title-form"
-import { QuizQuestionForm } from "./_components/quiz-question-form"
+import { QuizForm } from "./_components/quiz-form"
 import { QuizAnswerForm } from "./_components/quiz-answer-form"
 import { Actions } from "./_components/actions"
-
-// import { allanswer } from "./_components/mock-answer"
+import { Button } from "@/components/ui/button"
 
 const QuizPage = async ({ params }: { params: { courseId: string } }) => {
   const { userId } = auth()
-  const items = [1, 2, 3, 4]
 
   if (!userId) {
     return redirect("/")
@@ -72,10 +70,12 @@ const QuizPage = async ({ params }: { params: { courseId: string } }) => {
         <div className="grid gap-6">
           <div className="flex flex-col gap-6">
             <QuizTitleForm initialData={course} courseId={course.id} />
-            <QuizQuestionForm initialData={course} courseId={course.id} />
-            {/* {items.map((item, index) => ( */}
-            <QuizAnswerForm initialData={course} courseId={course.id} />
-            {/* ))} */}
+            {/* <QuizQuestionForm initialData={course} courseId={course.id} /> */}
+            {/* {questions.map((question, index) => (<QuizAnswerForm initialData={course} courseId={course.id} />))}
+            <Button variant="outline" size="sm">
+              Add question
+         </Button> */}
+         <QuizForm initialData={course} courseId={course.id} />
           </div>
         </div>
       </div>
