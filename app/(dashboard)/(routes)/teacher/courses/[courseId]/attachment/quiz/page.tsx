@@ -68,14 +68,15 @@ const QuizPage = async ({ params }: { params: { courseId: string } }) => {
           /> */}
         </div>
         <div className="grid gap-6">
-          <div className="flex flex-col gap-6">
+          <div className="flex flex-col gap-6 max-w-5xl">
             <QuizTitleForm initialData={course} courseId={course.id} />
+            <hr className="border-t-4 rounded-md border-gray-400" />
             {/* <QuizQuestionForm initialData={course} courseId={course.id} /> */}
             {/* {questions.map((question, index) => (<QuizAnswerForm initialData={course} courseId={course.id} />))}
             <Button variant="outline" size="sm">
               Add question
          </Button> */}
-         <QuizForm initialData={course} courseId={course.id} />
+            <QuizForm initialData={course} courseId={course.id} />
           </div>
         </div>
       </div>

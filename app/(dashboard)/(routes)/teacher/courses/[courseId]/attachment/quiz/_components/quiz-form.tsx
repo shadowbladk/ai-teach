@@ -40,14 +40,30 @@ export const QuizForm = ({ initialData, courseId }: QuizFormProps) => {
     setQuestions([...questions, { question: "", choices: [] }])
   }
 
+  const handleQuestionRemove = (index: number) => {
+    const items = [...questions]
+    items.splice(index, 1)
+    setQuestions(items)
+  }
+
   return (
     <>
       {questions.map((question, index) => (
-        <QuizAnswerForm
-          key={index}
-          initialData={initialData}
-          courseId={courseId}
-        />
+        <>
+          <QuizAnswerForm
+            key={index}
+            initialData={initialData}
+            courseId={courseId}
+          />
+          <Button
+            variant="warning"
+            size="default"
+            onClick={(e) => handleQuestionRemove(index)}
+          >
+            Delete question
+          </Button>
+          <hr className="border-t-2 rounded-md border-gray-400" />
+        </>
       ))}
       <Button
         variant="primary"
