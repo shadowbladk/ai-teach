@@ -73,10 +73,7 @@ QuizAnswerFormProps) => {
     })
   }
 
-  const toggleEdit = () => {
-    setIsEditing((current) => !current)
-    console.log(allAnswers)
-  }
+  const toggleEdit = () => setIsEditing((current) => !current)
 
   const router = useRouter()
 
@@ -90,23 +87,18 @@ QuizAnswerFormProps) => {
   const { isSubmitting, isValid } = form.formState
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    console.log(values.description)
-    console.log(answers)
-    console.log(allAnswers)
-    setAllAnswers([])
-    console.log(allAnswers)
     {
       answers.map((answer, index) =>
         index == Number(values.description)
-          ? allAnswers.push({ value: answer, isCorrect: true })
-          : allAnswers.push({ value: answer, isCorrect: false })
+          ? (allAnswers[index] = { value: answer, isCorrect: true })
+          : (allAnswers[index] = { value: answer, isCorrect: false })
       )
     }
+    setCorrectAnswer(Number(values.description))
 
     // try {
     //   await axios.patch(`/api/courses/${courseId}/attachment/quiz`, values)
     //   toast.success("Course updated")
-    // setCorrectAnswer(field.value)
     toggleEdit()
     //   router.refresh()
     // } catch {
@@ -116,11 +108,8 @@ QuizAnswerFormProps) => {
 
   const updateAnswerAtIndex = (index: number, newValue: string) => {
     setAnswers((prevItems) => {
-      // Create a copy of the original array
       const updatedItems: string[] = [...prevItems]
-      // Update the value at the specified index
       updatedItems[index] = newValue
-      // Return the updated array
       return updatedItems
     })
   }
@@ -203,7 +192,6 @@ QuizAnswerFormProps) => {
                           <Input
                             disabled={isSubmitting}
                             placeholder={`e.g. 'Choice ${index + 1}'`}
-                            // defaultValue={answer.value}
                             value={answers[index]}
                             onChange={(e) =>
                               updateAnswerAtIndex(index, e.target.value)
