@@ -19,20 +19,23 @@ import {
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 
-interface TitleFormProps {
+interface QuizTitleFormProps {
   initialData: {
     title: string
   }
   courseId: string
+  // quizId: string
 }
 
 const formSchema = z.object({
-  title: z.string().min(1, {
-    message: "Title is required",
-  }),
+  title: z.string().min(1),
 })
 
-export const TitleForm = ({ initialData, courseId }: TitleFormProps) => {
+export const QuizTitleForm = ({
+  initialData,
+  courseId,
+  // quizId,
+}: QuizTitleFormProps) => {
   const [isEditing, setIsEditing] = useState(false)
 
   const toggleEdit = () => setIsEditing((current) => !current)
@@ -47,20 +50,21 @@ export const TitleForm = ({ initialData, courseId }: TitleFormProps) => {
   const { isSubmitting, isValid } = form.formState
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    try {
-      await axios.patch(`/api/courses/${courseId}`, values)
-      toast.success("Course updated")
-      toggleEdit()
-      router.refresh()
-    } catch {
-      toast.error("Something went wrong")
-    }
+    console.log(values)
+    // try {
+    //   await axios.patch(`/api/courses/${courseId}`, values)
+    //   toast.success("Course updated")
+    //   toggleEdit()
+    //   router.refresh()
+    // } catch {
+    //   toast.error("Something went wrong")
+    // }
   }
 
   return (
     <div className="border bg-slate-100 rounded-md p-6 flex flex-col gap-4">
       <div className="font-medium flex justify-between">
-        Course title
+        Quiz title
         <Button onClick={toggleEdit} variant="ghost" size="ghost">
           {isEditing ? (
             <>Cancel</>
@@ -84,7 +88,7 @@ export const TitleForm = ({ initialData, courseId }: TitleFormProps) => {
                   <FormControl>
                     <Input
                       disabled={isSubmitting}
-                      placeholder="e.g. 'Advanced web development'"
+                      placeholder="e.g. 'Advanced web development quiz'"
                       {...field}
                     />
                   </FormControl>

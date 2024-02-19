@@ -6,12 +6,16 @@ import { db } from "@/lib/db"
 import { IconBadge } from "@/components/icon-badge"
 import { Banner } from "@/components/banner"
 
-import { TitleForm } from "./_components/title-form"
-import { DescriptionForm } from "./_components/description-form"
+import { QuizTitleForm } from "./_components/quiz-title-form"
+import { QuizQuestionForm } from "./_components/quiz-question-form"
+import { QuizAnswerForm } from "./_components/quiz-answer-form"
 import { Actions } from "./_components/actions"
 
-const CourseIdPage = async ({ params }: { params: { courseId: string } }) => {
+// import { allanswer } from "./_components/mock-answer"
+
+const QuizPage = async ({ params }: { params: { courseId: string } }) => {
   const { userId } = auth()
+  const items = [1, 2, 3, 4]
 
   if (!userId) {
     return redirect("/")
@@ -46,27 +50,11 @@ const CourseIdPage = async ({ params }: { params: { courseId: string } }) => {
     return redirect("/")
   }
 
-  const requiredFields = [
-    course.title,
-    course.description,
-    course.imageUrl,
-    // course.price,
-    course.categoryId,
-    // course.chapters.some((chapter) => chapter.isPublished),
-  ]
-
-  const totalFields = requiredFields.length
-  const completedFields = requiredFields.filter(Boolean).length
-
-  const completionText = `(${completedFields}/${totalFields})`
-
-  const isComplete = requiredFields.every(Boolean)
-
   return (
     <>
-      {!course.isPublished && (
+      {/* {!course.isPublished && (
         <Banner label="This course is unpublished. It will not be visible to the students." />
-      )}
+      )} */}
       <div className="p-6 flex flex-col gap-6">
         <div className="flex items-center justify-between">
           <div className="flex flex-col gap-y-2">
@@ -74,9 +62,6 @@ const CourseIdPage = async ({ params }: { params: { courseId: string } }) => {
               <PencilRuler />
               <h1 className="text-2xl font-medium">Quiz</h1>
             </div>
-            {/* <span className="text-sm text-slate-700">
-              Complete all fields {completionText}
-            </span> */}
           </div>
           {/* <Actions
             disabled={!isComplete}
@@ -84,19 +69,18 @@ const CourseIdPage = async ({ params }: { params: { courseId: string } }) => {
             isPublished={course.isPublished}
           /> */}
         </div>
-        <div className="grid grid-cols-2 gap-6">
-          <div className="grid grid-cols-1 col-span-2 lg:grid-cols-2 gap-6">
-            <div className="flex flex-col gap-6">
-              <TitleForm initialData={course} courseId={course.id} />
-              <DescriptionForm initialData={course} courseId={course.id} />
-            </div>
-            
+        <div className="grid gap-6">
+          <div className="flex flex-col gap-6">
+            <QuizTitleForm initialData={course} courseId={course.id} />
+            <QuizQuestionForm initialData={course} courseId={course.id} />
+            {/* {items.map((item, index) => ( */}
+            <QuizAnswerForm initialData={course} courseId={course.id} />
+            {/* ))} */}
           </div>
-          
         </div>
       </div>
     </>
   )
 }
 
-export default CourseIdPage
+export default QuizPage

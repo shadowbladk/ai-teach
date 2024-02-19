@@ -21,21 +21,19 @@ import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import { Textarea } from "@/components/ui/textarea"
 
-interface DescriptionFormProps {
+interface QuizQuestionFormProps {
   initialData: Course
   courseId: string
 }
 
 const formSchema = z.object({
-  description: z.string().min(1, {
-    message: "Description is required",
-  }),
+  description: z.string().min(1),
 })
 
-export const DescriptionForm = ({
+export const QuizQuestionForm = ({
   initialData,
   courseId,
-}: DescriptionFormProps) => {
+}: QuizQuestionFormProps) => {
   const [isEditing, setIsEditing] = useState(false)
 
   const toggleEdit = () => setIsEditing((current) => !current)
@@ -52,27 +50,27 @@ export const DescriptionForm = ({
   const { isSubmitting, isValid } = form.formState
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    try {
-      await axios.patch(`/api/courses/${courseId}`, values)
-      toast.success("Course updated")
-      toggleEdit()
-      router.refresh()
-    } catch {
-      toast.error("Something went wrong")
-    }
+    // try {
+    //   await axios.patch(`/api/courses/${courseId}`, values)
+    //   toast.success("Course updated")
+    //   toggleEdit()
+    //   router.refresh()
+    // } catch {
+    //   toast.error("Something went wrong")
+    // }
   }
 
   return (
     <div className="border bg-slate-100 rounded-md p-6 flex flex-col gap-4 h-full">
       <div className="font-medium flex justify-between">
-        Course description
+        Question
         <Button onClick={toggleEdit} variant="ghost" size="ghost">
           {isEditing ? (
             <>Cancel</>
           ) : (
             <>
               <Pencil className="h-4 w-4 mr-2" />
-              Edit description
+              Edit question
             </>
           )}
         </Button>
@@ -98,7 +96,7 @@ export const DescriptionForm = ({
                   <FormControl>
                     <Textarea
                       disabled={isSubmitting}
-                      placeholder="e.g. 'This course is about...'"
+                      placeholder="e.g. 'Question... ?'"
                       {...field}
                     />
                   </FormControl>
