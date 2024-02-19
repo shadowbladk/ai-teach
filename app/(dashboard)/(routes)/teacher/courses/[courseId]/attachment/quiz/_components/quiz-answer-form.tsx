@@ -121,18 +121,19 @@ QuizAnswerFormProps) => {
   return (
     <div className="border bg-slate-100 rounded-md p-6 flex flex-col gap-4 h-full">
       <div className="font-medium flex justify-between">
-        Answer
+        Question
         <Button onClick={toggleEdit} variant="ghost" size="ghost">
           {isEditing ? (
             <>Cancel</>
           ) : (
             <>
               <Pencil className="h-4 w-4 mr-2" />
-              Edit answer
+              Edit question
             </>
           )}
         </Button>
       </div>
+
       {!isEditing &&
         (allAnswers ? (
           <>
@@ -143,23 +144,36 @@ QuizAnswerFormProps) => {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <RadioGroup
-                        defaultValue={field.value}
-                        className="flex flex-col space-y-3"
-                        disabled={true}
-                      >
-                        {allAnswers.map((answer: any, index: any) => (
-                          <FormItem className="flex flex-row items-center space-x-3 space-y-0">
-                            <FormControl>
-                              <RadioGroupItem
-                                value={index}
-                                checked={answer.isCorrect}
-                              />
-                            </FormControl>
-                            <p>{answer.value}</p>
-                          </FormItem>
-                        ))}
-                      </RadioGroup>
+                      <section className="flex flex-col gap-4">
+                        <p
+                          className={cn(
+                            "text-sm",
+                            !initialData.description && "text-slate-500 italic"
+                          )}
+                        >
+                          {initialData.description || "No question"}
+                        </p>
+                        <div className="font-medium flex justify-between">
+                          Answer
+                        </div>
+                        <RadioGroup
+                          defaultValue={field.value}
+                          className="flex flex-col space-y-3"
+                          disabled={true}
+                        >
+                          {allAnswers.map((answer: any, index: any) => (
+                            <FormItem className="flex flex-row items-center space-x-3 space-y-0">
+                              <FormControl>
+                                <RadioGroupItem
+                                  value={index}
+                                  checked={answer.isCorrect}
+                                />
+                              </FormControl>
+                              <p>{answer.value}</p>
+                            </FormItem>
+                          ))}
+                        </RadioGroup>
+                      </section>
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -179,27 +193,37 @@ QuizAnswerFormProps) => {
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <RadioGroup
-                      onValueChange={field.onChange}
-                      defaultValue={correctAnswer?.toString()}
-                      className="flex flex-col space-y-1"
-                    >
-                      {answers.map((answer: any, index: number) => (
-                        <FormItem className="flex items-center space-x-3 space-y-0">
-                          <FormControl>
-                            <RadioGroupItem value={String(index)} />
-                          </FormControl>
-                          <Input
-                            disabled={isSubmitting}
-                            placeholder={`e.g. 'Choice ${index + 1}'`}
-                            value={answers[index]}
-                            onChange={(e) =>
-                              updateAnswerAtIndex(index, e.target.value)
-                            }
-                          />
-                        </FormItem>
-                      ))}
-                    </RadioGroup>
+                    <section className="flex flex-col gap-4">
+                      <Textarea
+                        disabled={isSubmitting}
+                        placeholder="e.g. 'Question... ?'"
+                        {...field}
+                      />
+                      <div className="font-medium flex justify-between">
+                        Answer
+                      </div>
+                      <RadioGroup
+                        onValueChange={field.onChange}
+                        defaultValue={correctAnswer?.toString()}
+                        className="flex flex-col space-y-1"
+                      >
+                        {answers.map((answer: any, index: number) => (
+                          <FormItem className="flex items-center space-x-3 space-y-0">
+                            <FormControl>
+                              <RadioGroupItem value={String(index)} />
+                            </FormControl>
+                            <Input
+                              disabled={isSubmitting}
+                              placeholder={`e.g. 'Choice ${index + 1}'`}
+                              value={answers[index]}
+                              onChange={(e) =>
+                                updateAnswerAtIndex(index, e.target.value)
+                              }
+                            />
+                          </FormItem>
+                        ))}
+                      </RadioGroup>
+                    </section>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
