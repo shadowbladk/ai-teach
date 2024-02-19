@@ -36,16 +36,24 @@ export const QuizForm = ({ initialData, courseId }: QuizFormProps) => {
     },
   })
 
-  const handleQuestionAdd = () => { 
+  const handleQuestionAdd = () => {
     setQuestions([...questions, { question: "", choices: [] }])
   }
 
   return (
     <>
       {questions.map((question, index) => (
-        <QuizAnswerForm key={index} initialData={initialData} courseId={courseId} />
+        <QuizAnswerForm
+          key={index}
+          initialData={initialData}
+          courseId={courseId}
+        />
       ))}
-      <Button variant="default" size="default" onClick={(e) => handleQuestionAdd()}>
+      <Button
+        variant="primary"
+        size="default"
+        onClick={(e) => handleQuestionAdd()}
+      >
         Add question
       </Button>
     </>
