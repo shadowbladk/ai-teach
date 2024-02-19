@@ -38,7 +38,7 @@ export const Chat = () => {
 
   return (
     <>
-      <div className="fixed z-20 bottom-[100px] right-[100px]">
+      <div className="fixed z-20 bottom-[50px] right-[50px]">
         <Bot
           className="w-14 h-14 bg-[#4F46E5] drop-shadow-xl text-white p-3 rounded-full"
           onClick={() => setChat(!chat)}
@@ -48,18 +48,18 @@ export const Chat = () => {
         <div
           className={`items-center justify-center bg-[#F3F4F4] shadow-md z-20 rounded-md ${
             chat
-              ? "fixed bottom-[180px] right-[20px] lg:right-[100px]"
+              ? "fixed bottom-[130px] right-[20px] sm:right-[50px]"
               : "hidden"
           }`}
         >
           <Resizable
             className="flex flex-col"
             defaultSize={{
-              width: 500,
-              height: 500,
+              width: 450,
+              height: 450,
             }}
-            minHeight={500}
-            minWidth={500}
+            minHeight={450}
+            minWidth={450}
           >
             <div className="bg-white w-full rounded-t-md flex flex-row items-center py-4 px-10 self-start">
               <h3 className="grow text-xl font-semibold">AI Chat</h3>
