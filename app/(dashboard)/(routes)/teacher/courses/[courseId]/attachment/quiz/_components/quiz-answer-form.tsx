@@ -124,15 +124,14 @@ QuizAnswerFormProps) => {
     <div className="border bg-slate-100 rounded-md p-6 flex flex-col gap-4 h-full">
       <div className="font-medium flex justify-between">
         Question
-        <Button onClick={toggleEdit} variant="ghost" size="ghost">
-          {isEditing ? (
-            <>Cancel</>
-          ) : (
-            <>
-              <Pencil className="h-4 w-4 mr-2" />
-              Edit question
-            </>
-          )}
+        <Button
+          onClick={toggleEdit}
+          variant="underline"
+          size="ghost"
+          className={isEditing ? "hidden" : "flex"}
+        >
+          <Pencil className="h-4 w-4 mr-1" />
+          Edit question
         </Button>
       </div>
 
@@ -235,8 +234,21 @@ QuizAnswerFormProps) => {
                 </FormItem>
               )}
             />
-            <div className="flex flex-row justify-between">
-              <Button disabled={!isValid || isSubmitting} type="submit">
+            <div className="flex justify-end gap-4">
+              <Button
+                onClick={toggleEdit}
+                variant="underline"
+                size="ghost"
+                className={isEditing ? "flex" : "hidden"}
+              >
+                Cancel
+              </Button>
+              <Button
+                disabled={!isValid || isSubmitting}
+                type="submit"
+                size="sm_l"
+                variant="primary"
+              >
                 Save
               </Button>
             </div>
