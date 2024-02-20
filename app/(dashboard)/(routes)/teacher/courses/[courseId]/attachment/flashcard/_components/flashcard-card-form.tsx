@@ -24,7 +24,7 @@ import { Input } from "@/components/ui/input"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Label } from "@/components/ui/label"
 
-interface QuizAnswerFormProps {
+interface FlashcardCardFormProps {
   initialData: Course
   courseId: string
   // allAnswers: ChoiceProps[] | null
@@ -39,23 +39,21 @@ const formSchema = z.object({
   description: z.string().min(1),
 })
 
-export const QuizAnswerForm = ({
+export const FlashcardCardForm = ({
   initialData,
   courseId,
 }: // allAnswers,
-QuizAnswerFormProps) => {
+FlashcardCardFormProps) => {
   const [isEditing, setIsEditing] = useState(false)
-  const [question, setQuestion] = useState("")
-  const [answers, setAnswers] = useState(Array.from({ length: 4 }, () => ""))
-  const [correctAnswer, setCorrectAnswer] = useState<number>()
-  const [allAnswers, setAllAnswers] = useState<ChoiceProps[]>([])
+  const [frontside, setFrontside] = useState("")
+  const [backside, setBackside] = useState("")
 
-  const setDefaultAnswer = () => {
-    allAnswers?.map((answer, index) => {
-      answer.isCorrect ? setCorrectAnswer(index) : null
-      updateAnswerAtIndex(index, answer.value)
-    })
-  }
+  // const setDefaultAnswer = () => {
+  //   allAnswers?.map((answer, index) => {
+  //     answer.isCorrect ? setCorrectAnswer(index) : null
+  //     updateAnswerAtIndex(index, answer.value)
+  //   })
+  // }
 
   const toggleEdit = () => setIsEditing((current) => !current)
 
@@ -71,14 +69,14 @@ QuizAnswerFormProps) => {
   const { isSubmitting, isValid } = form.formState
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    {
-      answers.map((answer, index) =>
-        index == Number(values.description)
-          ? (allAnswers[index] = { value: answer, isCorrect: true })
-          : (allAnswers[index] = { value: answer, isCorrect: false })
-      )
-    }
-    setCorrectAnswer(Number(values.description))
+    // {
+    //   answers.map((answer, index) =>
+    //     index == Number(values.description)
+    //       ? (allAnswers[index] = { value: answer, isCorrect: true })
+    //       : (allAnswers[index] = { value: answer, isCorrect: false })
+    //   )
+    // }
+    // setCorrectAnswer(Number(values.description))
     // try {
     //   await axios.patch(`/api/courses/${courseId}/attachment/quiz`, values)
     //   toast.success("Course updated")
@@ -89,23 +87,15 @@ QuizAnswerFormProps) => {
     // }
   }
 
-  const updateAnswerAtIndex = (index: number, newValue: string) => {
-    console.log(isSubmitting)
-    setAnswers((prevItems) => {
-      const updatedItems: string[] = [...prevItems]
-      updatedItems[index] = newValue
-      return updatedItems
-    })
-  }
 
-  useEffect(() => {
-    setDefaultAnswer()
-  }, [])
+  // useEffect(() => {
+  //   setDefaultAnswer()
+  // }, [])
 
   return (
     <div className="border bg-slate-100 rounded-md p-6 flex flex-col gap-4 h-full">
       <div className="font-medium flex justify-between">
-        Question
+        Front side
         <Button
           onClick={toggleEdit}
           variant="underline"
@@ -113,7 +103,7 @@ QuizAnswerFormProps) => {
           className={isEditing ? "hidden" : "flex"}
         >
           <Pencil className="h-4 w-4 mr-1" />
-          Edit question
+          Edit flashcard
         </Button>
       </div>
 
@@ -133,34 +123,19 @@ QuizAnswerFormProps) => {
                           !initialData.description && "text-slate-500 italic"
                         )}
                       >
-                        {initialData.description || "No question"}
+                        {initialData.description || "No front side description"}
                       </p>
                       <div className="font-medium flex justify-between">
-                        Answer
+                        Back side
                       </div>
-                      {allAnswers.length != 0 ? (
-                        <RadioGroup
-                          defaultValue={field.value}
-                          className="flex flex-col space-y-3"
-                          disabled={true}
-                        >
-                          {allAnswers?.map((answer: any, index: any) => (
-                            <FormItem className="flex flex-row items-center space-x-3 space-y-0">
-                              <FormControl>
-                                <RadioGroupItem
-                                  value={index}
-                                  checked={answer.isCorrect}
-                                />
-                              </FormControl>
-                              <p>{answer.value}</p>
-                            </FormItem>
-                          ))}
-                        </RadioGroup>
-                      ) : (
-                        <p className="text-sm text-slate-500 italic">
-                          No answer
-                        </p>
-                      )}
+                      <p
+                        className={cn(
+                          "text-sm",
+                          !initialData.description && "text-slate-500 italic"
+                        )}
+                      >
+                        {initialData.description || "No back side description"}
+                      </p>
                     </section>
                   </FormControl>
                   <FormMessage />
@@ -182,34 +157,19 @@ QuizAnswerFormProps) => {
                     <section className="flex flex-col gap-4">
                       <Textarea
                         disabled={isSubmitting}
-                        placeholder="e.g. 'Question... ?'"
-                        value={question}
-                        onChange={(e) => setQuestion(e.target.value)}
+                        placeholder="e.g. 'Flash card'"
+                        value={frontside}
+                        onChange={(e) => setFrontside(e.target.value)}
                       />
                       <div className="font-medium flex justify-between">
-                        Answer
+                        Back side
                       </div>
-                      <RadioGroup
-                        onValueChange={field.onChange}
-                        defaultValue={correctAnswer?.toString()}
-                        className="flex flex-col space-y-1"
-                      >
-                        {answers.map((answer: any, index: number) => (
-                          <div className="flex items-center space-x-3 space-y-0">
-                            <div>
-                              <RadioGroupItem value={String(index)} />
-                            </div>
-                            <Input
-                              disabled={isSubmitting}
-                              placeholder={`e.g. 'Choice ${index + 1}'`}
-                              value={answers[index]}
-                              onChange={(e) =>
-                                updateAnswerAtIndex(index, e.target.value)
-                              }
-                            />
-                          </div>
-                        ))}
-                      </RadioGroup>
+                      <Textarea
+                        disabled={isSubmitting}
+                        placeholder="e.g. 'a card containing a small amount of information, held up for students to see, as an aid to learning.'"
+                        value={backside}
+                        onChange={(e) => setBackside(e.target.value)}
+                      />
                     </section>
                   </FormControl>
                   <FormMessage />

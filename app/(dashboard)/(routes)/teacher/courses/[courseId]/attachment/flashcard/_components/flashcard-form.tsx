@@ -12,11 +12,10 @@ import { Course } from "@prisma/client"
 
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
-import { QuizAnswerForm } from "./quiz-answer-form"
-import { quiz } from "./mock-quiz"
-import { QuizQuestionForm } from "./quiz-question-form"
+import { FlashcardCardForm } from "./flashcard-card-form"
+import { flashcard } from "./mock-flashcard"
 
-interface QuizFormProps {
+interface FlashcardFormProps {
   initialData: Course
   courseId: string
 }
@@ -25,8 +24,8 @@ const formSchema = z.object({
   description: z.string().min(1),
 })
 
-export const QuizForm = ({ initialData, courseId }: QuizFormProps) => {
-  const [questions, setQuestions] = useState(quiz)
+export const FlashcardForm = ({ initialData, courseId }: FlashcardFormProps) => {
+  const [cards, setCards] = useState(flashcard)
 
   const router = useRouter()
 
@@ -38,31 +37,31 @@ export const QuizForm = ({ initialData, courseId }: QuizFormProps) => {
   })
 
   const handleQuestionAdd = () => {
-    setQuestions([...questions, { question: "", choices: [] }])
+    setCards([...cards, { frontside: "", backside: "" }])
   }
 
   const handleQuestionRemove = (index: number) => {
-    const items = [...questions]
+    const items = [...cards]
     items.splice(index, 1)
-    setQuestions(items)
+    setCards(items)
   }
 
   return (
     <>
-      {/* <QuizQuestionForm initialData={initialData} courseId={courseId} /> */}
-      {questions.map((question, index) => (
+      {cards.map((card, index) => (
         <>
-          <QuizAnswerForm
+          <FlashcardCardForm
             key={index}
             initialData={initialData}
             courseId={courseId}
+            // card={card}
           />
           <Button
             variant="warning"
             size="default"
             onClick={(e) => handleQuestionRemove(index)}
           >
-            Delete question
+            Delete flashcard
           </Button>
           <hr className="border-t-2 rounded-md border-gray-400" />
         </>
@@ -72,7 +71,7 @@ export const QuizForm = ({ initialData, courseId }: QuizFormProps) => {
         size="default"
         onClick={(e) => handleQuestionAdd()}
       >
-        Add question
+        Add flashcard
       </Button>
     </>
   )
