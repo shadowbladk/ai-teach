@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import AnswerGroup from "./AnswerGroup";
-import WordCard from "./Wordcard";
+import FlashcardGroup from "./FlashcardGroup";
+import WordCard from "./WordCard";
 
 interface FlashcardProps {
   title: string;
@@ -12,7 +12,7 @@ type Word = {
   word: string;
   definition: string;
   choices: string[];
-  answer: string;
+  answers:string;
 };
 
 type Answer = {
@@ -44,10 +44,11 @@ const Flashcard: React.FunctionComponent<FlashcardProps> = ({
         <h2>{title}</h2>
         <div>{`Word ${currentQuestionIndex + 1}/${words.length}`}</div>
       </div>
-      <WordCard word={words[currentQuestionIndex].word} />
-      <AnswerGroup
+      
+      <WordCard word={words[currentQuestionIndex].word} definition={""} />
+      <FlashcardGroup
         choices={words[currentQuestionIndex].choices}
-        answer={words[currentQuestionIndex].answer}
+        answer={words[currentQuestionIndex].answers}
         submitAnswer={submitAnswer}
       />
     </section>

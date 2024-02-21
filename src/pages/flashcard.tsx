@@ -10,17 +10,22 @@ function flashcard() {
     <div className="flex min-h-screen flex-col">
       <Navbar />
       <div className="flex-grow">
-        <div className="container mx-auto justify-center max-w-[600px] ">
+        <div className="container mx-auto justify-center max-w-[980px]">
+          <div className="flex flex-col items-center justify-center px-24 py-14 gap-12">
+            <h1 className="text-[32px] font-extrabold text-center text-black">
+              Flashcard
+            </h1>
+          </div>
           <Flashcard
             title="Flashcard - Chapter 1"
             words={[
               {
                 id: "1",
-                word: "keyword",
+                word: "Keyword",
                 definition:
                   "predefined, reserved words used in Python programming that have special meanings to the compiler.",
                 choices: ["Know", "Don't Know"],
-                answer: "Know",
+                answers: "Know",
               },
             ]}
           />
@@ -32,3 +37,6 @@ function flashcard() {
 }
 
 export default flashcard;
+
+
+
