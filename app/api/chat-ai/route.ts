@@ -9,7 +9,6 @@ export async function POST(req: Request) {
       return new NextResponse("Bad Request", { status: 400 });
     }
 
-    // AI logic goes here
     const completion = await getCompletion(message);
     return new NextResponse(completion);
   } catch (error) {
