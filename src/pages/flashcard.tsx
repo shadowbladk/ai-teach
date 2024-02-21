@@ -23,9 +23,61 @@ function flashcard() {
                 id: "1",
                 word: "Keyword",
                 definition:
-                  "predefined, reserved words used in Python programming that have special meanings to the compiler.",
-                choices: ["Know", "Don't Know"],
-                answers: "Know",
+                  "Predefined, reserved words used in Python programming that have special meanings to the compiler.",
+              },
+              {
+                id: "2",
+                word: "Keyword2",
+                definition:
+                  "Predefined, reserved words used in Python programming that have special meanings to the compiler.",
+              },
+              {
+                id: "3",
+                word: "Keyword3",
+                definition:
+                  "Predefined, reserved words used in Python programming that have special meanings to the compiler.",
+              },
+              {
+                id: "4",
+                word: "Keyword4",
+                definition:
+                  "Predefined, reserved words used in Python programming that have special meanings to the compiler.",
+              },
+              {
+                id: "5",
+                word: "Keyword5",
+                definition:
+                  "Predefined, reserved words used in Python programming that have special meanings to the compiler.",
+              },
+              {
+                id: "6",
+                word: "Keyword6",
+                definition:
+                  "Predefined, reserved words used in Python programming that have special meanings to the compiler.",
+              },
+              {
+                id: "7",
+                word: "Keyword7",
+                definition:
+                  "Predefined, reserved words used in Python programming that have special meanings to the compiler.",
+              },
+              {
+                id: "8",
+                word: "Keyword8",
+                definition:
+                  "Predefined, reserved words used in Python programming that have special meanings to the compiler.",
+              },
+              {
+                id: "9",
+                word: "Keyword9",
+                definition:
+                  "Predefined, reserved words used in Python programming that have special meanings to the compiler.",
+              },
+              {
+                id: "10",
+                word: "Keyword10",
+                definition:
+                  "Predefined, reserved words used in Python programming that have special meanings to the compiler.",
               },
             ]}
           />
@@ -37,6 +89,3 @@ function flashcard() {
 }
 
 export default flashcard;
-
-
-
