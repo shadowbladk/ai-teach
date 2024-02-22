@@ -68,8 +68,9 @@ model Chapter {
 
   userProgress UserProgress[]
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  FlashcardDeck FlashcardDeck[]
 
   @@index([courseId])
 }
@@ -120,4 +121,34 @@ model StripeCustomer {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model Flashcard {
+  id    String  @id @default(uuid())
+  front String? @db.Text
+  back  String? @db.Text
+
+  deckId String
+  deck   FlashcardDeck @relation(fields: [deckId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([deckId])
+  @@fulltext([front, back])
+}
+
+model FlashcardDeck {
+  id    String @id @default(uuid())
+  title String
+
+  chapterId String
+  chapter   Chapter @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+
+  Flashcard Flashcard[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([chapterId])
 }
