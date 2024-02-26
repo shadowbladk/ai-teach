@@ -1,7 +1,7 @@
-"use client"
+"use client";
 import { useState, useEffect } from "react";
 import { Course, Chapter } from "@prisma/client";
-import ChapterNavbarItem from "./chapter-navbar-item";
+import { Slider } from "./slider";
 
 interface ChapterNavbarProps {
   course: Course & {
@@ -9,29 +9,26 @@ interface ChapterNavbarProps {
   };
 }
 
-const ChapterNavbar: React.FC<ChapterNavbarProps> = ({ course }) => {
-  const [selectedChapterIndex, setSelectedChapterIndex] = useState<number | null>(null);
-
+export const ChapterNavbar = ({ course }: ChapterNavbarProps) => {
+  const [currentChapterTitle, setCurrentChapterTitle] = useState("");
   useEffect(() => {
-    setSelectedChapterIndex(0);
-  }, []);
+    if (course.chapters.length > 0) {
+      setCurrentChapterTitle(course.chapters[0].title);
+    }
+  }, [course.chapters]);
 
-  const handleChapterClick = (index: number) => {
-    setSelectedChapterIndex(index);
+  const handleChapterClick = (title: string) => {
+    setCurrentChapterTitle(title);
   };
 
   return (
     <div className="flex-col">
       <div className="flex justify-center p-6">
-        {course.chapters.map((chapter, index) => (
-          <button key={chapter.id} onClick={() => handleChapterClick(index)}>
-            <ChapterNavbarItem chapter={chapter} number={index + 1} />
-          </button>
-        ))}
+        <Slider course={course} onChapterClick={handleChapterClick} />
       </div>
-      <div className="p-6">
+      <div>
         <h1 className="text-2xl font-extrabold text-black text-center">
-          {selectedChapterIndex !== null && course.chapters[selectedChapterIndex].title}
+          {currentChapterTitle}
         </h1>
       </div>
     </div>
@@ -39,4 +36,3 @@ const ChapterNavbar: React.FC<ChapterNavbarProps> = ({ course }) => {
 };
 
 export default ChapterNavbar;
-
