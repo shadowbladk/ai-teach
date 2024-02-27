@@ -96,7 +96,7 @@ export const FlashcardForm = ({
               Back side
             </TabsTrigger>
           </TabsList>
-          <TabsContent value="front">
+          <TabsContent value="front" className="w-full">
             <FlashcardFrontCardForm initialData={cards[clickedCard]} />
           </TabsContent>
         </Tabs>

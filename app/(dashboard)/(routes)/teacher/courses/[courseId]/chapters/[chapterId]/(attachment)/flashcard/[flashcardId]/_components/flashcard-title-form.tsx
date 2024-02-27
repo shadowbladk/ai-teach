@@ -18,13 +18,10 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
+import { FlashcardDeck } from "@prisma/client"
 
 interface FlashcardTitleFormProps {
-  initialData: {
-    title: string
-  }
-  courseId: string
-  // flashcardId: string
+  initialData: FlashcardDeck
 }
 
 const formSchema = z.object({
@@ -32,9 +29,7 @@ const formSchema = z.object({
 })
 
 export const FlashcardTitleForm = ({
-  initialData,
-  courseId,
-  // flashcardId,
+  initialData
 }: 
 FlashcardTitleFormProps) => {
   const [isEditing, setIsEditing] = useState(false)

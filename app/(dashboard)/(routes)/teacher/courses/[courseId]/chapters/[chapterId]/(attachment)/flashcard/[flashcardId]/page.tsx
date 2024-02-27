@@ -11,31 +11,31 @@ import { FlashcardForm } from "./_components/flashcard-form"
 import { Actions } from "./_components/actions"
 import { Button } from "@/components/ui/button"
 
-const FlashcardPage = async ({ params }: { params: { chapterId: string } }) => {
+const FlashcardPage = async ({
+  params,
+}: {
+  params: { flashcardId: string }
+}) => {
   const { userId } = auth()
 
   if (!userId) {
     return redirect("/")
   }
 
-  const chapter = await db.chapter.findUnique({
+  const flashcardDeck = await db.flashcardDeck.findUnique({
     where: {
-      id: params.chapterId,
-    },
-    include: {
-      
+      id: params.flashcardId,
     },
   })
 
-  // const flashcardDeck = await db.flashcard.findMany({
-  //   orderBy: {
-  //     name: "asc",
-  //   },
-  // })
-
-  if (!chapter) {
-    return redirect("/")
-  }
+  const flashcards = await db.flashcard.findMany({
+    where: {
+      flashcardDeckId: params.flashcardId,
+    },
+    orderBy: {
+      updatedAt: "desc",
+    },
+  })
 
   return (
     <>
@@ -50,18 +50,17 @@ const FlashcardPage = async ({ params }: { params: { chapterId: string } }) => {
             <h1 className="text-2xl font-medium">Flash Card</h1>
             {/* </div> */}
           </div>
-          <Actions
+          {/* <Actions
             // disabled={!isComplete}
             disabled={true}
             courseId={params.chapterId}
             isPublished={chapter.isPublished}
-          />
+          /> */}
         </div>
         {/* <div className="grid gap-6 w-full justify-center"> */}
         <div className="flex flex-col gap-6 w-4/5 max-w-7xl justify-center">
           <FlashcardTitleForm
-            initialData={chapter}
-            courseId={chapter.id}
+            initialData={flashcardDeck!}
             // flashcardId={}
           />
           <hr className="border-t-4 rounded-md border-gray-400" />

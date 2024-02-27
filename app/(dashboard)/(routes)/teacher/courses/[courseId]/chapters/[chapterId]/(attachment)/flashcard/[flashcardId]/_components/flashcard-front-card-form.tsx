@@ -77,7 +77,7 @@ export const FlashcardFrontCardForm = ({
   }
 
   return (
-    <div className="bg-white border-[#80489C] w-[280px] h-[240px] sm:w-[440px] sm:h-[280px] border-4 rounded-md p-6 flex flex-col gap-4 ">
+    <div className="bg-white border-[#80489C] w-full max-w-[440px] h-[280px] border-4 rounded-md p-6 flex flex-col gap-4 ">
       {!isEditing && (
         <>
           <div className="grow">
