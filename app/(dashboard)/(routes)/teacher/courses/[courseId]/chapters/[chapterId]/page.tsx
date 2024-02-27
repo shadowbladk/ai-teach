@@ -28,7 +28,14 @@ const ChapterIdPage = async ({
     where: {
       id: params.chapterId,
       courseId: params.courseId,
-    }
+    },
+    include: {
+      flashcardDecks: {
+        orderBy: {
+          createdAt: "desc",
+        },
+      },
+    },
   });
 
   if (!chapter) {
