@@ -22,6 +22,7 @@ model Course {
   category    Category?    @relation(fields: [categoryId], references: [id])
   chapters    Chapter[]
   attachments Attachment[]
+  enrollment  Enrollment[]
 
   @@index([categoryId])
   @@fulltext([title])
@@ -46,16 +47,18 @@ model Attachment {
 }
 
 model Chapter {
-  id           String         @id @default(uuid())
-  title        String
-  description  String?        @db.Text
-  position     Int
-  isPublished  Boolean        @default(false)
-  courseId     String
-  createdAt    DateTime       @default(now())
-  updatedAt    DateTime       @updatedAt
-  course       Course         @relation(fields: [courseId], references: [id], onDelete: Cascade)
-  userProgress UserProgress[]
+  id             String          @id @default(uuid())
+  title          String
+  description    String?         @db.Text
+  position       Int
+  isPublished    Boolean         @default(false)
+  courseId       String
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  course         Course          @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  userProgress   UserProgress[]
+  questions      Question[]
+  flashcardDecks FlashcardDeck[]
 
   @@index([courseId])
 }
@@ -73,23 +76,13 @@ model UserProgress {
   @@index([chapterId])
 }
 
-model Answer {
-  id         String   @id @default(uuid())
-  text       String   @db.Text
-  isCorrect  Boolean
-  questionId String
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime
-
-  @@index([questionId])
-}
-
 model Enrollment {
   id        String   @id @default(uuid())
   userId    String
   courseId  String
   createdAt DateTime @default(now())
-  updatedAt DateTime
+  updatedAt DateTime @updatedAt
+  course    Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
 
   @@unique([userId, courseId])
   @@index([courseId])
@@ -114,6 +107,7 @@ model FlashcardDeck {
   chapterId String
   createdAt DateTime @default(now())
   updatedAt DateTime
+  chapter   Chapter  @relation(fields: [chapterId], references: [id])
 
   @@index([chapterId])
 }
@@ -123,7 +117,21 @@ model Question {
   text      String   @db.Text
   chapterId String
   createdAt DateTime @default(now())
-  updatedAt DateTime
+  updatedAt DateTime @updatedAt
+  chapter   Chapter  @relation(fields: [chapterId], references: [id])
+  answers   Answer[]
 
   @@index([chapterId])
+}
+
+model Answer {
+  id         String   @id @default(uuid())
+  text       String   @db.Text
+  isCorrect  Boolean
+  questionId String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+
+  @@index([questionId])
 }

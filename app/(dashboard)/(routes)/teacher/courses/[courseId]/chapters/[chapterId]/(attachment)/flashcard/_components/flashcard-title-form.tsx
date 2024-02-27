@@ -24,7 +24,7 @@ interface FlashcardTitleFormProps {
     title: string
   }
   courseId: string
-  // FlashcardId: string
+  // flashcardId: string
 }
 
 const formSchema = z.object({
@@ -34,7 +34,8 @@ const formSchema = z.object({
 export const FlashcardTitleForm = ({
   initialData,
   courseId,
-}: // FlashcardId,
+  // flashcardId,
+}: 
 FlashcardTitleFormProps) => {
   const [isEditing, setIsEditing] = useState(false)
 
