@@ -74,7 +74,7 @@ model UserProgress {
 }
 
 model Answer {
-  id         String   @id
+  id         String   @id @default(uuid())
   text       String   @db.Text
   isCorrect  Boolean
   questionId String
@@ -85,7 +85,7 @@ model Answer {
 }
 
 model Enrollment {
-  id        String   @id
+  id        String   @id @default(uuid())
   userId    String
   courseId  String
   createdAt DateTime @default(now())
@@ -96,7 +96,7 @@ model Enrollment {
 }
 
 model Flashcard {
-  id              String   @id
+  id              String   @id @default(uuid())
   front           String?  @db.Text
   back            String?  @db.Text
   flashcardDeckId String
@@ -108,7 +108,7 @@ model Flashcard {
 }
 
 model FlashcardDeck {
-  id        String   @id
+  id        String   @id @default(uuid())
   title     String?  @db.Text
   isPublic  Boolean  @default(false)
   chapterId String
@@ -119,7 +119,7 @@ model FlashcardDeck {
 }
 
 model Question {
-  id        String   @id
+  id        String   @id @default(uuid())
   text      String   @db.Text
   chapterId String
   createdAt DateTime @default(now())
