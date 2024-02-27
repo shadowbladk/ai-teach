@@ -21,7 +21,10 @@ import { Button } from "@/components/ui/button"
 import { FlashcardDeck } from "@prisma/client"
 
 interface FlashcardTitleFormProps {
-  initialData: FlashcardDeck
+  initialData: {
+    id: string;
+    title: string;
+  };
 }
 
 const formSchema = z.object({

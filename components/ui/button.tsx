@@ -23,6 +23,7 @@ const buttonVariants = cva(
           "underline underline-offset-2 text-black hover:text-[#80489C]",
         primary: "bg-[#4F46E5] text-white hover:bg-[#4F46E5]/90",
         warning: "bg-[#FB6055] text-white hover:bg-[#FB6055]/90",
+        cancel: "border-[#4F46E5] border-2 hover:bg-[#4F46E5]/50",
       },
       size: {
         default: "h-10 px-4 py-2",
@@ -31,6 +32,7 @@ const buttonVariants = cva(
         lg: "h-11 rounded-md px-8",
         icon: "h-10 w-10",
         ghost: "size-fit p-0",
+        rectangle: "w-full h-10",
       },
     },
     defaultVariants: {

@@ -42,7 +42,7 @@ const FlashcardPage = async ({
       {/* {!course.isPublished && (
         <Banner label="This course is unpublished. It will not be visible to the students." />
       )} */}
-      <div className="flex flex-col items-center justify-center px-4 py-16 gap-12">
+      <div className="flex flex-col items-center justify-center px-4 py-16 gap-8">
         <div className="flex items-center w-4/5 max-w-7xl justify-between">
           <div className="flex flex-row gap-2 items-center justify-center">
             {/* <div className="flex items-center gap-x-2"> */}
@@ -58,9 +58,12 @@ const FlashcardPage = async ({
           /> */}
         </div>
         {/* <div className="grid gap-6 w-full justify-center"> */}
-        <div className="flex flex-col gap-6 w-4/5 max-w-7xl justify-center">
+        <div className="flex flex-col gap-8 w-4/5 max-w-7xl justify-center">
           <FlashcardTitleForm
-            initialData={flashcardDeck!}
+            initialData={{
+              id: flashcardDeck?.id!,
+              title: flashcardDeck?.title!,
+            }}
             // flashcardId={}
           />
           <hr className="border-t-4 rounded-md border-gray-400" />
@@ -69,7 +72,7 @@ const FlashcardPage = async ({
             <Button variant="outline" size="sm">
               Add question
          </Button> */}
-          <FlashcardForm initialData={chapter} courseId={chapter.id} />
+          <FlashcardForm initialData={flashcards} />
         </div>
         {/* </div> */}
       </div>

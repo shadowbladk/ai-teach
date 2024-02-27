@@ -26,24 +26,22 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Label } from "@/components/ui/label"
 
 interface FlashcardFrontCardFormProps {
-  // initialData: Flashcard
-  // flashcardDeckId: string
-  initialData: any
+  initialData: Flashcard
 }
 
 const formSchema = z.object({
-  frontside: z.string().min(1),
+  front: z.string().min(1),
 })
 
 export const FlashcardFrontCardForm = ({
   initialData,
 }: FlashcardFrontCardFormProps) => {
   const [isEditing, setIsEditing] = useState(false)
-  const [frontside, setFrontside] = useState(initialData?.frontside || "")
+  const [front, setFront] = useState(initialData?.front || "")
 
   const toggleEdit = () => {
     setIsEditing((current) => !current)
-    setFrontside(initialData?.frontside || "")
+    setFront(initialData?.front || "")
   }
 
   const router = useRouter()
@@ -51,7 +49,7 @@ export const FlashcardFrontCardForm = ({
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      frontside: initialData?.frontside || "",
+      front: initialData?.front || "",
     },
   })
 
@@ -85,17 +83,17 @@ export const FlashcardFrontCardForm = ({
               <Form {...form}>
                 <FormField
                   control={form.control}
-                  name="frontside"
+                  name="front"
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
                         <div
                           className={cn(
                             "text-2xl font-medium text-center",
-                            !initialData.frontside && "text-slate-500 italic"
+                            !(front != "") && "text-lg text-slate-500 italic"
                           )}
                         >
-                          {initialData.frontside || "No front side description"}
+                          {front || "No front side description"}
                         </div>
                       </FormControl>
                       <FormMessage />
@@ -125,16 +123,16 @@ export const FlashcardFrontCardForm = ({
             <div className="grow">
               <FormField
                 control={form.control}
-                name="frontside"
+                name="front"
                 render={({ field }) => (
                   <FormItem className="h-full">
                     <FormControl>
                       <Textarea
-                        defaultValue={initialData.frontside}
+                        // defaultValue={initialData.front}
                         disabled={isSubmitting}
                         placeholder="e.g. 'Flash card'"
-                        value={frontside}
-                        onChange={(e) => setFrontside(e.target.value)}
+                        value={front}
+                        onChange={(e) => setFront(e.target.value)}
                         className="h-full"
                       />
                     </FormControl>
