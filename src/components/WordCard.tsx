@@ -1,28 +1,3 @@
-// const WordCard: React.FC<WordCardProps> = ({
-//   word,
-//   definition,
-//   isFlipped,
-//   setIsFlipped,
-// }) => {
-//   return (
-//     <div className="justify-center flex flex-col border-4 border-purple-500/100 rounded-xl bg-white p-4">
-//       <div className="p-4">
-//         <p className="text-[20px] font-normal text-center text-black items-center">
-//           {isFlipped ? definition : word}
-//         </p>
-//       </div>
-//       <button
-//         className="mt-4 grid justify-items-end"
-//         onClick={() => setIsFlipped(!isFlipped)}
-//       >
-//         <Image src={Flipicon} alt="-" width={50} height={50} />
-//       </button>
-//     </div>
-//   );
-// };
-
-// export default WordCard;
-
 import Flipicon from "@/assets/flipicon.svg";
 import Image from "next/image";
 import React from "react";
@@ -41,20 +16,22 @@ const WordCard: React.FC<WordCardProps> = ({
   setIsFlipped,
 }) => {
   return (
-    <div className="relative flex justify-center items-start"> {/* Container with relative position */}
-      <div className="flex flex-col border-4 border-purple-500/100 rounded-xl bg-white p-4"> {/* Word box */}
-        <div className="p-4">
-          <p className="text-[20px] font-normal text-center text-black items-center">
+    <div className="relative flex justify-center items-start w-full max-w-[980px] px-8">
+      <div className="flex flex-col border-4 border-purple-500/100 rounded-xl bg-white p-4 w-[440px] h-[280px]">
+        <div className="p-4 h-full">
+          <p className="text-[20px] font-normal text-center text-black h-full flex items-center justify-center">
             {isFlipped ? definition : word}
           </p>
         </div>
       </div>
-      <button
-        className="absolute top-0 right-0 mt-4 mr-4 transform p-4 translate-x-full" // Position the button outside the box
-        onClick={() => setIsFlipped(!isFlipped)}
-      >
-        <Image src={Flipicon} alt="Flip" width={50} height={50} />
-      </button>
+      <div className="absolute top-0 right-0 flex justify-end items-start w-full max-w-[980px]">
+        <button
+          className="flex items-start mt-4 p-2"
+          onClick={() => setIsFlipped(!isFlipped)}
+        >
+          <Image src={Flipicon} alt="Flip" width={50} height={50} />
+        </button>
+      </div>
     </div>
   );
 };

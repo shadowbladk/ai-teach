@@ -31,17 +31,16 @@ const Flashcard: React.FunctionComponent<FlashcardProps> = ({
     const newAnswer: Answer = {
       wordId: words[currentQuestionIndex].id,
       answer: userAnswer,
-      correct: userAnswer === words[currentQuestionIndex].definition, // Example, you might have a different logic
+      correct: userAnswer === words[currentQuestionIndex].definition,
     };
 
     setAnswers([...answers, newAnswer]);
 
     if (currentQuestionIndex < words.length - 1) {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
-      setIsFlipped(false); // Reset the flip state here
+      setIsFlipped(false);
     } else {
       console.log("Submit all answers:", answers);
-      // Handle the end of the flashcards
     }
   };
 
@@ -55,8 +54,8 @@ const Flashcard: React.FunctionComponent<FlashcardProps> = ({
       <WordCard
         word={words[currentQuestionIndex].word}
         definition={words[currentQuestionIndex].definition}
-        isFlipped={isFlipped} // Pass this prop to WordCard
-        setIsFlipped={setIsFlipped} // Pass this prop to WordCard
+        isFlipped={isFlipped}
+        setIsFlipped={setIsFlipped}
       />
       <FlashcardGroup submitAnswer={submitAnswer} />
     </section>
