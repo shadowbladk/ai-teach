@@ -1,5 +1,5 @@
 import { db } from "@/lib/db";
-import { Attachment, Chapter } from "@prisma/client";
+import { Chapter } from "@prisma/client";
 
 interface GetChapterProps {
   userId: string;
@@ -13,7 +13,7 @@ export const getChapter = async ({
   chapterId,
 }: GetChapterProps) => {
   try {
-    const purchase = await db.purchase.findUnique({
+    const enrollment = await db.enrollment.findUnique({
       where: {
         userId_courseId: {
           userId,
@@ -26,9 +26,6 @@ export const getChapter = async ({
       where: {
         isPublished: true,
         id: courseId,
-      },
-      select: {
-        price: true,
       },
     });
 
@@ -43,25 +40,9 @@ export const getChapter = async ({
       throw new Error("Chapter or course not found");
     }
 
-    let muxData = null;
-    let attachments: Attachment[] = [];
     let nextChapter: Chapter | null = null;
 
-    if (purchase) {
-      attachments = await db.attachment.findMany({
-        where: {
-          courseId: courseId,
-        },
-      });
-    }
-
-    if (chapter.isFree || purchase) {
-      muxData = await db.muxData.findUnique({
-        where: {
-          chapterId: chapterId,
-        },
-      });
-
+    if (chapter || enrollment) {
       nextChapter = await db.chapter.findFirst({
         where: {
           courseId: courseId,
@@ -88,22 +69,18 @@ export const getChapter = async ({
     return {
       chapter,
       course,
-      muxData,
-      attachments,
       nextChapter,
       userProgress,
-      purchase,
+      enrollment,
     };
   } catch (error) {
     console.log("[GET_CHAPTER]", error);
     return {
       chapter: null,
       course: null,
-      muxData: null,
-      attachments: [],
       nextChapter: null,
       userProgress: null,
-      purchase: null,
+      enrollment: null,
     };
   }
 };
