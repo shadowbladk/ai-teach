@@ -89,7 +89,7 @@ model Flashcard {
 
 model FlashcardDeck {
   id        String      @id @default(uuid())
-  title     String?     @db.Text
+  title     String      @db.Text
   isPublic  Boolean     @default(false)
   chapterId String
   createdAt DateTime    @default(now())
