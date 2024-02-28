@@ -38,14 +38,14 @@ interface SliderProps {
   course: Course & {
     chapters: Chapter[];
   };
-  onChapterClick: (title: string) => void;
+  onSelectChapter: (index: number) => void;
 }
 
 const formSchema = z.object({
   title: z.string().min(1),
 });
 
-export const Slider = ({ course, onChapterClick }: SliderProps) => {
+export const Slider = ({ course, onSelectChapter }: SliderProps) => {
   const [lengthItems, setLengthItems] = useState(course.chapters.length);
   const [canGoPrev, setCanGoPrev] = useState(false);
   const [canGoNext, setCanGoNext] = useState(lengthItems > 3);
@@ -68,10 +68,11 @@ export const Slider = ({ course, onChapterClick }: SliderProps) => {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      await axios.post(`/api/courses/${course.id}/chapters`, values);
-      toast.success("Chapter created");
+      const response = await axios.post(`/api/courses/${course.id}/chapters`, values);
+      toast.success("Chapter created"); 
       toggleCreating();
       router.refresh();
+      router.push(`/teacher/edit/${course.id}/chapters/${response.data.id}`);
     } catch {
       toast.error("Something went wrong");
     }
@@ -80,7 +81,7 @@ export const Slider = ({ course, onChapterClick }: SliderProps) => {
   const handleSlideChange = (swiper: any) => {
     setCanGoPrev(!swiper.isBeginning);
     setCanGoNext(!swiper.isEnd);
-  };
+  };  
 
   useEffect(() => {
     setLengthItems(course.chapters.length);
@@ -114,16 +115,18 @@ export const Slider = ({ course, onChapterClick }: SliderProps) => {
         >
           {course.chapters.map((chapter, index) => (
             <SwiperSlide key={chapter.id} className="max-w-fit mb-16">
-              <div className="flex flex-col mx-1 place-items-center group relative cursor-pointer">
-                <Link
-                  href={`/teacher/edit/${chapter.courseId}/chapters/${chapter.id}`}
-                  className="mx-1 px-3 py-1 bg-gray-200 text-gray-800 rounded-full"
-                  onClick={() => onChapterClick(chapter.title)}
-                >
-                  {index + 1}
-                </Link>
-              </div>
-            </SwiperSlide>
+            <div 
+              className="flex flex-col mx-1 place-items-center group relative cursor-pointer"
+              onClick={() => onSelectChapter(index)}
+            >
+              <Link
+                href={`/teacher/edit/${chapter.courseId}/chapters/${chapter.id}`}
+                className="mx-1 px-3 py-1 bg-gray-200 text-gray-800 rounded-full"
+              >
+                {index + 1}
+              </Link>
+            </div>
+          </SwiperSlide>
           ))}
           <SwiperSlide className="max-w-fit mb-16">
             <Dialog>

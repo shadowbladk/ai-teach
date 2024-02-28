@@ -32,7 +32,9 @@ const EditPage = async ({ params }: { params: { courseId: string } }) => {
   if (!course) {
     return redirect("/");
   }
-
+  if (course.chapters.length === 0) {
+    return (<div></div>);
+  }
   return redirect(
     `/teacher/edit/${course.id}/chapters/${course.chapters[0].id}`
   );

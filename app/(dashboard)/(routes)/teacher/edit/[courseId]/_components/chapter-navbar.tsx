@@ -1,7 +1,9 @@
-"use client";
-import { useState, useEffect } from "react";
+"use client"
+
+import React, { useState } from "react";
 import { Course, Chapter } from "@prisma/client";
 import { Slider } from "./slider";
+import { ChapterTitleForm } from "./chapter-title-form";
 
 interface ChapterNavbarProps {
   course: Course & {
@@ -10,26 +12,27 @@ interface ChapterNavbarProps {
 }
 
 export const ChapterNavbar = ({ course }: ChapterNavbarProps) => {
-  const [currentChapterTitle, setCurrentChapterTitle] = useState("");
-  useEffect(() => {
-    if (course.chapters.length > 0) {
-      setCurrentChapterTitle(course.chapters[0].title);
-    }
-  }, [course.chapters]);
+  const [selectedChapterIndex, setSelectedChapterIndex] = useState(0);
 
-  const handleChapterClick = (title: string) => {
-    setCurrentChapterTitle(title);
+  const handleChapterChange = (index: number) => {
+    setSelectedChapterIndex(index);
   };
 
   return (
     <div className="flex-col">
       <div className="flex justify-center p-6">
-        <Slider course={course} onChapterClick={handleChapterClick} />
+        <Slider course={course} onSelectChapter={handleChapterChange} />
       </div>
       <div>
-        <h1 className="text-2xl font-extrabold text-black text-center">
-          {currentChapterTitle}
-        </h1>
+        {course.chapters.length > 0 ? (
+          <ChapterTitleForm
+            initialData={{ title: course.chapters[selectedChapterIndex].title }}
+            courseId={course.id}
+            chapterId={course.chapters[selectedChapterIndex].id}
+          />
+        ) : (
+          <p>No chapters available</p>
+        )}
       </div>
     </div>
   );

@@ -19,11 +19,9 @@ model Course {
   categoryId  String?
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
-  price       Float?
   category    Category?    @relation(fields: [categoryId], references: [id])
   chapters    Chapter[]
   attachments Attachment[]
-  purchases   Purchase[]
 
   @@index([categoryId])
   @@fulltext([title])
@@ -51,26 +49,15 @@ model Chapter {
   id           String         @id @default(uuid())
   title        String
   description  String?        @db.Text
-  videoUrl     String?        @db.Text
   position     Int
   isPublished  Boolean        @default(false)
   courseId     String
   createdAt    DateTime       @default(now())
   updatedAt    DateTime       @updatedAt
-  isFree       Boolean        @default(false)
-  muxData      MuxData?
   course       Course         @relation(fields: [courseId], references: [id], onDelete: Cascade)
   userProgress UserProgress[]
 
   @@index([courseId])
-}
-
-model MuxData {
-  id         String  @id @default(uuid())
-  assetId    String
-  playbackId String?
-  chapterId  String  @unique
-  chapter    Chapter @relation(fields: [chapterId], references: [id], onDelete: Cascade)
 }
 
 model UserProgress {
@@ -86,41 +73,54 @@ model UserProgress {
   @@index([chapterId])
 }
 
-model Purchase {
-  id        String   @id @default(uuid())
-  userId    String
-  courseId  String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  course    Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
-
-  @@unique([userId, courseId])
-  @@index([courseId])
-}
-
-model StripeCustomer {
-  id               String   @id @default(uuid())
-  userId           String   @unique
-  stripeCustomerId String   @unique
-  createdAt        DateTime @default(now())
-  updatedAt        DateTime @updatedAt
-}
-
 model Flashcard {
-  id        String   @id
-  front     String?  @db.Text
-  back      String?  @db.Text
-  deckId    String
-  createdAt DateTime @default(now())
-  updatedAt DateTime
+  id              String   @id
+  front           String?  @db.Text
+  back            String?  @db.Text
+  flashcardDeckId String
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime
 
-  @@index([deckId])
+  @@index([flashcardDeckId])
   @@fulltext([front, back])
 }
 
 model FlashcardDeck {
   id        String   @id
-  title     String
+  title     String   @db.Text
+  isPublic  Boolean  @default(false)
+  chapterId String
+  createdAt DateTime @default(now())
+  updatedAt DateTime
+
+  @@index([chapterId])
+}
+
+model Answer {
+  id         String   @id
+  text       String   @db.Text
+  isCorrect  Boolean
+  questionId String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime
+
+  @@index([questionId])
+}
+
+model Enrollment {
+  id        String   @id
+  userId    String
+  courseId  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime
+
+  @@unique([userId, courseId])
+  @@index([courseId])
+}
+
+model Question {
+  id        String   @id
+  text      String   @db.Text
   chapterId String
   createdAt DateTime @default(now())
   updatedAt DateTime
