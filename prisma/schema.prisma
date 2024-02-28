@@ -134,5 +134,6 @@ model Question {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+
   @@index([chapterId])
 }
