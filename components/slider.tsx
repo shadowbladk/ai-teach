@@ -1,7 +1,7 @@
 "use client"
 
 import React from "react"
-import { useRef, useState } from "react"
+import { useState } from "react"
 
 import { Swiper, SwiperSlide } from "swiper/react"
 
@@ -95,7 +95,6 @@ export const Slider = ({ items }: CoursesListProps) => {
                   title={item.title}
                   imageUrl={item.imageUrl!}
                   chaptersLength={item.chapters.length}
-                  price={item.price!}
                   progress={item.progress}
                   category={item?.category?.name!}
                   size="slider"
