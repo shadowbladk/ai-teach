@@ -109,7 +109,7 @@ model Answer {
   isCorrect  Boolean
   questionId String
   createdAt  DateTime @default(now())
-  updatedAt  DateTime
+  updatedAt  DateTime @updatedAt
 
   @@index([questionId])
 }
@@ -120,7 +120,7 @@ model Enrollment {
   courseId  String
   course    Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
-  updatedAt DateTime
+  updatedAt DateTime @updatedAt
 
   @@unique([userId, courseId])
   @@index([courseId])
@@ -132,7 +132,7 @@ model Question {
   chapterId String
   chapter   Chapter  @relation(fields: [chapterId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
-  updatedAt DateTime
+  updatedAt DateTime @updatedAt
 
   @@index([chapterId])
 }
