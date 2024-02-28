@@ -53,8 +53,8 @@ const QuizPage = async ({ params }: { params: { courseId: string } }) => {
       {/* {!course.isPublished && (
         <Banner label="This course is unpublished. It will not be visible to the students." />
       )} */}
-      <div className="p-6 flex flex-col gap-6">
-        <div className="flex items-center justify-between">
+      <div className="flex flex-col items-center justify-center px-4 py-16 gap-8 ">
+        <div className="flex items-center w-4/5 max-w-7xl justify-between">
           <div className="flex flex-col gap-y-2">
             <div className="flex items-center gap-x-2">
               <PencilRuler />
@@ -67,8 +67,8 @@ const QuizPage = async ({ params }: { params: { courseId: string } }) => {
             isPublished={course.isPublished}
           /> */}
         </div>
-        <div className="grid gap-6">
-          <div className="flex flex-col gap-6 max-w-5xl">
+        <div className="grid gap-6 w-4/5 max-w-7xl ">
+          <div className="flex flex-col gap-6 w-full">
             <QuizTitleForm initialData={course} courseId={course.id} />
             <hr className="border-t-4 rounded-md border-gray-400" />
             {/* <QuizQuestionForm initialData={course} courseId={course.id} /> */}

@@ -16,6 +16,17 @@ import { QuizAnswerForm } from "./quiz-answer-form"
 import { quiz } from "./mock-quiz"
 import { QuizQuestionForm } from "./quiz-question-form"
 
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+  type CarouselApi,
+} from "@/components/ui/carousel"
+
+import React from "react"
+
 interface QuizFormProps {
   initialData: Course
   courseId: string
@@ -27,6 +38,23 @@ const formSchema = z.object({
 
 export const QuizForm = ({ initialData, courseId }: QuizFormProps) => {
   const [questions, setQuestions] = useState(quiz)
+
+  const [api, setApi] = React.useState<CarouselApi>()
+  const [current, setCurrent] = React.useState(0)
+  const [count, setCount] = React.useState(0)
+
+  React.useEffect(() => {
+    if (!api) {
+      return
+    }
+
+    setCount(api.scrollSnapList().length)
+    setCurrent(api.selectedScrollSnap() + 1)
+
+    api.on("select", () => {
+      setCurrent(api.selectedScrollSnap() + 1)
+    })
+  }, [api])
 
   const router = useRouter()
 
@@ -74,6 +102,36 @@ export const QuizForm = ({ initialData, courseId }: QuizFormProps) => {
       >
         Add question
       </Button>
+      <div>
+        <Carousel setApi={setApi} className="w-full max-w-xs">
+          <CarouselContent>
+            {questions.map((question, index) => (
+              <CarouselItem key={index}>
+                <>
+                  <QuizAnswerForm
+                    key={index}
+                    initialData={initialData}
+                    courseId={courseId}
+                  />
+                  <Button
+                    variant="warning"
+                    size="default"
+                    onClick={(e) => handleQuestionRemove(index)}
+                  >
+                    Delete question
+                  </Button>
+                  <hr className="border-t-2 rounded-md border-gray-400" />
+                </>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+          <CarouselPrevious />
+          <CarouselNext />
+        </Carousel>
+        <div className="py-2 text-center text-sm text-muted-foreground">
+          Question {current} of {count}
+        </div>
+      </div>
     </>
   )
 }
