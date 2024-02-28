@@ -8,7 +8,7 @@ import { IconBadge } from "@/components/icon-badge";
 import { Banner } from "@/components/banner";
 
 import { ChapterTitleForm } from "./_components/chapter-title-form";
-import { ChapterVideoForm } from "./_components/chapter-video-form";
+// import { ChapterVideoForm } from "./_components/chapter-video-form";
 import { ChapterActions } from "./_components/chapter-actions";
 
 const ChapterIdPage = async ({
@@ -109,7 +109,7 @@ const ChapterIdPage = async ({
               /> */}
             </div>
           </div>
-          <div>
+          {/* <div>
             <div className="flex items-center gap-x-2">
               <IconBadge icon={Video} />
               <h2 className="text-xl">Add a video</h2>
@@ -119,7 +119,7 @@ const ChapterIdPage = async ({
               chapterId={params.chapterId}
               courseId={params.courseId}
             />
-          </div>
+          </div> */}
         </div>
       </div>
     </>
