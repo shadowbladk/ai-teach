@@ -17,12 +17,13 @@ model Course {
   imageUrl    String?      @db.Text
   isPublished Boolean      @default(false)
   categoryId  String?
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
   category    Category?    @relation(fields: [categoryId], references: [id])
   chapters    Chapter[]
   attachments Attachment[]
-  enrollment  Enrollment[]
+  enrollments  Enrollment[]
+  
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
 
   @@index([categoryId])
   @@fulltext([title])
@@ -47,18 +48,18 @@ model Attachment {
 }
 
 model Chapter {
-  id             String          @id @default(uuid())
-  title          String
-  description    String?         @db.Text
-  position       Int
-  isPublished    Boolean         @default(false)
-  courseId       String
-  createdAt      DateTime        @default(now())
-  updatedAt      DateTime        @updatedAt
-  course         Course          @relation(fields: [courseId], references: [id], onDelete: Cascade)
-  userProgress   UserProgress[]
-  questions      Question[]
-  flashcardDecks FlashcardDeck[]
+  id            String          @id @default(uuid())
+  title         String
+  description   String?         @db.Text
+  position      Int
+  isPublished   Boolean         @default(false)
+  courseId      String
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  course        Course          @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  userProgress  UserProgress[]
+  FlashcardDeck FlashcardDeck[]
+  Question      Question[]
 
   @@index([courseId])
 }
@@ -76,50 +77,28 @@ model UserProgress {
   @@index([chapterId])
 }
 
-model Enrollment {
-  id        String   @id @default(uuid())
-  userId    String
-  courseId  String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  course    Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
-
-  @@unique([userId, courseId])
-  @@index([courseId])
-}
-
 model Flashcard {
-  id              String   @id @default(uuid())
-  front           String?  @db.Text
-  back            String?  @db.Text
+  id              String        @id @default(uuid())
+  front           String?       @db.Text
+  back            String?       @db.Text
   flashcardDeckId String
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  deck            FlashcardDeck @relation(fields: [flashcardDeckId], references: [id], onDelete: Cascade)
 
   @@index([flashcardDeckId])
   @@fulltext([front, back])
 }
 
 model FlashcardDeck {
-  id        String   @id @default(uuid())
-  title     String?  @db.Text
-  isPublic  Boolean  @default(false)
+  id        String      @id @default(uuid())
+  title     String      @db.Text
+  isPublic  Boolean     @default(false)
   chapterId String
-  createdAt DateTime @default(now())
-  updatedAt DateTime
-  chapter   Chapter  @relation(fields: [chapterId], references: [id])
-
-  @@index([chapterId])
-}
-
-model Question {
-  id        String   @id @default(uuid())
-  text      String   @db.Text
-  chapterId String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  chapter   Chapter  @relation(fields: [chapterId], references: [id])
-  answers   Answer[]
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  chapter   Chapter     @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+  Flashcard Flashcard[]
 
   @@index([chapterId])
 }
@@ -131,7 +110,30 @@ model Answer {
   questionId String
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
-  question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
 
   @@index([questionId])
+}
+
+model Enrollment {
+  id        String   @id @default(uuid())
+  userId    String
+  courseId  String
+  course    Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, courseId])
+  @@index([courseId])
+}
+
+model Question {
+  id        String   @id @default(uuid())
+  text      String   @db.Text
+  chapterId String
+  chapter   Chapter  @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+
+  @@index([chapterId])
 }
