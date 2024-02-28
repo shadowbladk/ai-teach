@@ -8,8 +8,6 @@ import { IconBadge } from "@/components/icon-badge";
 import { Banner } from "@/components/banner";
 
 import { ChapterTitleForm } from "./_components/chapter-title-form";
-import { ChapterDescriptionForm } from "./_components/chapter-description-form";
-import { ChapterAccessForm } from "./_components/chapter-access-form";
 import { ChapterVideoForm } from "./_components/chapter-video-form";
 import { ChapterActions } from "./_components/chapter-actions";
 
@@ -29,9 +27,6 @@ const ChapterIdPage = async ({
       id: params.chapterId,
       courseId: params.courseId,
     },
-    include: {
-      muxData: true,
-    },
   });
 
   if (!chapter) {
@@ -41,7 +36,6 @@ const ChapterIdPage = async ({
   const requiredFields = [
     chapter.title,
     // chapter.description,
-    chapter.videoUrl,
   ];
 
   const totalFields = requiredFields.length;
@@ -108,11 +102,11 @@ const ChapterIdPage = async ({
                 <IconBadge icon={Eye} />
                 <h2 className="text-xl">Access Settings</h2>
               </div>
-              <ChapterAccessForm
+              {/* <ChapterAccessForm
                 initialData={chapter}
                 courseId={params.courseId}
                 chapterId={params.chapterId}
-              />
+              /> */}
             </div>
           </div>
           <div>
