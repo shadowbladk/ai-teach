@@ -17,11 +17,13 @@ model Course {
   imageUrl    String?      @db.Text
   isPublished Boolean      @default(false)
   categoryId  String?
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
   category    Category?    @relation(fields: [categoryId], references: [id])
   chapters    Chapter[]
   attachments Attachment[]
+  enrollments  Enrollment[]
+  
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
 
   @@index([categoryId])
   @@fulltext([title])
@@ -57,6 +59,7 @@ model Chapter {
   course        Course          @relation(fields: [courseId], references: [id], onDelete: Cascade)
   userProgress  UserProgress[]
   FlashcardDeck FlashcardDeck[]
+  Question      Question[]
 
   @@index([courseId])
 }
@@ -115,6 +118,7 @@ model Enrollment {
   id        String   @id @default(uuid())
   userId    String
   courseId  String
+  course    Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
   updatedAt DateTime
 
@@ -126,6 +130,7 @@ model Question {
   id        String   @id @default(uuid())
   text      String   @db.Text
   chapterId String
+  chapter   Chapter  @relation(fields: [chapterId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
   updatedAt DateTime
 
