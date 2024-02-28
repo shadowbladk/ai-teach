@@ -33,21 +33,19 @@ interface FlashcardFormProps {
 
 const formSchema = z.object({
   front: z.string(),
+  back: z.string(),
 })
 
 export const FlashcardForm = ({ initialData }: FlashcardFormProps) => {
   const [cards, setCards] = useState(initialData)
   const [clickedCard, setClickedCard] = useState(0)
-  const [front, setFront] = useState(cards[clickedCard].front || "")
-  const [back, setBack] = useState(cards[clickedCard].back || "")
+  const [front, setFront] = useState(cards[clickedCard]?.front || "")
+  const [back, setBack] = useState(cards[clickedCard]?.back || "")
   const [isEditing, setIsEditing] = useState(false)
 
   const router = useRouter()
 
-  const toggleEdit = () => {
-    setIsEditing((current) => !current)
-    setFront(cards[clickedCard].front || "")
-  }
+  const toggleEdit = () => setIsEditing((current) => !current)
 
   // const form = useForm<z.infer<typeof formSchema>>({
   //   resolver: zodResolver(formSchema),
@@ -56,21 +54,42 @@ export const FlashcardForm = ({ initialData }: FlashcardFormProps) => {
   //   },
   // })
 
-  // const handleQuestionAdd = () => {
-  //   setCards([...cards, { frontside: "", backside: "" }])
-  // }
+  const handleFlashcardAdd = () => {
+    setCards([
+      ...cards,
+      {
+        id: "",
+        front: "",
+        back: "",
+        flashcardDeckId: "",
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+    ])
+    setClickedCard(cards.length)
+    setFront("")
+    setBack("")
+  }
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      front: cards[clickedCard].front || "",
+      front: cards[clickedCard]?.front || "",
+      back: cards[clickedCard]?.back || "",
     },
   })
 
   const { isSubmitting, isValid } = form.formState
 
+  const handleFlashcardSave = (front: any, back: any) => {
+    console.log(front, back)
+    toggleEdit()
+    console.log(cards)
+  }
+
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     console.log(values)
+
     // {
     //   answers.map((answer, index) =>
     //     index == Number(values.description)
@@ -89,10 +108,30 @@ export const FlashcardForm = ({ initialData }: FlashcardFormProps) => {
     // }
   }
 
-  const handleQuestionRemove = (index: number) => {
+  const handleFlashcardRemove = (index: number) => {
     const items = [...cards]
     items.splice(index, 1)
+
     setCards(items)
+    items.length == 0
+      ? (setCards([
+          {
+            id: "",
+            front: "",
+            back: "",
+            flashcardDeckId: "",
+            createdAt: new Date(),
+            updatedAt: new Date(),
+          },
+        ]),
+        setFront(""),
+        setBack(""))
+      : index == items.length
+      ? (setFront(cards[clickedCard - 1].front!),
+        setBack(cards[clickedCard - 1].back!),
+        setClickedCard(clickedCard - 1))
+      : (setFront(cards[clickedCard + 1].front!),
+        setBack(cards[clickedCard + 1].back!))
   }
 
   return (
@@ -100,35 +139,38 @@ export const FlashcardForm = ({ initialData }: FlashcardFormProps) => {
       <div className="flex flex-col gap-4 w-full max-w-sm lg:max-w-xs">
         <div className="flex flex-row justify-between">
           <h3 className="text-lg font-medium">Card list</h3>
-          <Button variant="underline" size="ghost">
+          <Button
+            variant="underline"
+            size="ghost"
+            onClick={handleFlashcardAdd}
+            disabled={cards.length == 1 && front == ""}
+          >
             <PlusCircle className="w-4 h-4 mr-2" />
             Add Card
           </Button>
         </div>
-        <ScrollArea className="w-full h-[384px] rounded-md border">
-          <div className="p-4 flex flex-col gap-4">
-            {cards.map((card, index) => (
-              <>
-                <button
-                  key={index}
-                  className={`font-medium p-4 rounded-md ${
-                    clickedCard === index
-                      ? "bg-[#80489C]/90 text-white"
-                      : "bg-slate-200"
-                  }`}
-                  onClick={(e) => {
-                    setClickedCard(index)
-                    setFront(cards[index].front!)
-                    setBack(cards[index].back!)
-                  }}
-                >
-                  {card.front}
-                </button>
-                {/* <Separator className="my-2" /> */}
-              </>
-            ))}
-          </div>
-        </ScrollArea>
+        <div className="p-4 flex flex-col gap-4 overflow-y-scroll w-full h-[384px] rounded-md border">
+          {cards.map((card, index) => (
+            <>
+              <button
+                key={index}
+                className={`font-medium p-4 h-[56px] rounded-md ${
+                  clickedCard === index
+                    ? "bg-[#80489C]/90 text-white"
+                    : "bg-slate-200"
+                } ${card.front ? "text-black" : "text-slate-500 italic"}`}
+                onClick={(e) => {
+                  setClickedCard(index)
+                  setFront(cards[index].front!)
+                  setBack(cards[index].back!)
+                }}
+              >
+                {card.front || "New card"}
+              </button>
+              {/* <Separator className="my-2" /> */}
+            </>
+          ))}
+        </div>
       </div>
       <div className="flex w-full justify-center ">
         <Tabs
@@ -146,52 +188,51 @@ export const FlashcardForm = ({ initialData }: FlashcardFormProps) => {
           <>
             {!isEditing && (
               <>
-                <div className="bg-white border-[#80489C] w-full max-w-[440px] h-[280px] border-4 rounded-md p-6">
-                  <ScrollArea className="w-full h-full place-content-center grid">
-                    <Form {...form}>
-                      <FormField
-                        control={form.control}
-                        name="front"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormControl>
-                              <>
-                                <TabsContent value="front" className="w-full">
-                                  <div
-                                    className={cn(
-                                      "text-2xl font-medium text-center",
-                                      !(front != "") &&
-                                        "text-lg text-slate-500 italic"
-                                    )}
-                                  >
-                                    {front || "No front side description"}
-                                  </div>
-                                </TabsContent>
-                                <TabsContent value="back" className="w-full">
-                                  <div
-                                    className={cn(
-                                      "text-2xl font-medium text-center",
-                                      !(back != "") &&
-                                        "text-lg text-slate-500 italic"
-                                    )}
-                                  >
-                                    {back || "No front side description"}
-                                  </div>
-                                </TabsContent>
-                              </>
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
+                <div className="bg-white border-[#80489C] w-full max-w-[440px] h-[280px] border-4 rounded-md px-8 pt-6 pb-8">
+                  {/* <ScrollArea className="w-full h-full place-content-center grid"> */}
+                  {/* <Form {...form}>
+                    <FormField
+                      control={form.control}
+                      name="front"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormControl> */}
+                  <>
+                    <TabsContent value="front" className="w-full h-full">
+                      <div
+                        className={cn(
+                          "text-2xl font-medium text-center place-content-center grid overflow-y-scroll h-[208px]",
+                          !(front != "") && "text-lg text-slate-500 italic"
                         )}
-                      />
-                    </Form>
-                  </ScrollArea>
+                      >
+                        {front || "No front side description"}
+                      </div>
+                    </TabsContent>
+                    <TabsContent value="back" className="w-full">
+                      <div
+                        className={cn(
+                          "text-lg font-medium text-center place-content-center grid overflow-y-scroll h-[208px]",
+                          !(back != "") && "text-lg text-slate-500 italic"
+                        )}
+                      >
+                        {back || "No back side description"}
+                      </div>
+                    </TabsContent>
+                  </>
+                  {/* </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </Form> */}
+                  {/* </ScrollArea> */}
                 </div>
                 <div className="flex flex-row w-full gap-4">
                   <Button
+                    disabled={cards.length == 1 && front == ""}
                     variant="warning"
                     size="rectangle"
-                    // onClick={(e) => handleQuestionRemove(index)}
+                    onClick={(e) => handleFlashcardRemove(clickedCard)}
                   >
                     Delete
                   </Button>
@@ -206,98 +247,69 @@ export const FlashcardForm = ({ initialData }: FlashcardFormProps) => {
               </>
             )}
             {isEditing && (
-              <Form {...form}>
-                <form
-                  onSubmit={form.handleSubmit(onSubmit)}
-                  className="space-y-4 flex flex-col w-full max-w-[440px] "
-                >
-                  <FormField
+              <>
+                {/*  <Form {...form}>
+                 <form
+                   onSubmit={form.handleSubmit(onSubmit)}
+                   className="space-y-4 flex flex-col w-full max-w-[440px] "
+                 > */}
+                {/* <FormField
                     control={form.control}
                     name="front"
-                    render={({ field }) => (
-                      <FormItem className="bg-white border-[#80489C] h-[280px] border-4 rounded-md px-6 pt-4 pb-8">
-                        <FormControl>
-                          <>
-                            <TabsContent
-                              value="front"
-                              className="w-full h-full"
-                            >
-                              <Textarea
-                                // defaultValue={initialData.front}
-                                disabled={isSubmitting}
-                                placeholder="e.g. 'Flash card'"
-                                value={front}
-                                onChange={(e) => setFront(e.target.value)}
-                                className="h-full text-center text-lg"
-                              />
-                            </TabsContent>
-                            <TabsContent value="back" className="w-full h-full">
-                              <Textarea
-                                // defaultValue={initialData.front}
-                                disabled={isSubmitting}
-                                placeholder="e.g. 'Flash card'"
-                                value={back}
-                                onChange={(e) => setFront(e.target.value)}
-                                className="h-full text-center text-lg"
-                              />
-                            </TabsContent>
-                          </>
-                        </FormControl>
+                    render={({ field }) => ( */}
+                {/* <FormItem className="bg-white border-[#80489C] h-[280px] border-4 rounded-md px-6 pt-4 pb-8"> */}
+                {/* <FormControl> */}
+                <div className="bg-white border-[#80489C] h-[280px] w-full max-w-[440px] border-4 rounded-md px-6 pt-4 pb-8">
+                  <TabsContent value="front" className="w-full h-full">
+                    <Textarea
+                      disabled={isSubmitting}
+                      placeholder="e.g. 'Flash card'"
+                      value={front}
+                      onChange={(e) => setFront(e.target.value)}
+                      className="h-full text-center text-2xl"
+                    />
+                  </TabsContent>
+                  <TabsContent value="back" className="w-full h-full">
+                    <Textarea
+                      disabled={isSubmitting}
+                      placeholder="e.g. 'Flash card'"
+                      value={back}
+                      onChange={(e) => setBack(e.target.value)}
+                      className="h-full text-center text-lg"
+                    />
+                  </TabsContent>
+                </div>
+                {/* </FormControl>
                         <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+                      </FormItem> */}
+                {/* )}
+                  /> */}
 
-                  <div className="flex flex-row w-full gap-4">
-                    <Button
-                      onClick={toggleEdit}
-                      variant="cancel"
-                      size="rectangle"
-                    >
-                      Cancel
-                    </Button>
-                    <Button
-                      disabled={!isValid || isSubmitting}
-                      type="submit"
-                      variant="primary"
-                      size="rectangle"
-                    >
-                      Save
-                    </Button>
-                  </div>
-                </form>
-              </Form>
+                <div className="flex flex-row w-full gap-4">
+                  <Button
+                    onClick={toggleEdit}
+                    variant="cancel"
+                    size="rectangle"
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    disabled={!isValid || isSubmitting}
+                    type="submit"
+                    variant="primary"
+                    size="rectangle"
+                    onClick={(e) => handleFlashcardSave(front, back)}
+                  >
+                    Save
+                  </Button>
+                </div>
+                {/* </form>
+              </Form> */}
+              </>
             )}
           </>
         </Tabs>
       </div>
-      {/* <div>
-          {cards.map((card, index) => (
-          <>
-            <FlashcardCardForm
-              // key={index}
-              initialData={initialData}
-              courseId={courseId}
-              // card={card}
-            />
-            <Button
-              variant="warning"
-              size="default"
-              // onClick={(e) => handleQuestionRemove(index)}
-            >
-              Delete flashcard
-            </Button>
-            <hr className="border-t-2 rounded-md border-gray-400" />
-          </>
-          ))}
-          <Button
-            variant="primary"
-            size="default"
-            onClick={(e) => handleQuestionAdd()}
-          >
-            Add flashcard
-          </Button>
-        </div> */}
     </div>
   )
 }
