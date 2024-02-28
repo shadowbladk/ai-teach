@@ -1,32 +1,27 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["fullTextIndex", "fullTextSearch"]
+}
+
 datasource db {
   provider     = "mysql"
   url          = env("DATABASE_URL")
   relationMode = "prisma"
 }
 
-generator client {
-  provider        = "prisma-client-js"
-  previewFeatures = ["fullTextSearch", "fullTextIndex"]
-}
-
 model Course {
-  id          String  @id @default(uuid())
+  id          String       @id @default(uuid())
   userId      String
-  title       String  @db.Text
-  description String? @db.Text
-  imageUrl    String? @db.Text
-  price       Float?
-  isPublished Boolean @default(false)
-
-  categoryId String?
-  category   Category? @relation(fields: [categoryId], references: [id])
-
+  title       String       @db.Text
+  description String?      @db.Text
+  imageUrl    String?      @db.Text
+  isPublished Boolean      @default(false)
+  categoryId  String?
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  category    Category?    @relation(fields: [categoryId], references: [id])
   chapters    Chapter[]
   attachments Attachment[]
-  purchases   Purchase[]
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
 
   @@index([categoryId])
   @@fulltext([title])
@@ -39,116 +34,100 @@ model Category {
 }
 
 model Attachment {
-  id   String @id @default(uuid())
-  name String
-  url  String @db.Text
-
-  courseId String
-  course   Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
-
+  id        String   @id @default(uuid())
+  name      String
+  url       String   @db.Text
+  courseId  String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  course    Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
 
   @@index([courseId])
 }
 
 model Chapter {
-  id          String  @id @default(uuid())
-  title       String
-  description String? @db.Text
-  videoUrl    String? @db.Text
-  position    Int
-  isPublished Boolean @default(false)
-  isFree      Boolean @default(false)
-
-  muxData MuxData?
-
-  courseId String
-  course   Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
-
-  userProgress UserProgress[]
-
+  id            String          @id @default(uuid())
+  title         String
+  description   String?         @db.Text
+  position      Int
+  isPublished   Boolean         @default(false)
+  courseId      String
   createdAt     DateTime        @default(now())
   updatedAt     DateTime        @updatedAt
+  course        Course          @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  userProgress  UserProgress[]
   FlashcardDeck FlashcardDeck[]
 
   @@index([courseId])
 }
 
-model MuxData {
-  id         String  @id @default(uuid())
-  assetId    String
-  playbackId String?
-
-  chapterId String  @unique
-  chapter   Chapter @relation(fields: [chapterId], references: [id], onDelete: Cascade)
-}
-
 model UserProgress {
-  id     String @id @default(uuid())
-  userId String
-
-  chapterId String
-  chapter   Chapter @relation(fields: [chapterId], references: [id], onDelete: Cascade)
-
-  isCompleted Boolean @default(false)
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id          String   @id @default(uuid())
+  userId      String
+  chapterId   String
+  isCompleted Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  chapter     Chapter  @relation(fields: [chapterId], references: [id], onDelete: Cascade)
 
   @@unique([userId, chapterId])
   @@index([chapterId])
 }
 
-model Purchase {
-  id     String @id @default(uuid())
-  userId String
+model Flashcard {
+  id              String        @id @default(uuid())
+  front           String?       @db.Text
+  back            String?       @db.Text
+  flashcardDeckId String
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  deck            FlashcardDeck @relation(fields: [flashcardDeckId], references: [id], onDelete: Cascade)
 
-  courseId String
-  course   Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  @@index([flashcardDeckId])
+  @@fulltext([front, back])
+}
 
+model FlashcardDeck {
+  id        String      @id @default(uuid())
+  title     String?     @db.Text
+  isPublic  Boolean     @default(false)
+  chapterId String
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  chapter   Chapter     @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+  Flashcard Flashcard[]
+
+  @@index([chapterId])
+}
+
+model Answer {
+  id         String   @id @default(uuid())
+  text       String   @db.Text
+  isCorrect  Boolean
+  questionId String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime
+
+  @@index([questionId])
+}
+
+model Enrollment {
+  id        String   @id @default(uuid())
+  userId    String
+  courseId  String
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt()
+  updatedAt DateTime
 
   @@unique([userId, courseId])
   @@index([courseId])
 }
 
-model StripeCustomer {
-  id               String @id @default(uuid())
-  userId           String @unique
-  stripeCustomerId String @unique
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-model Flashcard {
-  id    String  @id @default(uuid())
-  front String? @db.Text
-  back  String? @db.Text
-
-  deckId String
-  deck   FlashcardDeck @relation(fields: [deckId], references: [id], onDelete: Cascade)
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@index([deckId])
-  @@fulltext([front, back])
-}
-
-model FlashcardDeck {
-  id    String @id @default(uuid())
-  title String
-
+model Question {
+  id        String   @id @default(uuid())
+  text      String   @db.Text
   chapterId String
-  chapter   Chapter @relation(fields: [chapterId], references: [id], onDelete: Cascade)
-
-  Flashcard Flashcard[]
-
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  updatedAt DateTime
 
   @@index([chapterId])
 }
