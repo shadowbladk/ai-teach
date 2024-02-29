@@ -66,23 +66,22 @@ export const CategoryForm = ({
   const selectedOption = options.find((option) => option.value === initialData.categoryId);
 
   return (
-    <div className="mt-6 border bg-slate-100 rounded-md p-4">
-      <div className="font-medium flex items-center justify-between">
+    <div className="border bg-slate-100 rounded-md p-6 flex flex-col gap-4">
+      <div className="font-medium flex justify-between">
         Course category
-        <Button onClick={toggleEdit} variant="ghost">
-          {isEditing ? (
-            <>Cancel</>
-          ) : (
-            <>
-              <Pencil className="h-4 w-4 mr-2" />
-              Edit category
-            </>
-          )}
+        <Button
+          onClick={toggleEdit}
+          variant="underline"
+          size="ghost"
+          className={isEditing ? "hidden" : "flex"}
+        >
+          <Pencil className="h-4 w-4 mr-1" />
+          Edit title
         </Button>
       </div>
       {!isEditing && (
         <p className={cn(
-          "text-sm mt-2",
+          "text-sm",
           !initialData.categoryId && "text-slate-500 italic"
         )}>
           {selectedOption?.label || "No category"}
@@ -92,7 +91,7 @@ export const CategoryForm = ({
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className="space-y-4 mt-4"
+            className="space-y-4"
           >
             <FormField
               control={form.control}
@@ -109,10 +108,20 @@ export const CategoryForm = ({
                 </FormItem>
               )}
             />
-            <div className="flex items-center gap-x-2">
+              <div className="flex justify-end gap-4">
+              <Button
+                onClick={toggleEdit}
+                variant="underline"
+                size="ghost"
+                className={isEditing ? "flex" : "hidden"}
+              >
+                Cancel
+              </Button>
               <Button
                 disabled={!isValid || isSubmitting}
                 type="submit"
+                size="sm_l"
+                variant="primary"
               >
                 Save
               </Button>
