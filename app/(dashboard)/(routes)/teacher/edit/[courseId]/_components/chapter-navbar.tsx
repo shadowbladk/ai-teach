@@ -23,7 +23,7 @@ export const ChapterNavbar = ({ course }: ChapterNavbarProps) => {
       <div className="flex justify-center p-6">
         <Slider course={course} onSelectChapter={handleChapterChange} />
       </div>
-      <div>
+      <div className="lg:w-[720px] md:w-[540px] sm:w-[220px]">
         {course.chapters.length > 0 ? (
           <ChapterTitleForm
             initialData={{ title: course.chapters[selectedChapterIndex].title }}

@@ -60,10 +60,10 @@ const EditPage = async ({
           </div>
         </div>
       </div>
-      <div className="flex justify-center item-center">
+      <div className="flex w-screen justify-center item-center">
         <ChapterNavbar course={course} />
       </div>
-      <main className="h-full">{children}</main>
+      <main className="p-6 h-full">{children}</main>
     </div>
   );
 };
