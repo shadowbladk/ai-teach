@@ -12,6 +12,32 @@ export async function POST(
   }
 ) {
   try {
+    const { userId } = auth();
+    const { title } = await req.json();
+
+    if (!userId) {
+      return new NextResponse("Unauthorized", { status: 401 });
+    }
+
+    const courseOwner = await db.course.findUnique({
+      where: {
+        id: params.courseId,
+        userId: userId,
+      },
+    });
+
+    if (!courseOwner) {
+      return new NextResponse("Unauthorized", { status: 401 });
+    }
+
+    const flashcardDeck = await db.flashcardDeck.create({
+      data: {
+        chapterId: params.chapterId,
+        title: title,
+      },
+    });
+
+    return NextResponse.json(flashcardDeck);
   } catch (error) {
     return new NextResponse("Internal Error", { status: 500 });
   }
