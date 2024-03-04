@@ -55,9 +55,6 @@ const EditPage = async ({
         <div className="flex flex-col gap-5 max-w-[720px] items-center justify-center p-6 lg:items-start">
           <TitleForm initialData={course} courseId={course.id} />
           <DescriptionForm initialData={course} courseId={course.id} />
-          <div className="w-full flex grid-row-2 gap-5 justify-end">
-            <Button variant="default">Enroll course</Button>
-          </div>
         </div>
       </div>
       <div className="flex w-screen justify-center item-center">

@@ -42,25 +42,7 @@ export const ImageForm = ({ initialData, courseId }: ImageFormProps) => {
   };
 
   return (
-    <div className="max-w-xs lg:max-w-md border bg-slate-100 rounded-md p-4 items-start">
-      <div className="font-medium flex items-center justify-between">
-        Course image
-        <Button onClick={toggleEdit} variant="ghost">
-          {isEditing && <>Cancel</>}
-          {!isEditing && !initialData.imageUrl && (
-            <>
-              <PlusCircle className="h-4 w-4 mr-2" />
-              Add an image
-            </>
-          )}
-          {!isEditing && initialData.imageUrl && (
-            <>
-              <Pencil className="h-4 w-4 mr-2" />
-              Edit image
-            </>
-          )}
-        </Button>
-      </div>
+    <div className="max-w-xs lg:max-w-md ">
       {!isEditing &&
         (!initialData.imageUrl ? (
           <div className="flex items-center justify-center h-60 bg-slate-200 rounded-md">
@@ -91,6 +73,23 @@ export const ImageForm = ({ initialData, courseId }: ImageFormProps) => {
           </div>
         </div>
       )}
+      <div className="w-[300px] font-medium flex items-center justify-end">
+        <Button onClick={toggleEdit} variant="ghost">
+          {isEditing && <>Cancel</>}
+          {!isEditing && !initialData.imageUrl && (
+            <>
+              <PlusCircle className="h-4 w-4 mr-2" />
+              Add an image
+            </>
+          )}
+          {!isEditing && initialData.imageUrl && (
+            <>
+              <Pencil className="h-4 w-4 mr-2" />
+              Edit image
+            </>
+          )}
+        </Button>
+      </div>
     </div>
   );
 };

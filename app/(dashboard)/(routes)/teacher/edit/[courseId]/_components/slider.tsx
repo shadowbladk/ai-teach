@@ -33,6 +33,7 @@ import { ChevronsLeft, ChevronsRight, PlusCircle } from "lucide-react";
 
 import { Chapter, Course } from "@prisma/client";
 import Link from "next/link";
+import { DialogClose } from "@radix-ui/react-dialog";
 
 interface SliderProps {
   course: Course & {
@@ -68,11 +69,14 @@ export const Slider = ({ course, onSelectChapter }: SliderProps) => {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      const response = await axios.post(`/api/courses/${course.id}/chapters`, values);
-      toast.success("Chapter created"); 
+      const response = await axios.post(
+        `/api/courses/${course.id}/chapters`,
+        values
+      );
+      toast.success("Chapter created");
       toggleCreating();
       router.refresh();
-      router.push(`/teacher/edit/${course.id}/chapters/${response.data.id}`);
+      // router.push(`/teacher/edit/${course.id}/chapters/${response.data.id}`);
     } catch {
       toast.error("Something went wrong");
     }
@@ -81,11 +85,11 @@ export const Slider = ({ course, onSelectChapter }: SliderProps) => {
   const handleSlideChange = (swiper: any) => {
     setCanGoPrev(!swiper.isBeginning);
     setCanGoNext(!swiper.isEnd);
-  };  
+  };
 
   useEffect(() => {
     setLengthItems(course.chapters.length);
-    setCanGoNext(course.chapters.length > 3);
+    setCanGoNext(course.chapters.length > 5);
   }, [course.chapters.length]);
 
   return (
@@ -115,24 +119,24 @@ export const Slider = ({ course, onSelectChapter }: SliderProps) => {
         >
           {course.chapters.map((chapter, index) => (
             <SwiperSlide key={chapter.id} className="max-w-fit mb-16">
-            <div 
-              className="flex flex-col mx-1 place-items-center group relative cursor-pointer"
-              onClick={() => onSelectChapter(index)}
-            >
-              <Link
-                href={`/teacher/edit/${chapter.courseId}/chapters/${chapter.id}`}
-                className="mx-1 px-3 py-1 bg-gray-200 text-gray-800 rounded-full"
+              <div
+                className="flex flex-col mx-1 place-items-center group relative cursor-pointer"
+                onClick={() => onSelectChapter(index)}
               >
-                {index + 1}
-              </Link>
-            </div>
-          </SwiperSlide>
+                <Link
+                  href={`/teacher/edit/${chapter.courseId}/chapters/${chapter.id}`}
+                  className="mx-3 px-5 py-3 bg-gray-200 text-gray-800 rounded-full"
+                >
+                  {index + 1}
+                </Link>
+              </div>
+            </SwiperSlide>
           ))}
           <SwiperSlide className="max-w-fit mb-16">
             <Dialog>
               <DialogTrigger asChild>
                 <div className="flex flex-col mx-1 place-items-center group relative cursor-pointer">
-                  <PlusCircle size={32} />
+                  <PlusCircle size={49} />
                 </div>
               </DialogTrigger>
               <DialogContent className="sm:max-w-[425px]">
@@ -158,9 +162,11 @@ export const Slider = ({ course, onSelectChapter }: SliderProps) => {
                         </FormItem>
                       )}
                     />
-                    <Button disabled={!isValid || isSubmitting} type="submit">
-                      Create
-                    </Button>
+                    <DialogClose asChild>
+                      <Button disabled={!isValid || isSubmitting} type="submit">
+                        Create
+                      </Button>
+                    </DialogClose>
                   </form>
                 </Form>
               </DialogContent>

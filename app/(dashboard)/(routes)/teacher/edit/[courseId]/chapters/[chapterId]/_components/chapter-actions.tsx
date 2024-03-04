@@ -54,10 +54,9 @@ export const ChapterActions = ({
       setIsLoading(true);
 
       await axios.delete(`/api/courses/${courseId}/chapters/${chapterId}`);
-
       toast.success("Chapter deleted");
+      router.push(`/teacher/edit/${courseId}/chapters`);
       router.refresh();
-      router.push(`/teacher/courses/${courseId}`);
     } catch {
       toast.error("Something went wrong");
     } finally {
@@ -77,7 +76,8 @@ export const ChapterActions = ({
       </Button> */}
       <ConfirmModal onConfirm={onDelete}>
         <Button size="sm" disabled={isLoading} className="gap-1">
-          <Trash className="h-4 w-4" />Delete
+          <Trash className="h-4 w-4" />
+          Delete
         </Button>
       </ConfirmModal>
     </div>
