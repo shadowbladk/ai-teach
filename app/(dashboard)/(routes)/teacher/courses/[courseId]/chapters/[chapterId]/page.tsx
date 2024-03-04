@@ -1,28 +1,28 @@
-import { auth } from "@clerk/nextjs"
-import { redirect } from "next/navigation"
-import Link from "next/link"
-import { ArrowLeft, Eye, LayoutDashboard, Video } from "lucide-react"
+import { auth } from "@clerk/nextjs";
+import { redirect } from "next/navigation";
+import Link from "next/link";
+import { ArrowLeft, Eye, LayoutDashboard, Video } from "lucide-react";
 
-import { db } from "@/lib/db"
-import { IconBadge } from "@/components/icon-badge"
-import { Banner } from "@/components/banner"
+import { db } from "@/lib/db";
+import { IconBadge } from "@/components/icon-badge";
+import { Banner } from "@/components/banner";
 
-import { ChapterTitleForm } from "./_components/chapter-title-form"
-import { ChapterDescriptionForm } from "./_components/chapter-description-form"
+import { ChapterTitleForm } from "./_components/chapter-title-form";
+import { ChapterDescriptionForm } from "./_components/chapter-description-form";
 // import { ChapterAccessForm } from "./_components/chapter-access-form"
 // import { ChapterVideoForm } from "./_components/chapter-video-form";
-import { ChapterActions } from "./_components/chapter-actions"
-import { flashcard } from "./(attachment)/flashcard/[flashcardId]/_components/mock-flashcard"
+import { ChapterActions } from "./_components/chapter-actions";
+import { flashcard } from "./(attachment)/flashcard/[flashcardId]/_components/mock-flashcard";
 
 const ChapterIdPage = async ({
   params,
 }: {
-  params: { courseId: string; chapterId: string }
+  params: { courseId: string; chapterId: string };
 }) => {
-  const { userId } = auth()
+  const { userId } = auth();
 
   if (!userId) {
-    return redirect("/")
+    return redirect("/");
   }
 
   const chapter = await db.chapter.findUnique({
@@ -31,29 +31,29 @@ const ChapterIdPage = async ({
       courseId: params.courseId,
     },
     include: {
-      flashcardDecks: {
+      FlashcardDeck: {
         orderBy: {
           createdAt: "desc",
         },
       },
     },
-  })
+  });
 
   if (!chapter) {
-    return redirect("/")
+    return redirect("/");
   }
 
   const requiredFields = [
     chapter.title,
     // chapter.description,
-  ]
+  ];
 
-  const totalFields = requiredFields.length
-  const completedFields = requiredFields.filter(Boolean).length
+  const totalFields = requiredFields.length;
+  const completedFields = requiredFields.filter(Boolean).length;
 
-  const completionText = `(${completedFields}/${totalFields})`
+  const completionText = `(${completedFields}/${totalFields})`;
 
-  const isComplete = requiredFields.every(Boolean)
+  const isComplete = requiredFields.every(Boolean);
 
   return (
     <>
@@ -131,7 +131,7 @@ const ChapterIdPage = async ({
             /> */}
           {/* </div> */}
         </div>
-        {chapter.flashcardDecks.map((deck, index) => (
+        {chapter.FlashcardDeck.map((deck, index) => (
           <>
             <button>
               <Link
@@ -147,7 +147,7 @@ const ChapterIdPage = async ({
         ))}
       </div>
     </>
-  )
-}
+  );
+};
 
-export default ChapterIdPage
+export default ChapterIdPage;
