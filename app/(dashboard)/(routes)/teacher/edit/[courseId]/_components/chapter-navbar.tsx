@@ -4,7 +4,9 @@ import React, { useState } from "react";
 import { Course, Chapter } from "@prisma/client";
 import { Slider } from "./slider";
 import { ChapterTitleForm } from "./chapter-title-form";
-
+import { ChaptersForm } from "./chapters-form";
+import { Button } from "@/components/ui/button";
+import { ChapterCarousel } from "./chapter-carousel";
 interface ChapterNavbarProps {
   course: Course & {
     chapters: Chapter[];
@@ -13,17 +15,19 @@ interface ChapterNavbarProps {
 
 export const ChapterNavbar = ({ course }: ChapterNavbarProps) => {
   const [selectedChapterIndex, setSelectedChapterIndex] = useState(0);
+  const [isRearranging, setIsRearranging] = useState(false);
 
   const handleChapterChange = (index: number) => {
     setSelectedChapterIndex(index);
   };
 
   return (
-    <div className="flex-col">
-      <div className="flex justify-center p-6">
-        <Slider course={course} onSelectChapter={handleChapterChange} />
+    <div className="flex-col w-full justify-center px-12">
+      <div className="mx-auto flex flex-wrap justify-center">
+        <ChapterCarousel />
+        {/* <Slider course={course} onSelectChapter={handleChapterChange} /> */}
       </div>
-      <div className="lg:w-[720px] md:w-[540px] sm:w-[220px]">
+      <div className="max-w-[720px] justify-center mx-auto pt-6">
         {course.chapters.length > 0 ? (
           <ChapterTitleForm
             initialData={{ title: course.chapters[selectedChapterIndex].title }}

@@ -8,6 +8,7 @@ import { DescriptionForm } from "./_components/description-form";
 
 import { ImageForm } from "./_components/image-form";
 import ChapterNavbar from "./_components/chapter-navbar";
+import { ChaptersForm } from "./_components/chapters-form";
 
 const EditPage = async ({
   children,

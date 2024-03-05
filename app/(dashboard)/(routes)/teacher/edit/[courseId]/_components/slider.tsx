@@ -47,6 +47,7 @@ const formSchema = z.object({
 });
 
 export const Slider = ({ course, onSelectChapter }: SliderProps) => {
+  const [selectedChapterIndex, setSelectedChapterIndex] = useState(-1);
   const [lengthItems, setLengthItems] = useState(course.chapters.length);
   const [canGoPrev, setCanGoPrev] = useState(false);
   const [canGoNext, setCanGoNext] = useState(lengthItems > 3);
@@ -101,7 +102,7 @@ export const Slider = ({ course, onSelectChapter }: SliderProps) => {
           <ChevronsLeft className="w-5 text-[#94A3B8]" />
         )}
       </div>
-      <div className="flex flex-row w-[140px] justify-center items-center">
+      <div className="flex flex-row w-auto justify-center items-center">
         <Swiper
           onSlideChange={(swiper) => handleSlideChange(swiper)}
           slidesPerView={lengthItems > 3 ? 3 : lengthItems}
@@ -121,11 +122,18 @@ export const Slider = ({ course, onSelectChapter }: SliderProps) => {
             <SwiperSlide key={chapter.id} className="max-w-fit mb-16">
               <div
                 className="flex flex-col mx-1 place-items-center group relative cursor-pointer"
-                onClick={() => onSelectChapter(index)}
+                onClick={() => {
+                  onSelectChapter(index);
+                  setSelectedChapterIndex(index);
+                }}
               >
                 <Link
                   href={`/teacher/edit/${chapter.courseId}/chapters/${chapter.id}`}
-                  className="mx-3 px-5 py-3 bg-gray-200 text-gray-800 rounded-full"
+                  className={`mx-2 px-4 py-2  text-xl font-bold rounded-full ${
+                    selectedChapterIndex === index
+                      ? "bg-indigo-600 text-white"
+                      : "bg-gray-200 text-gray-800"
+                  }`}
                 >
                   {index + 1}
                 </Link>
@@ -135,7 +143,7 @@ export const Slider = ({ course, onSelectChapter }: SliderProps) => {
           <SwiperSlide className="max-w-fit mb-16">
             <Dialog>
               <DialogTrigger asChild>
-                <div className="flex flex-col mx-1 place-items-center group relative cursor-pointer">
+                <div className="flex flex-col mx-2 place-items-center group relative cursor-pointer">
                   <PlusCircle size={49} />
                 </div>
               </DialogTrigger>
