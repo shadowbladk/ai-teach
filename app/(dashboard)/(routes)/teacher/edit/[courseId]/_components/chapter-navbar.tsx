@@ -7,6 +7,7 @@ import { ChapterTitleForm } from "./chapter-title-form";
 import { ChaptersForm } from "./chapters-form";
 import { Button } from "@/components/ui/button";
 import { ChapterCarousel } from "./chapter-carousel";
+
 interface ChapterNavbarProps {
   course: Course & {
     chapters: Chapter[];
@@ -24,10 +25,13 @@ export const ChapterNavbar = ({ course }: ChapterNavbarProps) => {
   return (
     <div className="flex-col w-full justify-center px-12">
       <div className="mx-auto flex flex-wrap justify-center">
-        <ChapterCarousel />
         {/* <Slider course={course} onSelectChapter={handleChapterChange} /> */}
+        <ChapterCarousel
+          course={course}
+          onSelectChapter={handleChapterChange}
+        />
       </div>
-      <div className="max-w-[720px] justify-center mx-auto pt-6">
+      <div className="flex max-w-[720px] justify-between mx-auto pt-6">
         {course.chapters.length > 0 ? (
           <ChapterTitleForm
             initialData={{ title: course.chapters[selectedChapterIndex].title }}
