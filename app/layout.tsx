@@ -5,6 +5,7 @@ import "./globals.css";
 import { ToastProvider } from "@/components/providers/toaster-provider";
 import { ConfettiProvider } from "@/components/providers/confetti-provider";
 import { Chat } from "@/components/chat";
+import { Navbar } from "@/components/navbar";
 
 const nunito = Nunito({ subsets: ["latin"] });
 
@@ -24,6 +25,7 @@ export default function RootLayout({
         <body className={nunito.className}>
           <ConfettiProvider />
           <ToastProvider />
+          <Navbar />
           {children}
           <Chat />
         </body>
