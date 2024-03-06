@@ -6,6 +6,8 @@ import { ChapterTitleForm } from "./chapter-title-form";
 import { ChaptersForm } from "./chapters-form";
 import { Button } from "@/components/ui/button";
 import { ChapterCarousel } from "./chapter-carousel";
+import { ArrowUpDown } from "lucide-react";
+
 
 interface ChapterNavbarProps {
   course: Course & {
@@ -15,20 +17,34 @@ interface ChapterNavbarProps {
 
 export const ChapterNavbar = ({ course }: ChapterNavbarProps) => {
   const [selectedChapterIndex, setSelectedChapterIndex] = useState(0);
-  const [isRearranging, setIsRearranging] = useState(false);
+  const [showCarousel, setShowCarousel] = useState(true);
 
   const handleChapterChange = (index: number) => {
     setSelectedChapterIndex(index);
   };
 
+  const toggleView = () => {
+    setShowCarousel((prevState) => !prevState);
+  };
+
   return (
     <div className="flex-col w-full justify-center px-12">
       <div className="mx-auto flex flex-wrap justify-center">
-        <ChapterCarousel
-          course={course}
-          onSelectChapter={handleChapterChange}
-        />
+      {showCarousel ? (
+          <ChapterCarousel
+            course={course}
+            onSelectChapter={handleChapterChange}
+          />
+        ) : (
+          <ChaptersForm initialData={course} courseId={course.id} />
+        )}
       </div>
+      <div className="flex max-w-[720px] mx-auto p-3 justify-end">
+        <Button onClick={toggleView}>
+          
+          {showCarousel ? <ArrowUpDown /> : "Back"}
+        </Button>
+        </div>
       <div className="flex max-w-[720px] justify-between mx-auto pt-6">
       {course.chapters.length > 0 ? (
         <ChapterTitleForm

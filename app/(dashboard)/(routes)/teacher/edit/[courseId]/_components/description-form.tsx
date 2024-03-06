@@ -90,7 +90,7 @@ export const DescriptionForm = ({
                       disabled={isSubmitting}
                       placeholder="e.g. 'This course is about...'"
                       {...field}
-                      className="sm:min-w-[200px] md:min-w-[500px] lg:min-w-[720px]"
+                      className="sm:min-w-[200px] md:min-w-[500px] lg:max-w-[720px]"
                     />
                   </FormControl>
                   <FormMessage />
