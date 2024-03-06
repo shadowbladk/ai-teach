@@ -3,38 +3,39 @@ import { NextResponse } from "next/server";
 
 import { db } from "@/lib/db";
 
-export async function DELETE(
+export async function POST(
   req: Request,
-  { params }: { params: { courseId: string; attachmentId: string } }
+  params: { courseId: string; chapterId: string; flashcarddeckId: string }
 ) {
   try {
     const { userId } = auth();
-
     if (!userId) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
-    const courseOwner = await db.course.findUnique({
+    const ownCourse = await db.course.findUnique({
       where: {
         id: params.courseId,
         userId: userId,
       },
     });
 
-    if (!courseOwner) {
+    if (!ownCourse) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
-    const attachment = await db.attachment.delete({
-      where: {
-        courseId: params.courseId,
-        id: params.attachmentId,
+    const { frontface, backface } = await req.json();
+
+    const flashcard = await db.flashcard.create({
+      data: {
+        flashcardDeckId: params.flashcarddeckId,
+        front: frontface,
+        back: backface,
       },
     });
-
-    return NextResponse.json(attachment);
+    return NextResponse.json(flashcard);
   } catch (error) {
-    console.log("ATTACHMENT_ID", error);
+    console.log("[FLASHCARD]", error);
     return new NextResponse("Internal Error", { status: 500 });
   }
 }
