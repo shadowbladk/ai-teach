@@ -201,7 +201,7 @@ export const FlashcardForm = ({ initialData }: FlashcardFormProps) => {
                     <TabsContent value="front" className="w-full h-full">
                       <div
                         className={cn(
-                          "text-2xl font-medium text-center place-content-center grid overflow-y-scroll h-[208px]",
+                          "text-2xl font-medium text-center place-content-center grid overflow-y-auto h-[208px]",
                           !(front != "") && "text-lg text-slate-500 italic"
                         )}
                       >
@@ -211,7 +211,7 @@ export const FlashcardForm = ({ initialData }: FlashcardFormProps) => {
                     <TabsContent value="back" className="w-full">
                       <div
                         className={cn(
-                          "text-lg font-medium text-center place-content-center grid overflow-y-scroll h-[208px]",
+                          "text-lg font-medium text-center place-content-center grid overflow-y-auto h-[208px]",
                           !(back != "") && "text-lg text-slate-500 italic"
                         )}
                       >
