@@ -34,10 +34,10 @@ export async function DELETE(
 
 export async function PATCH(
   req: Request,
-  params: {
-    courseId: string;
-    chapterId: string;
-    flashcarddeckId: string;
+  {
+    params,
+  }: {
+    params: { courseId: string; chapterId: string; flashcarddeckId: string };
   }
 ) {
   try {
