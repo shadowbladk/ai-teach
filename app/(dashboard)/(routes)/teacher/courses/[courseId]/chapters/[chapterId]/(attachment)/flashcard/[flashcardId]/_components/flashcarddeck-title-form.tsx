@@ -20,7 +20,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
-interface TitleFormProps {
+interface FlashcarddeckTitleFormProps {
   initialData: {
     title: string;
   };
@@ -33,12 +33,12 @@ const formSchema = z.object({
   title: z.string().min(1),
 });
 
-export const TitleForm = ({
+export const FlashcarddeckTitleForm = ({
   initialData,
   courseId,
   chapterId,
   flashcarddeckId,
-}: TitleFormProps) => {
+}: FlashcarddeckTitleFormProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const toggleEdit = () => setIsEditing((current) => !current);
 
