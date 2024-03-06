@@ -103,7 +103,7 @@ QuizAnswerFormProps) => {
   }, [])
 
   return (
-    <div className="border bg-slate-100 rounded-md p-6 flex flex-col gap-4 h-full">
+    <div className="border bg-slate-100 rounded-md p-6 flex flex-col gap-4">
       <div className="font-medium flex justify-between">
         Question
         <Button

@@ -66,19 +66,22 @@ export const QuizForm = ({ initialData, courseId }: QuizFormProps) => {
   })
 
   const handleQuestionAdd = () => {
+    setCurrent(count + 1)
+    setCount(count + 1)
     setQuestions([...questions, { question: "", choices: [] }])
   }
 
   const handleQuestionRemove = (index: number) => {
-    const items = [...questions]
-    items.splice(index, 1)
-    setQuestions(items)
+    console.log(index)
+    // const items = [...questions]
+    // items.splice(index, 1)
+    // setQuestions(items)
   }
 
   return (
-    <>
+    <div className="w-4/5 flex flex-col self-center gap-4">
       {/* <QuizQuestionForm initialData={initialData} courseId={courseId} /> */}
-      {questions.map((question, index) => (
+      {/* {questions.map((question, index) => (
         <>
           <QuizAnswerForm
             key={index}
@@ -94,44 +97,51 @@ export const QuizForm = ({ initialData, courseId }: QuizFormProps) => {
           </Button>
           <hr className="border-t-2 rounded-md border-gray-400" />
         </>
-      ))}
-      <Button
+      ))} */}
+      {/* <Button
         variant="primary"
         size="default"
         onClick={(e) => handleQuestionAdd()}
       >
         Add question
-      </Button>
-      <div>
-        <Carousel setApi={setApi} className="w-full max-w-xs">
-          <CarouselContent>
-            {questions.map((question, index) => (
-              <CarouselItem key={index}>
-                <>
-                  <QuizAnswerForm
-                    key={index}
-                    initialData={initialData}
-                    courseId={courseId}
-                  />
-                  <Button
-                    variant="warning"
-                    size="default"
-                    onClick={(e) => handleQuestionRemove(index)}
-                  >
-                    Delete question
-                  </Button>
-                  <hr className="border-t-2 rounded-md border-gray-400" />
-                </>
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-          <CarouselPrevious />
-          <CarouselNext />
-        </Carousel>
-        <div className="py-2 text-center text-sm text-muted-foreground">
-          Question {current} of {count}
-        </div>
+      </Button> */}
+      <div className="py-2 text-center text-xl ">
+        Question {current} of {count}
       </div>
-    </>
+      <Carousel setApi={setApi} className="w-full">
+        <CarouselContent>
+          {questions.map((question, index) => (
+            <CarouselItem key={index}>
+              <div className="flex flex-col gap-4">
+                <QuizAnswerForm
+                  key={index}
+                  initialData={initialData}
+                  courseId={courseId}
+                />
+              </div>
+            </CarouselItem>
+          ))}
+        </CarouselContent>
+        <CarouselPrevious />
+        <CarouselNext />
+      </Carousel>
+      <div className="flex flex-row w-full gap-4">
+        <Button
+          // disabled={questions.length == 1}
+          variant="warning"
+          size="rectangle"
+          onClick={(e) => handleQuestionRemove(current)}
+        >
+          Delete
+        </Button>
+        <Button
+          onClick={(e) => handleQuestionAdd()}
+          variant="primary"
+          size="rectangle"
+        >
+          Add
+        </Button>
+      </div>
+    </div>
   )
 }

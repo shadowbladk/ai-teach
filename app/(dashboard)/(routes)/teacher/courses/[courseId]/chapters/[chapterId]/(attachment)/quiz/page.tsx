@@ -67,7 +67,7 @@ const QuizPage = async ({ params }: { params: { courseId: string } }) => {
             isPublished={course.isPublished}
           /> */}
         </div>
-        <div className="grid gap-6 w-4/5 max-w-7xl ">
+        <div className="grid gap-6 w-4/5 max-w-7xl">
           <div className="flex flex-col gap-6 w-full">
             <QuizTitleForm initialData={course} courseId={course.id} />
             <hr className="border-t-4 rounded-md border-gray-400" />
