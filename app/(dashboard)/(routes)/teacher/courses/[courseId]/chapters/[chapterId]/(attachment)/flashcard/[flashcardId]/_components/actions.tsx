@@ -13,13 +13,17 @@ import { useConfettiStore } from "@/hooks/use-confetti-store";
 interface ActionsProps {
   disabled: boolean;
   courseId: string;
+  chapterId: string;
+  flashcarddeckId: string;
   isPublished: boolean;
-};
+}
 
 export const Actions = ({
   disabled,
   courseId,
-  isPublished
+  chapterId,
+  flashcarddeckId,
+  isPublished,
 }: ActionsProps) => {
   const router = useRouter();
   const confetti = useConfettiStore();
@@ -44,15 +48,15 @@ export const Actions = ({
     } finally {
       setIsLoading(false);
     }
-  }
-  
+  };
+
   const onDelete = async () => {
     try {
       setIsLoading(true);
-
-      await axios.delete(`/api/courses/${courseId}`);
-
-      toast.success("Course deleted");
+      await axios.delete(
+        `/api/courses/${courseId}/chapters/${chapterId}/flashcarddecks/${flashcarddeckId}`
+      );
+      toast.success("Flashcarddeck deleted");
       router.refresh();
       router.push(`/teacher/courses`);
     } catch {
@@ -60,7 +64,7 @@ export const Actions = ({
     } finally {
       setIsLoading(false);
     }
-  }
+  };
 
   return (
     <div className="flex items-center gap-x-2">
@@ -78,5 +82,5 @@ export const Actions = ({
         </Button>
       </ConfirmModal>
     </div>
-  )
-}
+  );
+};
