@@ -2,7 +2,6 @@
 
 import React, { useState } from "react";
 import { Course, Chapter } from "@prisma/client";
-import { Slider } from "./slider";
 import { ChapterTitleForm } from "./chapter-title-form";
 import { ChaptersForm } from "./chapters-form";
 import { Button } from "@/components/ui/button";
@@ -25,21 +24,20 @@ export const ChapterNavbar = ({ course }: ChapterNavbarProps) => {
   return (
     <div className="flex-col w-full justify-center px-12">
       <div className="mx-auto flex flex-wrap justify-center">
-        {/* <Slider course={course} onSelectChapter={handleChapterChange} /> */}
         <ChapterCarousel
           course={course}
           onSelectChapter={handleChapterChange}
         />
       </div>
       <div className="flex max-w-[720px] justify-between mx-auto pt-6">
-        {course.chapters.length > 0 ? (
-          <ChapterTitleForm
-            initialData={{ title: course.chapters[selectedChapterIndex].title }}
-            courseId={course.id}
-            chapterId={course.chapters[selectedChapterIndex].id}
-          />
-        ) : (
-          <p>No chapters available</p>
+      {course.chapters.length > 0 ? (
+        <ChapterTitleForm
+          initialData={course.chapters[selectedChapterIndex] ? { title: course.chapters[selectedChapterIndex].title } : { title: course.chapters[selectedChapterIndex - 1
+          ].title }}
+          courseId={course.id}
+          chapterId={course.chapters[selectedChapterIndex]?.id}/>
+          ) : (
+        <p>No chapters available</p>
         )}
       </div>
     </div>

@@ -74,7 +74,6 @@ export const ChapterCarousel = ({
       toast.success("Chapter created");
       toggleCreating();
       router.refresh();
-      // router.push(`/teacher/edit/${course.id}/chapters/${response.data.id}`);
     } catch {
       toast.error("Something went wrong");
     }
@@ -91,7 +90,7 @@ export const ChapterCarousel = ({
                     className="flex items-center justify-center p-3 "
                     onClick={() => onSelectChapter(index)}
                   >
-                    <Link href="" className="text-2xl font-semibold">
+                    <Link href={`/teacher/edit/${chapter.courseId}/chapters/${chapter.id}`} className="text-2xl font-semibold">
                       {index + 1}
                     </Link>
                   </CardContent>
@@ -99,8 +98,7 @@ export const ChapterCarousel = ({
               </div>
             </CarouselItem>
           ))}
-          <CarouselItem className="basis-1/3 md:basis-1/5">
-            <div className="p-1 md:p-3">
+            <div className="pt-1 md:pt-3 mx-4 md:mx-8">
               <Dialog>
                 <DialogTrigger asChild>
                   <div className="flex flex-col mx-2 place-items-center group relative cursor-pointer">
@@ -143,7 +141,6 @@ export const ChapterCarousel = ({
                 </DialogContent>
               </Dialog>
             </div>
-          </CarouselItem>
         </CarouselContent>
         <CarouselPrevious />
         <CarouselNext />
