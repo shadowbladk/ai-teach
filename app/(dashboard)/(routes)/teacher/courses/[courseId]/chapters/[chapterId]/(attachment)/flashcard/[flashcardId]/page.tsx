@@ -1,47 +1,55 @@
-import { auth } from "@clerk/nextjs"
-import { redirect } from "next/navigation"
-import { GalleryVerticalEnd } from "lucide-react"
+import { auth } from "@clerk/nextjs";
+import { redirect } from "next/navigation";
+import { GalleryVerticalEnd } from "lucide-react";
 
-import { db } from "@/lib/db"
-import { IconBadge } from "@/components/icon-badge"
-import { Banner } from "@/components/banner"
+import { db } from "@/lib/db";
+import { IconBadge } from "@/components/icon-badge";
+import { Banner } from "@/components/banner";
 
-import { FlashcardTitleForm } from "./_components/flashcard-title-form"
-import { FlashcardForm } from "./_components/flashcard-form"
-import { Actions } from "./_components/actions"
-import { Button } from "@/components/ui/button"
+import { FlashcardTitleForm } from "./_components/flashcard-title-form";
+import { FlashcarddeckTitleForm } from "./_components/flashcarddeck-title-form";
+import { FlashcardForm } from "./_components/flashcard-form";
+import { Actions } from "./_components/actions";
+import { Button } from "@/components/ui/button";
 
 const FlashcardPage = async ({
   params,
 }: {
-  params: { flashcardId: string }
+  params: {
+    courseId: string;
+    chapterId: string;
+    flashcardId: string;
+  };
 }) => {
-  const { userId } = auth()
+  const { userId } = auth();
 
   if (!userId) {
-    return redirect("/")
+    return redirect("/");
   }
 
-  const flashcardDeck = await db.flashcardDeck.findUnique({
+  // fetch flashcarddeck with flashcards
+  const flashcarddeck = await db.flashcardDeck.findUnique({
     where: {
       id: params.flashcardId,
     },
-  })
+    include: {
+      Flashcard: {
+        orderBy: {
+          updatedAt: "desc",
+        },
+      },
+    },
+  });
 
-  const flashcards = await db.flashcard.findMany({
-    where: {
-      flashcardDeckId: params.flashcardId,
-    },
-    orderBy: {
-      updatedAt: "desc",
-    },
-  })
+  if (!flashcarddeck) {
+    return redirect("/");
+  }
 
   return (
     <>
-      {/* {!course.isPublished && (
-        <Banner label="This course is unpublished. It will not be visible to the students." />
-      )} */}
+      {!flashcarddeck?.isPublic && (
+        <Banner label="This flashcarddeck is unpublished. It will not be visible to the students." />
+      )}
       <div className="flex flex-col items-center justify-center px-4 py-16 gap-8">
         <div className="flex items-center w-4/5 max-w-7xl justify-between">
           <div className="flex flex-row gap-2 items-center justify-center">
@@ -59,12 +67,11 @@ const FlashcardPage = async ({
         </div>
         {/* <div className="grid gap-6 w-full justify-center"> */}
         <div className="flex flex-col gap-8 w-4/5 max-w-7xl justify-center">
-          <FlashcardTitleForm
-            initialData={{
-              id: flashcardDeck?.id!,
-              title: flashcardDeck?.title!,
-            }}
-            // flashcardId={}
+          <FlashcarddeckTitleForm
+            initialData={flashcarddeck}
+            courseId={params.courseId}
+            chapterId={params.chapterId}
+            flashcarddeckId={params.flashcardId}
           />
           <hr className="border-t-4 rounded-md border-gray-400" />
           {/* <QuizQuestionForm initialData={course} courseId={course.id} /> */}
@@ -72,12 +79,11 @@ const FlashcardPage = async ({
             <Button variant="outline" size="sm">
               Add question
          </Button> */}
-          <FlashcardForm initialData={flashcards} />
         </div>
         {/* </div> */}
       </div>
     </>
-  )
-}
+  );
+};
 
-export default FlashcardPage
+export default FlashcardPage;
