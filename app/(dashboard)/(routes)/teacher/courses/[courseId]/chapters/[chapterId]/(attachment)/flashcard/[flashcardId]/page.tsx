@@ -58,12 +58,14 @@ const FlashcardPage = async ({
             <h1 className="text-2xl font-medium">Flash Card</h1>
             {/* </div> */}
           </div>
-          {/* <Actions
+          <Actions
             // disabled={!isComplete}
             disabled={true}
             courseId={params.chapterId}
-            isPublished={chapter.isPublished}
-          /> */}
+            chapterId={params.chapterId}
+            flashcarddeckId={params.flashcardId}
+            isPublished={flashcarddeck.isPublic}
+          />
         </div>
         {/* <div className="grid gap-6 w-full justify-center"> */}
         <div className="flex flex-col gap-8 w-4/5 max-w-7xl justify-center">
