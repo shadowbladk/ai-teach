@@ -68,7 +68,7 @@ CourseHeroProps) => {
             {/* <Button variant="outline" onClick={onReviewTabClick}>
               Reviews
             </Button> */}
-            <Button variant="default" /*onClick={onCourseDetailTabClick}*/>
+            <Button variant="primary" /*onClick={onCourseDetailTabClick}*/>
               Enroll course
             </Button>
           </div>

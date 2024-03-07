@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import { Course, Chapter } from "@prisma/client";
 import { Slider } from "./slider";
+import { ChapterCarousel } from "./chapter-carousel";
 
 interface ChapterNavbarProps {
   course: Course & {
@@ -11,6 +12,7 @@ interface ChapterNavbarProps {
 
 export const ChapterNavbar = ({ course }: ChapterNavbarProps) => {
   const [currentChapterTitle, setCurrentChapterTitle] = useState("");
+  
   useEffect(() => {
     if (course.chapters.length > 0) {
       setCurrentChapterTitle(course.chapters[0].title);
@@ -24,7 +26,7 @@ export const ChapterNavbar = ({ course }: ChapterNavbarProps) => {
   return (
     <div className="flex-col">
       <div className="flex justify-center p-6">
-        <Slider course={course} onChapterClick={handleChapterClick} />
+        <ChapterCarousel  course={course} onSelectChapter={handleChapterClick}/>
       </div>
       <div>
         <h1 className="text-2xl font-extrabold text-black text-center">

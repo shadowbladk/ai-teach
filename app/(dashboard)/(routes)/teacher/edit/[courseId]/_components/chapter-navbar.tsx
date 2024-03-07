@@ -7,6 +7,7 @@ import { ChaptersForm } from "./chapters-form";
 import { Button } from "@/components/ui/button";
 import { ChapterCarousel } from "./chapter-carousel";
 import { ArrowUpDown } from "lucide-react";
+import { ChapterEdit } from "./chapter-edit";
 
 
 interface ChapterNavbarProps {
@@ -39,11 +40,12 @@ export const ChapterNavbar = ({ course }: ChapterNavbarProps) => {
           <ChaptersForm initialData={course} courseId={course.id} />
         )}
       </div>
-      <div className="flex max-w-[720px] mx-auto p-3 justify-end">
-        <Button onClick={toggleView}>
+      <div className="flex max-w-[720px] mx-auto p-3 justify-center">
+        {/* <Button onClick={toggleView}>
           
           {showCarousel ? <ArrowUpDown /> : "Back"}
-        </Button>
+        </Button> */}
+        <ChapterEdit course={course}/>
         </div>
       <div className="flex max-w-[720px] justify-between mx-auto pt-6">
       {course.chapters.length > 0 ? (
