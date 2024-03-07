@@ -10,6 +10,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import Link from "next/link";
 import { Chapter, Course } from "@prisma/client";
 import * as z from "zod";
+import { ChapterEdit } from "./chapter-edit";
 
 interface ChapterCarouselProps {
   course: Course & {
@@ -31,9 +32,9 @@ export const ChapterCarousel = ({
             <div className="p-1 md:p-3">
               <CarouselItem key={index} className="basis-1/3 md:basis-1/4">
                 <Link href={`/teacher/edit/${chapter.courseId}/chapters/${chapter.id}`} className="text-2xl font-semibold">
-                  <Card className="w-[60px] h-[60px] rounded-full">
+                  <Card className="w-[55px] h-[55px] rounded-full border-[3px] border-black">
                     <CardContent
-                      className="flex items-center justify-center p-3 "
+                      className="flex items-center justify-center p-2 "
                       onClick={() => onSelectChapter(index)}
                     >
 
@@ -45,6 +46,7 @@ export const ChapterCarousel = ({
               </CarouselItem>
             </div>
           ))}
+        <ChapterEdit course={course}/>
         </CarouselContent>
         <CarouselPrevious />
         <CarouselNext />

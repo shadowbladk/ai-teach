@@ -18,35 +18,19 @@ interface ChapterNavbarProps {
 
 export const ChapterNavbar = ({ course }: ChapterNavbarProps) => {
   const [selectedChapterIndex, setSelectedChapterIndex] = useState(0);
-  const [showCarousel, setShowCarousel] = useState(true);
 
   const handleChapterChange = (index: number) => {
     setSelectedChapterIndex(index);
   };
 
-  const toggleView = () => {
-    setShowCarousel((prevState) => !prevState);
-  };
-
   return (
     <div className="flex-col w-full justify-center px-12">
       <div className="mx-auto flex flex-wrap justify-center">
-      {showCarousel ? (
-          <ChapterCarousel
-            course={course}
-            onSelectChapter={handleChapterChange}
-          />
-        ) : (
-          <ChaptersForm initialData={course} courseId={course.id} />
-        )}
+        <ChapterCarousel
+          course={course}
+          onSelectChapter={handleChapterChange}
+        />
       </div>
-      <div className="flex max-w-[720px] mx-auto p-3 justify-center">
-        {/* <Button onClick={toggleView}>
-          
-          {showCarousel ? <ArrowUpDown /> : "Back"}
-        </Button> */}
-        <ChapterEdit course={course}/>
-        </div>
       <div className="flex max-w-[720px] justify-between mx-auto pt-6">
       {course.chapters.length > 0 ? (
         <ChapterTitleForm

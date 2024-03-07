@@ -98,7 +98,7 @@ export const DescriptionForm = ({
               )}
             />
             <div className="flex items-center gap-x-2 justify-end">
-              <Button disabled={!isValid || isSubmitting} type="submit">
+              <Button disabled={!isValid || isSubmitting} type="submit" variant="primary">
                 Save
               </Button>
               <Button onClick={toggleEdit} variant="ghost">

@@ -12,6 +12,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { PlusCircle } from "lucide-react";
+import { CreateAttachment } from "./_components/create-attachment";
 
 const chapterIdPage = async ({
   params,
@@ -42,27 +43,12 @@ const chapterIdPage = async ({
     <div className="w-full justify-center px-6">
       <div className="max-w-[720px] mx-auto flex flex-wrap justify-center">
         <ChapterBox />
-        <Dialog>
-          <DialogTrigger>
-            <PlusCircle size={49} />
-          </DialogTrigger>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Are you absolutely sure?</DialogTitle>
-              <DialogDescription>
-                This action cannot be undone. This will permanently delete your
-                account and remove your data from our servers.
-              </DialogDescription>
-            </DialogHeader>
-          </DialogContent>
-        </Dialog>
+        <CreateAttachment/>
       </div>
       <div className="max-w-[720px] mx-auto flex flex-wrap justify-end">
         <ChapterActions
-          disabled={!isComplete}
           courseId={params.courseId}
           chapterId={params.chapterId}
-          isPublished={chapter.isPublished}
         />
       </div>
     </div>
