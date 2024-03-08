@@ -1,8 +1,8 @@
-import { ChapterActions } from "./_components/chapter-actions";
+import { ChapterActions } from "./_components/attachment-actions";
 import { auth } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 import { db } from "@/lib/db";
-import { ChapterBox } from "./_components/chapter-box";
+import { ChapterBox } from "./_components/attachment-box";
 import {
   Dialog,
   DialogContent,
@@ -44,12 +44,6 @@ const chapterIdPage = async ({
       <div className="max-w-[720px] mx-auto flex flex-wrap justify-center">
         <ChapterBox />
         <CreateAttachment/>
-      </div>
-      <div className="max-w-[720px] mx-auto flex flex-wrap justify-end">
-        <ChapterActions
-          courseId={params.courseId}
-          chapterId={params.chapterId}
-        />
       </div>
     </div>
   );
