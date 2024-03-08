@@ -71,10 +71,7 @@ export const ChapterActions = ({
         {isPublished ? "Unpublish" : "Publish"}
       </Button> */}
       <ConfirmModal onConfirm={onDelete}>
-        <Button size="sm" disabled={isLoading} className="gap-1">
           <Trash className="h-4 w-4" />
-          Delete
-        </Button>
       </ConfirmModal>
     </div>
   );

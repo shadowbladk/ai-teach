@@ -39,7 +39,7 @@ export const ChapterNavbar = ({ course }: ChapterNavbarProps) => {
           courseId={course.id}
           chapterId={course.chapters[selectedChapterIndex]?.id}/>
           ) : (
-        <p>No chapters available</p>
+        <p>No chapters created</p>
         )}
       </div>
     </div>

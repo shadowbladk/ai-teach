@@ -31,7 +31,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Pencil } from "lucide-react";
+import { Pencil, PlusCircle } from "lucide-react";
 
 interface ChapterEditProps {
     course: Course & {
@@ -78,13 +78,19 @@ export const ChapterEdit = ({course} : ChapterEditProps) => {
     };
 
     return (
-        <div className="px-auto pt-5 md:pt-8">
+        
           <Dialog>
-            <DialogTrigger asChild>    
+            <DialogTrigger asChild> 
+            {course.chapters.length === 0 ? (
+              <PlusCircle size={40} strokeWidth={1.5} />
+            ) : (
+            <div className="px-auto pt-5 md:pt-8">
               <Pencil size={20} />
+            </div>
+            )}   
             </DialogTrigger>
             <DialogContent>
-              <Tabs>
+              <Tabs defaultValue="create">
                 <TabsList className="grid w-full grid-cols-2">
                   <TabsTrigger value="create">Create</TabsTrigger>
                   <TabsTrigger value="Edit">Modify</TabsTrigger>
@@ -125,6 +131,5 @@ export const ChapterEdit = ({course} : ChapterEditProps) => {
               </Tabs>
             </DialogContent>
           </Dialog>
-        </div>
     )
 }
