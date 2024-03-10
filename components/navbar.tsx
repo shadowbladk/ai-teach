@@ -33,31 +33,31 @@ export const Navbar = () => {
         >
           <ul className="justify-center space-y-6 text-center items-center flex flex-col md:flex-row md:space-x-10 md:space-y-0 ">
             <Link href="/">
-              <li className="text-base font-semibold hover:text-secondary">
+              <li className="text-base font-semibold hover:text-[#4F46E5] hover:underline hover:underline-offset-4 hover:decoration-2">
                 Home
               </li>
             </Link>
             <Link href="/profile">
-              <li className="text-base font-semibold hover:text-secondary">
+              <li className="text-base font-semibold hover:text-[#4F46E5] hover:underline hover:underline-offset-4 hover:decoration-2">
                 Profile
               </li>
             </Link>
             <Link href="/explore">
-              <li className="text-base font-semibold hover:text-secondary">
+              <li className="text-base font-semibold hover:text-[#4F46E5] hover:underline hover:underline-offset-4 hover:decoration-2">
                 Explore
               </li>
             </Link>
             <Link href="/teacher/courses">
-              <li className="text-base font-semibold hover:text-secondary">
+              <li className="text-base font-semibold hover:text-[#4F46E5] hover:underline hover:underline-offset-4 hover:decoration-2">
                 Instructor
               </li>
             </Link>
             <Link href="/">
-              <li className="text-base font-semibold hover:text-secondary">
+              <li className="text-base font-semibold hover:text-[#4F46E5] hover:underline hover:underline-offset-4 hover:decoration-2">
                 My learning
               </li>
             </Link>
-            
+
             <div className="hidden md:block">
               <UserButton afterSignOutUrl="/" />
             </div>
