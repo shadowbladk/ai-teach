@@ -76,11 +76,7 @@ const FlashcardPage = async ({
             flashcarddeckId={params.flashcardId}
           />
           <hr className="border-t-4 rounded-md border-gray-400" />
-          {/* <QuizQuestionForm initialData={course} courseId={course.id} /> */}
-          {/* {questions.map((question, index) => (<QuizAnswerForm initialData={course} courseId={course.id} />))}
-            <Button variant="outline" size="sm">
-              Add question
-         </Button> */}
+          <FlashcardForm initialData={flashcarddeck.Flashcard}/>
         </div>
         {/* </div> */}
       </div>

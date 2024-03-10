@@ -61,7 +61,7 @@ FlashcardTitleFormProps) => {
   }
 
   return (
-    <div className="border bg-slate-100 rounded-md p-6 flex flex-col gap-4">
+    <div className="border bg-slate-100 rounded-md p-6 flex flex-col gap-4 w-full">
       <div className="font-medium flex justify-between">
         Flash card title
         <Button
