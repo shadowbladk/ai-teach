@@ -34,8 +34,8 @@ const formSchema = z.object({
 export const QuizTitleForm = ({
   initialData,
   courseId,
-  // quizId,
-}: QuizTitleFormProps) => {
+}: // quizId,
+QuizTitleFormProps) => {
   const [isEditing, setIsEditing] = useState(false)
 
   const toggleEdit = () => setIsEditing((current) => !current)
@@ -62,7 +62,7 @@ export const QuizTitleForm = ({
   }
 
   return (
-    <div className="border bg-slate-100 rounded-md p-6 flex flex-col gap-4">
+    <div className="border bg-slate-100 rounded-md p-6 flex flex-col gap-4 w-full">
       <div className="font-medium flex justify-between">
         Quiz title
         <Button

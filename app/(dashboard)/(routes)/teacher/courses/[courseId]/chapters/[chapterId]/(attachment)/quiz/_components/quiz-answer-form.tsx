@@ -84,7 +84,7 @@ QuizAnswerFormProps) => {
     //   toast.success("Course updated")
     toggleEdit()
     //   router.refresh()
-    // } catch {
+    // } catch {;
     //   toast.error("Something went wrong")
     // }
   }
@@ -216,23 +216,33 @@ QuizAnswerFormProps) => {
                 </FormItem>
               )}
             />
-            <div className="flex justify-end gap-4">
+            <div className="flex flex-row justify-between pt-4">
               <Button
-                onClick={toggleEdit}
-                variant="underline"
-                size="ghost"
-                className={isEditing ? "flex" : "hidden"}
-              >
-                Cancel
-              </Button>
-              <Button
-                disabled={!isValid || isSubmitting}
-                type="submit"
+                // disabled={questions.length == 1}
+                variant="warning"
                 size="sm_l"
-                variant="primary"
+                // onClick={(e) => handleQuestionRemove(current)}
               >
-                Save
+                Delete
               </Button>
+              <div className="flex justify-end gap-4">
+                <Button
+                  onClick={toggleEdit}
+                  variant="underline"
+                  size="ghost"
+                  className={isEditing ? "flex" : "hidden"}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  disabled={!isValid || isSubmitting}
+                  type="submit"
+                  size="sm_l"
+                  variant="primary"
+                >
+                  Save
+                </Button>
+              </div>
             </div>
           </form>
         </Form>

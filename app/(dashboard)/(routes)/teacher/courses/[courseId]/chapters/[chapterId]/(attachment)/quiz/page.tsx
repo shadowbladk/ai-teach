@@ -50,34 +50,28 @@ const QuizPage = async ({ params }: { params: { courseId: string } }) => {
 
   return (
     <>
-      {/* {!course.isPublished && (
+      {!course.isPublished && (
         <Banner label="This course is unpublished. It will not be visible to the students." />
-      )} */}
-      <div className="flex flex-col items-center justify-center px-4 py-16 gap-8 ">
+      )}
+      <div className="flex flex-col items-center justify-center w-full px-4 py-16 gap-8 ">
         <div className="flex items-center w-4/5 max-w-7xl justify-between">
-          <div className="flex flex-col gap-y-2">
-            <div className="flex items-center gap-x-2">
-              <PencilRuler />
-              <h1 className="text-2xl font-medium">Quiz</h1>
-            </div>
+          <div className="flex flex-row gap-2 items-center justify-center">
+            <PencilRuler />
+            <h1 className="text-2xl font-medium">Quiz</h1>
           </div>
-          {/* <Actions
-            disabled={!isComplete}
+
+          <Actions
+            // disabled={!isComplete}
+            disabled={true}
             courseId={params.courseId}
             isPublished={course.isPublished}
-          /> */}
+          />
         </div>
-        <div className="grid gap-6 w-4/5 max-w-7xl">
-          <div className="flex flex-col gap-6 w-full">
-            <QuizTitleForm initialData={course} courseId={course.id} />
-            <hr className="border-t-4 rounded-md border-gray-400" />
-            {/* <QuizQuestionForm initialData={course} courseId={course.id} /> */}
-            {/* {questions.map((question, index) => (<QuizAnswerForm initialData={course} courseId={course.id} />))}
-            <Button variant="outline" size="sm">
-              Add question
-         </Button> */}
-            <QuizForm initialData={course} courseId={course.id} />
-          </div>
+
+        <div className="flex flex-col gap-8 w-4/5 max-w-7xl justify-center">
+          <QuizTitleForm initialData={course} courseId={course.id} />
+          <hr className="border-t-4 rounded-md border-gray-400" />
+          <QuizForm initialData={course} courseId={course.id} />
         </div>
       </div>
     </>

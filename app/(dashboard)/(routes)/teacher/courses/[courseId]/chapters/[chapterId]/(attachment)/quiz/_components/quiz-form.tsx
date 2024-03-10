@@ -9,6 +9,7 @@ import { useState } from "react"
 import toast from "react-hot-toast"
 import { useRouter } from "next/navigation"
 import { Course } from "@prisma/client"
+import { PlusCircle } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
@@ -79,36 +80,22 @@ export const QuizForm = ({ initialData, courseId }: QuizFormProps) => {
   }
 
   return (
-    <div className="w-4/5 flex flex-col self-center gap-4">
-      {/* <QuizQuestionForm initialData={initialData} courseId={courseId} /> */}
-      {/* {questions.map((question, index) => (
-        <>
-          <QuizAnswerForm
-            key={index}
-            initialData={initialData}
-            courseId={courseId}
-          />
-          <Button
-            variant="warning"
-            size="default"
-            onClick={(e) => handleQuestionRemove(index)}
-          >
-            Delete question
-          </Button>
-          <hr className="border-t-2 rounded-md border-gray-400" />
-        </>
-      ))} */}
-      {/* <Button
-        variant="primary"
-        size="default"
-        onClick={(e) => handleQuestionAdd()}
-      >
-        Add question
-      </Button> */}
-      <div className="py-2 text-center text-xl ">
-        Question {current} of {count}
+    <div className="w-4/5 flex flex-col self-center gap-8">
+      <div className="flex flex-col gap-4 justify-between md:grid md:grid-cols-3">
+        <div className="text-center text-xl col-start-1 md:col-start-2">
+          Question {current} of {count}
+        </div>
+        <Button
+          onClick={(e) => handleQuestionAdd()}
+          variant="underline"
+          size="ghost"
+          className="justify-self-end col-start-3"
+        >
+          <PlusCircle className="w-4 h-4 mr-2" />
+          Add new question
+        </Button>
       </div>
-      <Carousel setApi={setApi} className="w-full">
+      <Carousel setApi={setApi} className="w-full ">
         <CarouselContent>
           {questions.map((question, index) => (
             <CarouselItem key={index}>
@@ -125,23 +112,6 @@ export const QuizForm = ({ initialData, courseId }: QuizFormProps) => {
         <CarouselPrevious />
         <CarouselNext />
       </Carousel>
-      <div className="flex flex-row w-full gap-4">
-        <Button
-          // disabled={questions.length == 1}
-          variant="warning"
-          size="rectangle"
-          onClick={(e) => handleQuestionRemove(current)}
-        >
-          Delete
-        </Button>
-        <Button
-          onClick={(e) => handleQuestionAdd()}
-          variant="primary"
-          size="rectangle"
-        >
-          Add
-        </Button>
-      </div>
     </div>
   )
 }
