@@ -33,6 +33,8 @@ export async function POST(
         isCorrect: false,
       },
     });
+
+    return NextResponse.json(answer);
   } catch (error) {
     console.log("[ANSWER]", error);
     return new NextResponse("Internal Error", { status: 500 });
