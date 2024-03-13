@@ -38,3 +38,44 @@ export async function DELETE(
     return new NextResponse("Internal Error", { status: 500 });
   }
 }
+
+export async function PATCH(
+  req: Request,
+  {
+    params,
+  }: {
+    params: { courseId: string; chapterId: string; quizId: string };
+  }
+) {
+  try {
+    const { userId } = auth();
+    const values = await req.json();
+    if (!userId) {
+      return new NextResponse("Unauthorized", { status: 401 });
+    }
+
+    const courseOwner = await db.course.findUnique({
+      where: {
+        id: params.courseId,
+        userId: userId,
+      },
+    });
+
+    if (!courseOwner) {
+      return new NextResponse("Unauthorized", { status: 401 });
+    }
+
+    const quiz = await db.question.update({
+      where: {
+        id: params.quizId,
+      },
+      data: {
+        ...values,
+      },
+    });
+    return NextResponse.json(quiz);
+  } catch (error) {
+    console.log("[QUIZ_ID]", error);
+    return new NextResponse("Internal Error", { status: 500 });
+  }
+}
