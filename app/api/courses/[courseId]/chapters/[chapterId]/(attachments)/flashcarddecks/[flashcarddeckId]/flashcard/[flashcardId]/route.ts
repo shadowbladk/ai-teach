@@ -5,10 +5,13 @@ import { db } from "@/lib/db";
 
 export async function DELETE(
   req: Request,
-  params: {
-    courseId: string;
-    flashcarddeckId: string;
-    flashcardId: string;
+  {
+    params,
+  }: {
+    params: {
+      courseId: string;
+      flashcardId: string;
+    };
   }
 ) {
   try {

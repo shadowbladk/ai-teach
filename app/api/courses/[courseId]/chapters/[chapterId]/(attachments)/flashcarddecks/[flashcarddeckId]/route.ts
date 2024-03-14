@@ -5,10 +5,14 @@ import { db } from "@/lib/db";
 
 export async function PATCH(
   req: Request,
-  params: {
-    courseId: string;
-    chapterId: string;
-    flashcarddeckId: string;
+  {
+    params,
+  }: {
+    params: {
+      courseId: string;
+      chapterId: string;
+      flashcarddeckId: string;
+    };
   }
 ) {
   try {
@@ -38,9 +42,13 @@ export async function PATCH(
 
 export async function DELETE(
   req: Request,
-  params: {
-    courseId: string;
-    flashcarddeckId: string;
+  {
+    params,
+  }: {
+    params: {
+      courseId: string;
+      flashcarddeckId: string;
+    };
   }
 ) {
   try {
