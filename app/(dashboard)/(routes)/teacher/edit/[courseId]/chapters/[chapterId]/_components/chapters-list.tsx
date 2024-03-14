@@ -12,17 +12,16 @@ import { Grip, Pencil } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
+import { ChapterActions } from "./chapter-actions";
 
 interface ChaptersListProps {
   items: Chapter[];
   onReorder: (updateData: { id: string; position: number }[]) => void;
-  onEdit: (id: string) => void;
 }
 
 export const ChaptersList = ({
   items,
   onReorder,
-  onEdit,
 }: ChaptersListProps) => {
   const [isMounted, setIsMounted] = useState(false);
   const [chapters, setChapters] = useState(items);
@@ -93,6 +92,12 @@ export const ChaptersList = ({
                       <Grip className="h-5 w-5" />
                     </div>
                     {chapter.title}
+                  <div className="ml-auto pr-2 flex items-center gap-x-2">
+                  <ChapterActions
+                      courseId={chapter.courseId}
+                      chapterId={chapter.id}
+                    />
+                  </div>
                   </div>
                 )}
               </Draggable>

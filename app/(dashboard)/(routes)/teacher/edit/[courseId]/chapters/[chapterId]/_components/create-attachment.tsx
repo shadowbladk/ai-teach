@@ -30,7 +30,7 @@ export const CreateAttachment = () => {
           <DialogDescription>
             <div className="pt-5 grid grid-cols-2 gap-2 justify-items-center">
               <div className="text-center">
-                <Link href="">
+                <Link href="/teacher/text">
                   <Card className="w-[60px] h-[60px] rounded-full bg-[#D9D9D9]">
                     <CardContent className="flex items-center justify-center p-2">
                       <FileText size={40} strokeWidth={1.5} />
