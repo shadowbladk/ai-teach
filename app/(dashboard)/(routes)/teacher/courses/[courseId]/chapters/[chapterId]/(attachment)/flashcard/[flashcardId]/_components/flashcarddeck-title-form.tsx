@@ -54,7 +54,7 @@ export const FlashcarddeckTitleForm = ({
   const onSubmit = async (value: z.infer<typeof formSchema>) => {
     try {
       await axios.patch(
-        `api/courses/${courseId}/chapters/${chapterId}/flashcarddecks/${flashcarddeckId}`,
+        `/api/courses/${courseId}/chapters/${chapterId}/flashcarddecks/${flashcarddeckId}`,
         value
       );
       toast.success("Flashcard deck updated");

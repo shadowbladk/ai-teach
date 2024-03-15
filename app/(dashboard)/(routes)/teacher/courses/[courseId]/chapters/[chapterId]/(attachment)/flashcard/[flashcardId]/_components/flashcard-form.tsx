@@ -17,26 +17,20 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Textarea } from "@/components/ui/textarea"
 import { cn } from "@/lib/utils"
 import { FlashcardFrontCardForm } from "./flashcard-front-card-form"
-import { flashcard } from "./mock-flashcard"
-
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormMessage,
-} from "@/components/ui/form"
 
 interface FlashcardFormProps {
   initialData: Flashcard[]
+  courseId: string
+  chapterId: string
+  flashcarddeckId: string
 }
 
-const formSchema = z.object({
-  front: z.string(),
-  back: z.string(),
-})
-
-export const FlashcardForm = ({ initialData }: FlashcardFormProps) => {
+export const FlashcardForm = ({
+  initialData,
+  courseId,
+  chapterId,
+  flashcarddeckId,
+}: FlashcardFormProps) => {
   const [cards, setCards] = useState(initialData)
   const [clickedCard, setClickedCard] = useState(0)
   const [front, setFront] = useState(cards[clickedCard]?.front || "")
@@ -47,85 +41,65 @@ export const FlashcardForm = ({ initialData }: FlashcardFormProps) => {
 
   const toggleEdit = () => setIsEditing((current) => !current)
 
-  // const form = useForm<z.infer<typeof formSchema>>({
-  //   resolver: zodResolver(formSchema),
-  //   defaultValues: {
-  //     description: initialData?.description || "",
-  //   },
-  // })
-
-  const handleFlashcardAdd = () => {
-    setCards([
-      ...cards,
-      {
-        id: "",
-        front: "",
-        back: "",
-        flashcardDeckId: "",
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
-    ])
-    setClickedCard(cards.length)
-    setFront("")
-    setBack("")
-  }
-
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      front: cards[clickedCard]?.front || "",
-      back: cards[clickedCard]?.back || "",
-    },
-  })
-
-  const { isSubmitting, isValid } = form.formState
-
-  const handleFlashcardSave = (front: any, back: any) => {
-    console.log(front, back)
-    toggleEdit()
+  const handleFlashcardAdd = async () => {
+    let newCard
+    try {
+      let result = await axios.post(
+        `/api/courses/${courseId}/chapters/${chapterId}/flashcarddecks/${flashcarddeckId}/flashcard`
+      )
+      toast.success("Flashcard created")
+      newCard = await result.data
+      router.refresh()
+      // router.push(`/teacher/courses/${courseId}/chapters/${chapterId}/flashcard/${flashcarddeckId}`);
+    } catch {
+      toast.error("Something went wrong")
+    }
+    setCards([...cards, newCard])
     console.log(cards)
+    setClickedCard(cards.length)
+    setFront(newCard.front)
+    setBack(newCard.back)
   }
 
-  const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    console.log(values)
+  // const { isSubmitting, isValid } = form.formState
 
-    // {
-    //   answers.map((answer, index) =>
-    //     index == Number(values.description)
-    //       ? (allAnswers[index] = { value: answer, isCorrect: true })
-    //       : (allAnswers[index] = { value: answer, isCorrect: false })
-    //   )
-    // }
-    // setCorrectAnswer(Number(values.description))
-    // try {
-    //   await axios.patch(`/api/courses/${courseId}/attachment/quiz`, values)
-    //   toast.success("Course updated")
-    toggleEdit()
-    //   router.refresh()
-    // } catch {
-    //   toast.error("Something went wrong")
-    // }
+  const handleFlashcardSave = async (index: number, front: any, back: any) => {
+    try {
+      let value = {
+        front: front,
+        back: back,
+      }
+      let flashcardId = cards[index].id
+      let result = await axios.patch(
+        `/api/courses/${courseId}/chapters/${chapterId}/flashcarddecks/${flashcarddeckId}/flashcard/${flashcardId}`,
+        value
+      )
+      console.log(result)
+      toast.success("Flashcard updated")
+      toggleEdit()
+      router.refresh()
+    } catch {
+      toast.error("Something went wrong")
+    }
   }
 
-  const handleFlashcardRemove = (index: number) => {
+  const handleFlashcardRemove = async (index: number) => {
+    try {
+      let flashcardId = cards[index].id
+      await axios.delete(
+        `/api/courses/${courseId}/chapters/${chapterId}/flashcarddecks/${flashcarddeckId}/flashcard/${flashcardId}`
+      )
+      toast.success("Flashcard deleted")
+      router.refresh()
+    } catch {
+      toast.error("Something went wrong")
+    }
     const items = [...cards]
     items.splice(index, 1)
 
     setCards(items)
     items.length == 0
-      ? (setCards([
-          {
-            id: "",
-            front: "",
-            back: "",
-            flashcardDeckId: "",
-            createdAt: new Date(),
-            updatedAt: new Date(),
-          },
-        ]),
-        setFront(""),
-        setBack(""))
+      ? console.log("No cards")
       : index == items.length
       ? (setFront(cards[clickedCard - 1].front!),
         setBack(cards[clickedCard - 1].back!),
@@ -143,173 +117,150 @@ export const FlashcardForm = ({ initialData }: FlashcardFormProps) => {
             variant="underline"
             size="ghost"
             onClick={handleFlashcardAdd}
-            disabled={cards.length == 1 && front == ""}
+            disabled={cards.length == 1 && front == "" && back == ""}
           >
             <PlusCircle className="w-4 h-4 mr-2" />
             Add Card
           </Button>
         </div>
         <div className="p-4 flex flex-col gap-4 overflow-y-scroll w-full h-[384px] rounded-md border">
-          {cards.map((card, index) => (
-            <>
-              <button
-                key={index}
-                className={`font-medium p-4 h-[56px] rounded-md ${
-                  clickedCard === index
-                    ? "bg-[#80489C]/90 text-white"
-                    : "bg-slate-200"
-                } ${card.front ? "text-black" : "text-slate-500 italic"}`}
-                onClick={(e) => {
-                  setClickedCard(index)
-                  setFront(cards[index].front!)
-                  setBack(cards[index].back!)
-                }}
-              >
-                {card.front || "New card"}
-              </button>
-              {/* <Separator className="my-2" /> */}
-            </>
-          ))}
+          {cards.length != 0 &&
+            cards.map((card, index) => (
+              <>
+                <button
+                  key={index}
+                  className={`font-medium p-4 h-[56px] rounded-md ${
+                    clickedCard === index
+                      ? "bg-[#80489C]/90 text-white"
+                      : "bg-slate-200"
+                  } ${card.front ? "text-black" : "text-slate-500 italic"}`}
+                  onClick={(e) => {
+                    setClickedCard(index)
+                    setFront(cards[index].front!)
+                    setBack(cards[index].back!)
+                  }}
+                >
+                  {card.front || "New card"}
+                </button>
+                {/* <Separator className="my-2" /> */}
+              </>
+            ))}
+          {cards.length == 0 && (
+            <div className="text-lg text-center pt-4 text-slate-500 italic">
+              Card list is empty
+            </div>
+          )}
         </div>
       </div>
-      <div className="flex w-full justify-center ">
-        <Tabs
-          defaultValue="front"
-          className="w-full max-w-sm lg:max-w-md flex flex-col items-center gap-4"
-        >
-          <TabsList className="grid grid-cols-2 h-[44px] w-full mb-4">
-            <TabsTrigger value="front" className="h-full">
-              Front side
-            </TabsTrigger>
-            <TabsTrigger value="back" className="h-full">
-              Back side
-            </TabsTrigger>
-          </TabsList>
-          <>
-            {!isEditing && (
-              <>
-                <div className="bg-white border-[#80489C] w-full max-w-[440px] h-[280px] border-4 rounded-md px-8 pt-6 pb-8">
-                  {/* <ScrollArea className="w-full h-full place-content-center grid"> */}
-                  {/* <Form {...form}>
-                    <FormField
-                      control={form.control}
-                      name="front"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormControl> */}
-                  <>
+      {cards.length != 0 && (
+        <div className="flex w-full justify-center ">
+          <Tabs
+            defaultValue="front"
+            className="w-full max-w-sm lg:max-w-md flex flex-col items-center gap-4"
+          >
+            <TabsList className="grid grid-cols-2 h-[44px] w-full mb-4">
+              <TabsTrigger value="front" className="h-full">
+                Front side
+              </TabsTrigger>
+              <TabsTrigger value="back" className="h-full">
+                Back side
+              </TabsTrigger>
+            </TabsList>
+            <>
+              {!isEditing && (
+                <>
+                  <div className="bg-white border-[#80489C] w-full max-w-[440px] h-[280px] border-4 rounded-md px-8 pt-6 pb-8">
+                    <>
+                      <TabsContent value="front" className="w-full h-full">
+                        <div
+                          className={cn(
+                            "text-2xl font-medium text-center place-content-center grid overflow-y-auto h-[208px]",
+                            !(front != "") && "text-lg text-slate-500 italic"
+                          )}
+                        >
+                          {front || "No front side description"}
+                        </div>
+                      </TabsContent>
+                      <TabsContent value="back" className="w-full">
+                        <div
+                          className={cn(
+                            "text-lg font-medium text-center place-content-center grid overflow-y-auto h-[208px]",
+                            !(back != "") && "text-lg text-slate-500 italic"
+                          )}
+                        >
+                          {back || "No back side description"}
+                        </div>
+                      </TabsContent>
+                    </>
+                  </div>
+                  <div className="flex flex-row w-full gap-4">
+                    <Button
+                      disabled={cards.length == 1 && front == ""}
+                      variant="warning"
+                      size="rectangle"
+                      onClick={(e) => handleFlashcardRemove(clickedCard)}
+                    >
+                      Delete
+                    </Button>
+                    <Button
+                      onClick={toggleEdit}
+                      variant="primary"
+                      size="rectangle"
+                    >
+                      Edit
+                    </Button>
+                  </div>
+                </>
+              )}
+              {isEditing && (
+                <>
+                  <div className="bg-white border-[#80489C] h-[280px] w-full max-w-[440px] border-4 rounded-md px-6 pt-4 pb-8">
                     <TabsContent value="front" className="w-full h-full">
-                      <div
-                        className={cn(
-                          "text-2xl font-medium text-center place-content-center grid overflow-y-auto h-[208px]",
-                          !(front != "") && "text-lg text-slate-500 italic"
-                        )}
-                      >
-                        {front || "No front side description"}
-                      </div>
+                      <Textarea
+                        // disabled={isSubmitting}
+                        placeholder="e.g. 'Flash card'"
+                        value={front}
+                        onChange={(e) => setFront(e.target.value)}
+                        className="h-full text-center text-2xl"
+                      />
                     </TabsContent>
-                    <TabsContent value="back" className="w-full">
-                      <div
-                        className={cn(
-                          "text-lg font-medium text-center place-content-center grid overflow-y-auto h-[208px]",
-                          !(back != "") && "text-lg text-slate-500 italic"
-                        )}
-                      >
-                        {back || "No back side description"}
-                      </div>
+                    <TabsContent value="back" className="w-full h-full">
+                      <Textarea
+                        // disabled={isSubmitting}
+                        placeholder="e.g. 'Flash card'"
+                        value={back}
+                        onChange={(e) => setBack(e.target.value)}
+                        className="h-full text-center text-lg"
+                      />
                     </TabsContent>
-                  </>
-                  {/* </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </Form> */}
-                  {/* </ScrollArea> */}
-                </div>
-                <div className="flex flex-row w-full gap-4">
-                  <Button
-                    disabled={cards.length == 1 && front == ""}
-                    variant="warning"
-                    size="rectangle"
-                    onClick={(e) => handleFlashcardRemove(clickedCard)}
-                  >
-                    Delete
-                  </Button>
-                  <Button
-                    onClick={toggleEdit}
-                    variant="primary"
-                    size="rectangle"
-                  >
-                    Edit
-                  </Button>
-                </div>
-              </>
-            )}
-            {isEditing && (
-              <>
-                {/*  <Form {...form}>
-                 <form
-                   onSubmit={form.handleSubmit(onSubmit)}
-                   className="space-y-4 flex flex-col w-full max-w-[440px] "
-                 > */}
-                {/* <FormField
-                    control={form.control}
-                    name="front"
-                    render={({ field }) => ( */}
-                {/* <FormItem className="bg-white border-[#80489C] h-[280px] border-4 rounded-md px-6 pt-4 pb-8"> */}
-                {/* <FormControl> */}
-                <div className="bg-white border-[#80489C] h-[280px] w-full max-w-[440px] border-4 rounded-md px-6 pt-4 pb-8">
-                  <TabsContent value="front" className="w-full h-full">
-                    <Textarea
-                      disabled={isSubmitting}
-                      placeholder="e.g. 'Flash card'"
-                      value={front}
-                      onChange={(e) => setFront(e.target.value)}
-                      className="h-full text-center text-2xl"
-                    />
-                  </TabsContent>
-                  <TabsContent value="back" className="w-full h-full">
-                    <Textarea
-                      disabled={isSubmitting}
-                      placeholder="e.g. 'Flash card'"
-                      value={back}
-                      onChange={(e) => setBack(e.target.value)}
-                      className="h-full text-center text-lg"
-                    />
-                  </TabsContent>
-                </div>
-                {/* </FormControl>
-                        <FormMessage />
-                      </FormItem> */}
-                {/* )}
-                  /> */}
+                  </div>
 
-                <div className="flex flex-row w-full gap-4">
-                  <Button
-                    onClick={toggleEdit}
-                    variant="cancel"
-                    size="rectangle"
-                  >
-                    Cancel
-                  </Button>
-                  <Button
-                    disabled={!isValid || isSubmitting}
-                    type="submit"
-                    variant="primary"
-                    size="rectangle"
-                    onClick={(e) => handleFlashcardSave(front, back)}
-                  >
-                    Save
-                  </Button>
-                </div>
-                {/* </form>
-              </Form> */}
-              </>
-            )}
-          </>
-        </Tabs>
-      </div>
+                  <div className="flex flex-row w-full gap-4">
+                    <Button
+                      onClick={toggleEdit}
+                      variant="cancel"
+                      size="rectangle"
+                    >
+                      Cancel
+                    </Button>
+                    <Button
+                      // disabled={!isValid || isSubmitting}
+                      type="submit"
+                      variant="primary"
+                      size="rectangle"
+                      onClick={(e) =>
+                        handleFlashcardSave(clickedCard, front, back)
+                      }
+                    >
+                      Save
+                    </Button>
+                  </div>
+                </>
+              )}
+            </>
+          </Tabs>
+        </div>
+      )}
     </div>
   )
 }

@@ -1,30 +1,29 @@
-import { auth } from "@clerk/nextjs";
-import { redirect } from "next/navigation";
-import { GalleryVerticalEnd } from "lucide-react";
+import { auth } from "@clerk/nextjs"
+import { redirect } from "next/navigation"
+import { GalleryVerticalEnd } from "lucide-react"
 
-import { db } from "@/lib/db";
-import { IconBadge } from "@/components/icon-badge";
-import { Banner } from "@/components/banner";
+import { db } from "@/lib/db"
+import { IconBadge } from "@/components/icon-badge"
+import { Banner } from "@/components/banner"
 
-import { FlashcardTitleForm } from "./_components/flashcard-title-form";
-import { FlashcarddeckTitleForm } from "./_components/flashcarddeck-title-form";
-import { FlashcardForm } from "./_components/flashcard-form";
-import { Actions } from "./_components/actions";
-import { Button } from "@/components/ui/button";
+import { FlashcarddeckTitleForm } from "./_components/flashcarddeck-title-form"
+import { FlashcardForm } from "./_components/flashcard-form"
+import { Actions } from "./_components/actions"
+import { Button } from "@/components/ui/button"
 
 const FlashcardPage = async ({
   params,
 }: {
   params: {
-    courseId: string;
-    chapterId: string;
-    flashcardId: string;
-  };
+    courseId: string
+    chapterId: string
+    flashcardId: string
+  }
 }) => {
-  const { userId } = auth();
+  const { userId } = auth()
 
   if (!userId) {
-    return redirect("/");
+    return redirect("/")
   }
 
   // fetch flashcarddeck with flashcards
@@ -39,10 +38,10 @@ const FlashcardPage = async ({
         },
       },
     },
-  });
+  })
 
   if (!flashcarddeck) {
-    return redirect("/");
+    return redirect("/")
   }
 
   return (
@@ -76,12 +75,13 @@ const FlashcardPage = async ({
             flashcarddeckId={params.flashcardId}
           />
           <hr className="border-t-4 rounded-md border-gray-400" />
-          <FlashcardForm initialData={flashcarddeck.Flashcard}/>
+          <FlashcardForm initialData={flashcarddeck.Flashcard} courseId={params.courseId}
+            chapterId={params.chapterId} flashcarddeckId={params.flashcardId}/>
         </div>
         {/* </div> */}
       </div>
     </>
-  );
-};
+  )
+}
 
-export default FlashcardPage;
+export default FlashcardPage
