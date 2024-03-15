@@ -1,4 +1,3 @@
-import { ChapterActions } from "./_components/attachment-actions";
 import { auth } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 import { db } from "@/lib/db";
@@ -7,12 +6,12 @@ import { CreateAttachment } from "./_components/create-attachment";
 import { ImageForm } from "./_components/image-form";
 import { TitleForm } from "./_components/title-form";
 import { DescriptionForm } from "./_components/description-form";
-import ChapterNavbar from "./_components/chapter-navbar";
+import { ChapterNavbar } from "./_components/chapter-navbar";
 
 const chapterIdPage = async ({
   params,
 }: {
-  params: { courseId: string;};
+  params: { courseId: string, chapterId: string };
 }) => {
   const { userId } = auth();
 
@@ -40,6 +39,13 @@ const chapterIdPage = async ({
     },
   });
 
+  const chapter = await db.chapter.findUnique({
+    where: {
+      id: params.chapterId,
+      courseId: params.courseId,
+    },
+  });
+
   if (!course) {
     return redirect("/");
   }
@@ -61,7 +67,7 @@ const chapterIdPage = async ({
       <div className="w-full justify-center px-6">
       <div className="max-w-[720px] mx-auto flex flex-wrap justify-center">
         <ChapterBox />
-        <CreateAttachment/>
+        <CreateAttachment courseId={params.courseId} chapterId={params.chapterId}/>
       </div>
     </div>
     </div>
