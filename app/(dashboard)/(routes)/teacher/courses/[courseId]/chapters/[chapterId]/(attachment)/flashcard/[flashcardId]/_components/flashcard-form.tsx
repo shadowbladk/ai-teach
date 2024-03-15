@@ -50,12 +50,10 @@ export const FlashcardForm = ({
       toast.success("Flashcard created")
       newCard = await result.data
       router.refresh()
-      // router.push(`/teacher/courses/${courseId}/chapters/${chapterId}/flashcard/${flashcarddeckId}`);
     } catch {
       toast.error("Something went wrong")
     }
     setCards([...cards, newCard])
-    console.log(cards)
     setClickedCard(cards.length)
     setFront(newCard.front)
     setBack(newCard.back)
@@ -74,13 +72,18 @@ export const FlashcardForm = ({
         `/api/courses/${courseId}/chapters/${chapterId}/flashcarddecks/${flashcarddeckId}/flashcard/${flashcardId}`,
         value
       )
-      console.log(result)
+      setCards((prevItems) => {
+        const updatedItems = [...prevItems]
+        updatedItems[index] = result.data
+        return updatedItems
+      })
       toast.success("Flashcard updated")
       toggleEdit()
       router.refresh()
     } catch {
       toast.error("Something went wrong")
     }
+    
   }
 
   const handleFlashcardRemove = async (index: number) => {
@@ -133,16 +136,15 @@ export const FlashcardForm = ({
                     clickedCard === index
                       ? "bg-[#80489C]/90 text-white"
                       : "bg-slate-200"
-                  } ${card.front ? "text-black" : "text-slate-500 italic"}`}
+                  } ${card.front || card.back ? "text-black" : "text-slate-500 italic"}`}
                   onClick={(e) => {
                     setClickedCard(index)
                     setFront(cards[index].front!)
                     setBack(cards[index].back!)
                   }}
                 >
-                  {card.front || "New card"}
+                  {card.front || card.back || "New card"}
                 </button>
-                {/* <Separator className="my-2" /> */}
               </>
             ))}
           {cards.length == 0 && (
@@ -195,7 +197,7 @@ export const FlashcardForm = ({
                   </div>
                   <div className="flex flex-row w-full gap-4">
                     <Button
-                      disabled={cards.length == 1 && front == ""}
+                      disabled={cards.length == 1 && front == "" && back == ""}
                       variant="warning"
                       size="rectangle"
                       onClick={(e) => handleFlashcardRemove(clickedCard)}
