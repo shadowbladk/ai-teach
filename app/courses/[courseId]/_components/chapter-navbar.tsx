@@ -12,7 +12,7 @@ interface ChapterNavbarProps {
 
 export const ChapterNavbar = ({ course }: ChapterNavbarProps) => {
   const [currentChapterTitle, setCurrentChapterTitle] = useState("");
-  
+
   useEffect(() => {
     if (course.chapters.length > 0) {
       setCurrentChapterTitle(course.chapters[0].title);
@@ -26,9 +26,9 @@ export const ChapterNavbar = ({ course }: ChapterNavbarProps) => {
   return (
     <div className="flex-col">
       <div className="flex justify-center p-6">
-        <ChapterCarousel  course={course} onSelectChapter={handleChapterClick}/>
+        <ChapterCarousel course={course} onSelectChapter={handleChapterClick} />
       </div>
-      <div>
+      <div className="flex justify-center pb-6">
         <h1 className="text-2xl font-extrabold text-black text-center">
           {currentChapterTitle}
         </h1>

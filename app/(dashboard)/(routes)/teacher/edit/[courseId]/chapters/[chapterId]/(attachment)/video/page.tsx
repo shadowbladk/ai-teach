@@ -7,7 +7,7 @@ import { Actions } from "./_components/actions";
 import { Banner } from "@/components/banner";
 import { TextTitleForm } from "./_components/text-title-form";
 
-const text = async ({ params }: { params: { courseId: string } }) => {
+const video = async ({ params }: { params: { courseId: string } }) => {
   const { userId } = auth();
 
   if (!userId) {
@@ -59,10 +59,14 @@ const text = async ({ params }: { params: { courseId: string } }) => {
         <div className="flex flex-col gap-8 w-4/5 max-w-7xl justify-center">
           <TextTitleForm initialData={course} courseId={course.id} />
           <hr className="border-t-4 rounded-md border-gray-400" />
-          <TextForm initialData={course} courseId={params.courseId} />
+          <ChapterVideoForm
+            initialData={chapter}
+            chapterId={params.chapterId}
+            courseId={params.courseId}
+          />
         </div>
       </div>
     </>
   );
 };
-export default text;
+export default video;

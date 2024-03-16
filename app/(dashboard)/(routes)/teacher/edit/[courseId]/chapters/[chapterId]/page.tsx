@@ -11,7 +11,7 @@ import { ChapterNavbar } from "./_components/chapter-navbar";
 const chapterIdPage = async ({
   params,
 }: {
-  params: { courseId: string, chapterId: string };
+  params: { courseId: string; chapterId: string };
 }) => {
   const { userId } = auth();
 
@@ -65,13 +65,15 @@ const chapterIdPage = async ({
         <ChapterNavbar course={course} />
       </div>
       <div className="w-full justify-center px-6">
-      <div className="max-w-[720px] mx-auto flex flex-wrap justify-center">
-        <ChapterBox />
-        <CreateAttachment courseId={params.courseId} chapterId={params.chapterId}/>
+        <div className="max-w-[720px] mx-auto flex flex-wrap justify-center">
+          <ChapterBox />
+          <CreateAttachment
+            courseId={params.courseId}
+            chapterId={params.chapterId}
+          />
+        </div>
       </div>
     </div>
-    </div>
-    
   );
 };
 export default chapterIdPage;
