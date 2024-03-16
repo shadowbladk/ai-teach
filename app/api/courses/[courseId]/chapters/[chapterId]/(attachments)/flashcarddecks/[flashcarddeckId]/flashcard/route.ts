@@ -5,7 +5,7 @@ import { db } from "@/lib/db";
 
 export async function POST(
   req: Request,
-  params: { courseId: string; chapterId: string; flashcarddeckId: string }
+  {params} : {params: { courseId: string; chapterId: string; flashcarddeckId: string }}
 ) {
   try {
     const { userId } = auth();
@@ -24,13 +24,10 @@ export async function POST(
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
-    const { frontface, backface } = await req.json();
 
     const flashcard = await db.flashcard.create({
       data: {
         flashcardDeckId: params.flashcarddeckId,
-        front: frontface,
-        back: backface,
       },
     });
     return NextResponse.json(flashcard);
