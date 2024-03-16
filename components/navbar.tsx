@@ -52,7 +52,7 @@ export const Navbar = () => {
                 Instructor
               </li>
             </Link>
-            <Link href="/">
+            <Link href="/learning">
               <li className="text-base font-semibold hover:text-[#4F46E5] hover:underline hover:underline-offset-4 hover:decoration-2">
                 My learning
               </li>
