@@ -22,7 +22,6 @@ export const getCoursesForInstructor = async ({
     const courses = await db.course.findMany({
       where: {
         userId,
-        // isPublished: (isPublished ? isPublished : undefined),
         isPublished: isPublished,
       },
       include: {
@@ -43,7 +42,7 @@ export const getCoursesForInstructor = async ({
           };
         })
       );
-      console.log("[GET_COURSES_FOR_INSTRUCTOR]", coursesWithProgress);
+
     return coursesWithProgress;
   } catch (error) {
     console.log("[GET_COURSES_FOR_INSTRUCTOR]", error);

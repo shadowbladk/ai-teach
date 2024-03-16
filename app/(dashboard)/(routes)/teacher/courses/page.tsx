@@ -1,38 +1,62 @@
-import { auth } from "@clerk/nextjs";
-import { redirect } from "next/navigation";
+import { auth } from "@clerk/nextjs"
+import { redirect } from "next/navigation"
 
-import { db } from "@/lib/db";
+import { db } from "@/lib/db"
 
-import { DataTable } from "./_components/data-table";
-import { columns } from "./_components/columns";
+import { DataTable } from "./_components/data-table"
+import { columns } from "./_components/columns"
+// import { Fliters } from "./_components/filters"
 import { CoursesList } from "@/components/courses-list"
-import { getCoursesForInstructor } from "@/actions/get-courses-for-instuctor";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { getCoursesForInstructor } from "@/actions/get-courses-for-instuctor"
 
-interface CoursesPageProps {
-  searchParams: {
-    isPublished: boolean;
-  }
-}
+// interface CoursesPageProps {
+//   searchParams: {
+//     isPublished: boolean
+//   }
+// }
 
-const CoursesPage = async ({ searchParams }: CoursesPageProps) => {
-  const { userId } = auth();
+const CoursesPage = async () => {
+  const { userId } = auth()
 
   if (!userId) {
-    return redirect("/");
+    return redirect("/")
   }
 
-  const courses = await getCoursesForInstructor({
+  const publishCourses = await getCoursesForInstructor({
     userId,
-    ...searchParams,
+    isPublished: true,
+  })
+  const unpublishCourses = await getCoursesForInstructor({
+    userId,
+    isPublished: false,
   })
 
-  console.log(courses);
   return (
-    <div className="p-6">
+    <div className="flex flex-col items-center justify-center px-12 sm:px-24 py-16 ">
+      {/* <div className="max-w-5xl w-full flex flex-col gap-8"> */}
       {/* <DataTable columns={columns} data={courses} /> */}
-      <CoursesList items={courses} />
+      <Tabs
+        defaultValue="publish"
+        className="w-full flex flex-col items-center gap-4 max-w-5xl"
+      >
+        <TabsList className="grid grid-cols-2 h-[44px] w-full mb-4">
+          <TabsTrigger value="publish" className="h-full">
+            Published Courses
+          </TabsTrigger>
+          <TabsTrigger value="unpublish" className="h-full">
+            Unpublished Courses
+          </TabsTrigger>
+        </TabsList>
+        <TabsContent value="publish" className="w-full">
+          <CoursesList items={publishCourses} />
+        </TabsContent>
+        <TabsContent value="unpublish" className="w-full">
+          <CoursesList items={unpublishCourses} />
+        </TabsContent>
+      </Tabs>
     </div>
-  );
-};
+  )
+}
 
-export default CoursesPage;
+export default CoursesPage
