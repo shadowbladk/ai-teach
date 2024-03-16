@@ -8,6 +8,8 @@ import { IconBadge } from "@/components/icon-badge";
 import { Banner } from "@/components/banner";
 
 import { ChapterTitleForm } from "./_components/chapter-title-form";
+import { ChapterDescriptionForm } from "./_components/chapter-description-form";
+// import { ChapterAccessForm } from "./_components/chapter-access-form"
 // import { ChapterVideoForm } from "./_components/chapter-video-form";
 import { ChapterActions } from "./_components/chapter-actions";
 
@@ -26,6 +28,13 @@ const ChapterIdPage = async ({
     where: {
       id: params.chapterId,
       courseId: params.courseId,
+    },
+    include: {
+      FlashcardDeck: {
+        orderBy: {
+          createdAt: "desc",
+        },
+      },
     },
   });
 
@@ -114,16 +123,31 @@ const ChapterIdPage = async ({
               <IconBadge icon={Video} />
               <h2 className="text-xl">Add a video</h2>
             </div>
-            <ChapterVideoForm
+            {/* <ChapterVideoForm
               initialData={chapter}
               chapterId={params.chapterId}
               courseId={params.courseId}
-            />
-          </div> */}
+            /> */}
+          {/* </div> */}
         </div>
+        {chapter.FlashcardDeck.map((deck, index) => (
+          <>
+            <button>
+              <Link
+                href={`/teacher/courses/${params.courseId}/chapters/${params.chapterId}/flashcard/${deck.id}`}
+              >
+                <p className="text-sm text-slate-700 hover:opacity-75 transition">
+                  {deck.title}
+                </p>
+              </Link>
+            </button>
+            {/* <Separator className="my-2" /> */}
+          </>
+        ))}
       </div>
     </>
   );
 };
 
 export default ChapterIdPage;
+
