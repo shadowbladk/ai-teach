@@ -9,8 +9,6 @@ export async function PATCH(
 ) {
   try {
     const { userId } = auth();
-    console.log(userId);
-    console.log(params);
     if (!userId) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
@@ -21,7 +19,7 @@ export async function PATCH(
         userId,
       },
     });
-    console.log(ownCourse);
+
     if (!ownCourse) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
