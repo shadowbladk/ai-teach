@@ -34,11 +34,11 @@ export const Actions = ({
       setIsLoading(true);
 
       if (isPublished) {
-        await axios.patch(`/api/courses/${courseId}/unpublish`);
-        toast.success("Course unpublished");
+        await axios.patch(`/api/courses/${courseId}/chapters/${chapterId}/flashcarddecks/${flashcarddeckId}/unpublish`);
+        toast.success("Flashcard unpublished");
       } else {
-        await axios.patch(`/api/courses/${courseId}/publish`);
-        toast.success("Course published");
+        await axios.patch(`/api/courses/${courseId}/chapters/${chapterId}/flashcarddecks/${flashcarddeckId}/publish`);
+        toast.success("Flashcard published");
         confetti.onOpen();
       }
 

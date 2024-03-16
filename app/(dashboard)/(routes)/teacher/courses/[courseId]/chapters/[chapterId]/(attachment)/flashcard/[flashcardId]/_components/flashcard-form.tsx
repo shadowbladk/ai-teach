@@ -1,22 +1,16 @@
 "use client"
 
-import * as z from "zod"
 import axios from "axios"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
 import { PlusCircle } from "lucide-react"
 import { useState } from "react"
 import toast from "react-hot-toast"
 import { useRouter } from "next/navigation"
-import { Course, Flashcard } from "@prisma/client"
-import { Pencil } from "lucide-react"
+import { Flashcard } from "@prisma/client"
 
 import { Button } from "@/components/ui/button"
-import { ScrollArea } from "@/components/ui/scroll-area"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Textarea } from "@/components/ui/textarea"
 import { cn } from "@/lib/utils"
-import { FlashcardFrontCardForm } from "./flashcard-front-card-form"
 
 interface FlashcardFormProps {
   initialData: Flashcard[]
@@ -259,7 +253,7 @@ export const FlashcardForm = ({
                       Cancel
                     </Button>
                     <Button
-                      // disabled={!isValid || isSubmitting}
+                      disabled={cards[clickedCard].front == front && cards[clickedCard].back == back}
                       type="submit"
                       variant="primary"
                       size="rectangle"
