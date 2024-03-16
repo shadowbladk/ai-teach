@@ -11,6 +11,9 @@ import { Toggle } from "./_components/toggle"
 import Image from "next/image"
 import Profile from "./_components/user.svg"
 
+import { getCoursesForInstructor } from "@/actions/get-courses-for-instuctor"
+import { getCourses } from "@/actions/get-courses"
+
 export default async function Dashboard() {
   const { userId } = auth()
 
@@ -21,6 +24,16 @@ export default async function Dashboard() {
   const { completedCourses, coursesInProgress } = await getDashboardCourses(
     userId
   )
+
+  const enrollCourses = await getCourses({
+    userId,
+  })
+
+  const teachingCourses = await getCoursesForInstructor({
+    userId,
+    isPublished: undefined,
+  })
+
 
   return (
     <>
@@ -61,8 +74,11 @@ export default async function Dashboard() {
           />
         </div>
         {/* <CoursesList items={[...coursesInProgress, ...completedCourses]} /> */}
-
-        <Toggle />
+        {/* <CoursesList items={coursesInProgress} /> */}
+        <Toggle
+          enrollCourses={enrollCourses}
+          teachingCourses={teachingCourses}
+        />
       </section>
     </>
   )

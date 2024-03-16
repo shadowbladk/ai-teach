@@ -1,10 +1,24 @@
 "use client"
 
+import { Category, Course } from "@prisma/client";
 import { useState } from "react"
+import { CoursesList } from "@/components/courses-list"
 
-export const Toggle = () => {
+type CourseWithProgressWithCategory = Course & {
+  category: Category | null;
+  chapters: { id: string }[];
+  progress: number | null;
+};
+
+interface CoursesListProps {
+  items: CourseWithProgressWithCategory[];
+}
+
+export const Toggle = ({enrollCourses, teachingCourses}: any) => {
   const [toggle, setToggle] = useState(false)
+
   return (
+    <>
     <div className="flex flex-row justify-center">
       <button
         onClick={() => setToggle(true)}
@@ -29,5 +43,8 @@ export const Toggle = () => {
         <div className="rounded-l-none rounded-r w-full bg-primary px-16 py-0.5 text-sm font-semibold text-white shadow-sm hover:opacity-50"></div>
       </button>
     </div>
+    <div className="max-w-5xl w-full">
+    {toggle ? <CoursesList items={enrollCourses} /> : <CoursesList items={teachingCourses} />}
+    </div></>
   )
 }
