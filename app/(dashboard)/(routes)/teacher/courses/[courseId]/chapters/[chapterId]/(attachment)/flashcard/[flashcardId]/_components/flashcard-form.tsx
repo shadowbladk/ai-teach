@@ -33,8 +33,8 @@ export const FlashcardForm = ({
 }: FlashcardFormProps) => {
   const [cards, setCards] = useState(initialData)
   const [clickedCard, setClickedCard] = useState(0)
-  const [front, setFront] = useState(cards[clickedCard]?.front || "")
-  const [back, setBack] = useState(cards[clickedCard]?.back || "")
+  const [front, setFront] = useState(cards[clickedCard]?.front || null)
+  const [back, setBack] = useState(cards[clickedCard]?.back || null)
   const [isEditing, setIsEditing] = useState(false)
 
   const router = useRouter()
@@ -55,11 +55,16 @@ export const FlashcardForm = ({
     }
     setCards([...cards, newCard])
     setClickedCard(cards.length)
+    console.log(newCard.front, newCard.back)
     setFront(newCard.front)
     setBack(newCard.back)
   }
 
-  // const { isSubmitting, isValid } = form.formState
+  const handleFlashcardCancel = () => {
+    setFront(cards[clickedCard].front)
+    setBack(cards[clickedCard].back)
+    toggleEdit()
+  }
 
   const handleFlashcardSave = async (index: number, front: any, back: any) => {
     try {
@@ -83,7 +88,6 @@ export const FlashcardForm = ({
     } catch {
       toast.error("Something went wrong")
     }
-    
   }
 
   const handleFlashcardRemove = async (index: number) => {
@@ -120,7 +124,9 @@ export const FlashcardForm = ({
             variant="underline"
             size="ghost"
             onClick={handleFlashcardAdd}
-            disabled={cards.length == 1 && front == "" && back == ""}
+            disabled={
+              (cards.length == 1 && front == null && back == null) || isEditing
+            }
           >
             <PlusCircle className="w-4 h-4 mr-2" />
             Add Card
@@ -132,15 +138,20 @@ export const FlashcardForm = ({
               <>
                 <button
                   key={index}
+                  // disabled={isEditing}
                   className={`font-medium p-4 h-[56px] rounded-md ${
                     clickedCard === index
                       ? "bg-[#80489C]/90 text-white"
                       : "bg-slate-200"
-                  } ${card.front || card.back ? "text-black" : "text-slate-500 italic"}`}
-                  onClick={(e) => {
-                    setClickedCard(index)
-                    setFront(cards[index].front!)
-                    setBack(cards[index].back!)
+                  } ${
+                    card.front || card.back
+                      ? "text-black"
+                      : "text-slate-500 italic"
+                  }`}
+                  onClick={(e) => {isEditing ? toast.error("Flashcard has not been saved") : (
+                    setClickedCard(index),
+                    setFront(cards[index].front!),
+                    setBack(cards[index].back!))
                   }}
                 >
                   {card.front || card.back || "New card"}
@@ -161,10 +172,10 @@ export const FlashcardForm = ({
             className="w-full max-w-sm lg:max-w-md flex flex-col items-center gap-4"
           >
             <TabsList className="grid grid-cols-2 h-[44px] w-full mb-4">
-              <TabsTrigger value="front" className="h-full">
+              <TabsTrigger value="front" className="h-full" >
                 Front side
               </TabsTrigger>
-              <TabsTrigger value="back" className="h-full">
+              <TabsTrigger value="back" className="h-full" >
                 Back side
               </TabsTrigger>
             </TabsList>
@@ -177,7 +188,7 @@ export const FlashcardForm = ({
                         <div
                           className={cn(
                             "text-2xl font-medium text-center place-content-center grid overflow-y-auto h-[208px]",
-                            !(front != "") && "text-lg text-slate-500 italic"
+                            !(front != null) && "text-lg text-slate-500 italic"
                           )}
                         >
                           {front || "No front side description"}
@@ -187,7 +198,7 @@ export const FlashcardForm = ({
                         <div
                           className={cn(
                             "text-lg font-medium text-center place-content-center grid overflow-y-auto h-[208px]",
-                            !(back != "") && "text-lg text-slate-500 italic"
+                            !(back != null) && "text-lg text-slate-500 italic"
                           )}
                         >
                           {back || "No back side description"}
@@ -197,7 +208,9 @@ export const FlashcardForm = ({
                   </div>
                   <div className="flex flex-row w-full gap-4">
                     <Button
-                      disabled={cards.length == 1 && front == "" && back == ""}
+                      disabled={
+                        cards.length == 1 && front == null && back == null
+                      }
                       variant="warning"
                       size="rectangle"
                       onClick={(e) => handleFlashcardRemove(clickedCard)}
@@ -221,7 +234,7 @@ export const FlashcardForm = ({
                       <Textarea
                         // disabled={isSubmitting}
                         placeholder="e.g. 'Flash card'"
-                        value={front}
+                        value={front ? front : ""}
                         onChange={(e) => setFront(e.target.value)}
                         className="h-full text-center text-2xl"
                       />
@@ -230,7 +243,7 @@ export const FlashcardForm = ({
                       <Textarea
                         // disabled={isSubmitting}
                         placeholder="e.g. 'Flash card'"
-                        value={back}
+                        value={back ? back : ""}
                         onChange={(e) => setBack(e.target.value)}
                         className="h-full text-center text-lg"
                       />
@@ -239,7 +252,7 @@ export const FlashcardForm = ({
 
                   <div className="flex flex-row w-full gap-4">
                     <Button
-                      onClick={toggleEdit}
+                      onClick={(e) => handleFlashcardCancel()}
                       variant="cancel"
                       size="rectangle"
                     >
