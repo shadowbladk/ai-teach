@@ -63,8 +63,8 @@ QuizTitleFormProps) => {
 
   return (
     <div className="border bg-slate-100 rounded-md p-6 flex flex-col gap-4 w-full">
-      <div className="font-medium flex justify-between">
-        Quiz title
+      {!isEditing && (<div className="font-medium flex justify-between">
+        {initialData.title}
         <Button
           onClick={toggleEdit}
           variant="underline"
@@ -75,10 +75,10 @@ QuizTitleFormProps) => {
           Edit title
         </Button>
       </div>
-      {!isEditing && <p className="text-sm">{initialData.title}</p>}
+      )}
       {isEditing && (
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 pt-2">
             <FormField
               control={form.control}
               name="title"
