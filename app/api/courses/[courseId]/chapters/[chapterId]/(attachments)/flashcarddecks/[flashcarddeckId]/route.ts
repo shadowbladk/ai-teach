@@ -3,16 +3,41 @@ import { NextResponse } from "next/server";
 
 import { db } from "@/lib/db";
 
+export async function DELETE(
+  req: Request,
+  {
+    params,
+  }: {
+    params: { courseId: string; chapterId: string; flashcarddeckId: string };
+  }
+) {
+  try {
+    const { userId } = auth();
+
+    if (!userId) {
+      return new NextResponse("Unauthorized", { status: 401 });
+    }
+
+    const deleteFlashcardDeck = await db.flashcardDeck.delete({
+      where: {
+        id: params.flashcarddeckId,
+        chapterId: params.chapterId,
+      },
+    });
+
+    return NextResponse.json(deleteFlashcardDeck);
+  } catch (error) {
+    console.log("[FLASHCARDDECK_ID]", error);
+    return new NextResponse("Internal Error", { status: 500 });
+  }
+}
+
 export async function PATCH(
   req: Request,
   {
     params,
   }: {
-    params: {
-      courseId: string;
-      chapterId: string;
-      flashcarddeckId: string;
-    };
+    params: { courseId: string; chapterId: string; flashcarddeckId: string };
   }
 ) {
   try {
@@ -34,48 +59,6 @@ export async function PATCH(
     });
 
     return NextResponse.json(flashcardDeck);
-  } catch (error) {
-    console.log("[FLASHCARDDECK_ID]", error);
-    return new NextResponse("Internal Error", { status: 500 });
-  }
-}
-
-export async function DELETE(
-  req: Request,
-  {
-    params,
-  }: {
-    params: {
-      courseId: string;
-      flashcarddeckId: string;
-    };
-  }
-) {
-  try {
-    const { userId } = auth();
-
-    if (!userId) {
-      return new NextResponse("Unauthorized", { status: 401 });
-    }
-
-    const ownCourse = await db.course.findUnique({
-      where: {
-        id: params.courseId,
-        userId: userId,
-      },
-    });
-
-    if (!ownCourse) {
-      return new NextResponse("Unauthorized", { status: 401 });
-    }
-
-    const deleteFlashcardDeck = await db.flashcardDeck.delete({
-      where: {
-        id: params.flashcarddeckId,
-      },
-    });
-
-    return NextResponse.json(deleteFlashcardDeck);
   } catch (error) {
     console.log("[FLASHCARDDECK_ID]", error);
     return new NextResponse("Internal Error", { status: 500 });

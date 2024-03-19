@@ -3,12 +3,14 @@ import { NextResponse } from "next/server";
 
 import { db } from "@/lib/db";
 
-export async function POST(
+export async function PATCH(
   req: Request,
-  params: { courseId: string; chapterId: string; flashcarddeckId: string }
+  { params }: { params: { courseId: string; chapterId: string; flashcarddeckId: string } }
 ) {
   try {
     const { userId } = auth();
+    console.log(userId);
+    console.log(params);
     if (!userId) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
@@ -16,22 +18,27 @@ export async function POST(
     const ownCourse = await db.course.findUnique({
       where: {
         id: params.courseId,
-        userId: userId,
+        userId,
       },
     });
-
+    console.log(ownCourse);
     if (!ownCourse) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
-    const flashcard = await db.flashcard.create({
+    const publishedFlashcard = await db.flashcardDeck.update({
+      where: {
+        id: params.flashcarddeckId,
+        chapterId: params.chapterId,
+      },
       data: {
-        flashcardDeckId: params.flashcarddeckId,
+        isPublic: true,
       },
     });
-    return NextResponse.json(flashcard);
+
+    return NextResponse.json(publishedFlashcard);
   } catch (error) {
-    console.log("[FLASHCARD]", error);
+    console.log("[FLASHCARD_PUBLISH]", error);
     return new NextResponse("Internal Error", { status: 500 });
   }
 }

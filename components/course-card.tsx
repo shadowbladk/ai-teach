@@ -1,12 +1,11 @@
 import Image from "next/image"
 import Link from "next/link"
-import { BookOpen } from "lucide-react"
+import { BookOpen, ImageIcon } from "lucide-react"
 
 import { IconBadge } from "@/components/icon-badge"
 import { CourseProgress } from "@/components/course-progress"
 
 import { cva, type VariantProps } from "class-variance-authority"
-
 
 const cardVariants = cva(
   "group hover:shadow-sm transition overflow-hidden border rounded-lg p-3",
@@ -28,10 +27,10 @@ type CardVariantsProps = VariantProps<typeof cardVariants>
 interface CourseCardProps extends CardVariantsProps {
   id: string
   title: string
-  imageUrl: string
+  imageUrl: string | null
   chaptersLength: number
   progress: number | null
-  category: string
+  category: string | null
 }
 
 export const CourseCard = ({
@@ -47,7 +46,13 @@ export const CourseCard = ({
     <Link href={`/courses/${id}`}>
       <div className={cardVariants({ size })}>
         <div className="relative w-full aspect-video rounded-md overflow-hidden">
-          <Image fill className="object-cover" alt={title} src={imageUrl} />
+          {imageUrl ? (
+            <Image fill className="object-cover" alt={title} src={imageUrl} />
+          ) : (
+            <div className="flex items-center justify-center w-full h-full bg-slate-200">
+              <ImageIcon className="h-8 w-8 text-slate-600" />
+            </div>
+          )}
         </div>
         <div className="flex flex-col pt-2">
           <div className="text-lg md:text-base font-medium group-hover:text-sky-700 transition line-clamp-2">

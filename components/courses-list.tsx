@@ -1,6 +1,7 @@
 import { Category, Course } from "@prisma/client";
 
 import { CourseCard } from "@/components/course-card";
+import { CreateCourseCard } from "./create-course-card";
 
 type CourseWithProgressWithCategory = Course & {
   category: Category | null;
@@ -10,9 +11,10 @@ type CourseWithProgressWithCategory = Course & {
 
 interface CoursesListProps {
   items: CourseWithProgressWithCategory[];
+  isInstructor?: boolean;
 }
 
-export const CoursesList = ({ items }: CoursesListProps) => {
+export const CoursesList = ({ items, isInstructor }: CoursesListProps) => {
   return (
     <div>
       <div className="grid sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-4 gap-4">
@@ -27,6 +29,7 @@ export const CoursesList = ({ items }: CoursesListProps) => {
             category={item?.category?.name!}
           />
         ))}
+        {isInstructor? <CreateCourseCard /> : null}
       </div>
       {items.length === 0 && (
         <div className="text-center text-sm text-muted-foreground mt-10">
