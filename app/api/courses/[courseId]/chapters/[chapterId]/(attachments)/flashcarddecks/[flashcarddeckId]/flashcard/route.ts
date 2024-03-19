@@ -5,7 +5,15 @@ import { db } from "@/lib/db";
 
 export async function POST(
   req: Request,
-  params: { courseId: string; chapterId: string; flashcarddeckId: string }
+  {
+    params,
+  }: {
+    params: {
+      courseId: string;
+      chapterId: string;
+      flashcarddeckId: string;
+    };
+  }
 ) {
   try {
     const { userId } = auth();
