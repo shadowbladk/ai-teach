@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 
 export async function POST(
-  reg: Request,
+  req: Request,
   { params }: { params: { courseId: string; chapterId: string } }
 ) {
   try {
