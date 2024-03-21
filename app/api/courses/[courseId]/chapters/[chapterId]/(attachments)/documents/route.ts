@@ -28,7 +28,7 @@ export async function POST(
 
     const document = await db.document.create({
       data: {
-        url,
+        url: url,
         name: url.split("/").pop(),
         chapterId: params.chapterId,
       },
