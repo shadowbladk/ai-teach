@@ -5,7 +5,11 @@ import { db } from "@/lib/db";
 
 export async function POST(
   req: Request,
-  {params} : {params: { courseId: string; chapterId: string; flashcarddeckId: string }}
+  {
+    params,
+  }: {
+    params: { courseId: string; chapterId: string; flashcarddeckId: string };
+  }
 ) {
   try {
     const { userId } = auth();
@@ -13,21 +17,20 @@ export async function POST(
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
-    const ownCourse = await db.course.findUnique({
+    const courseOwner = await db.course.findUnique({
       where: {
         id: params.courseId,
         userId: userId,
       },
     });
 
-    if (!ownCourse) {
+    if (!courseOwner) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
-
     const flashcard = await db.flashcard.create({
       data: {
-        flashcardDeckId: params.flashcarddeckId,
+        flashcarddeckId: params.flashcarddeckId,
       },
     });
     return NextResponse.json(flashcard);
