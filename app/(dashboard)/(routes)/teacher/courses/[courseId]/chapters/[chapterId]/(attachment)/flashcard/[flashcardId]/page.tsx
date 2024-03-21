@@ -24,8 +24,7 @@ const FlashcardPage = async ({
     return redirect("/");
   }
 
-  // fetch flashcarddeck with flashcards
-  const flashcarddeck = await db.flashcardDeck.findUnique({
+  const flashcarddeck = await db.flashcarddeck.findUnique({
     where: {
       id: params.flashcardId,
     },
