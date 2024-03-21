@@ -7,13 +7,7 @@ export async function DELETE(
   req: Request,
   {
     params,
-  }: {
-    params: {
-      courseId: string;
-      chapterId: string;
-      documentId: string;
-    };
-  }
+  }: { params: { courseId: string; chapterId: string; documentId: string } }
 ) {
   try {
     const { userId } = auth();
@@ -31,9 +25,14 @@ export async function DELETE(
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
-    // TODO: Implement document deletion
+    const deleteDocument = await db.document.delete({
+      where: {
+        id: params.documentId,
+        chapterId: params.chapterId,
+      },
+    });
 
-    return NextResponse.json({});
+    return NextResponse.json(deleteDocument);
   } catch (error) {
     console.log("[DOCUMENT_ID]", error);
     return new NextResponse("Internal Error", { status: 500 });
