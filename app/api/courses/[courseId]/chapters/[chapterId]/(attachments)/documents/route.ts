@@ -9,16 +9,34 @@ export async function POST(
 ) {
   try {
     const { userId } = auth();
+    const { url } = await req.json();
 
     if (!userId) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
-    //   TODO: Implement document creation
+    const courseOwner = await db.course.findUnique({
+      where: {
+        id: params.courseId,
+        userId: userId,
+      },
+    });
 
-    return NextResponse.json({});
+    if (!courseOwner) {
+      return new NextResponse("Unauthorized", { status: 401 });
+    }
+
+    const document = await db.document.create({
+      data: {
+        url,
+        name: url.split("/").pop(),
+        chapterId: params.chapterId,
+      },
+    });
+
+    return NextResponse.json(document);
   } catch (error) {
-    console.log("[DOCUMENT", error);
+    console.log("[DOCUMENT]", error);
     return new NextResponse("Internal Error", { status: 500 });
   }
 }
