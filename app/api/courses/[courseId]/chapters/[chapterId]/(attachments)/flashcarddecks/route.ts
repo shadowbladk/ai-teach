@@ -22,7 +22,7 @@ export async function POST(
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
-    const flashcarddeck = await db.flashcardDeck.create({
+    const flashcarddeck = await db.flashcarddeck.create({
       data: {
         chapterId: params.chapterId,
         title,

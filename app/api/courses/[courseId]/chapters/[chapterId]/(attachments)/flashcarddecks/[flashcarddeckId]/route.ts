@@ -18,7 +18,7 @@ export async function DELETE(
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
-    const deleteFlashcardDeck = await db.flashcardDeck.delete({
+    const deleteFlashcardDeck = await db.flashcarddeck.delete({
       where: {
         id: params.flashcarddeckId,
         chapterId: params.chapterId,
@@ -48,7 +48,7 @@ export async function PATCH(
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
-    const flashcardDeck = await db.flashcardDeck.update({
+    const flashcardDeck = await db.flashcarddeck.update({
       where: {
         id: params.flashcarddeckId,
         chapterId: params.chapterId,

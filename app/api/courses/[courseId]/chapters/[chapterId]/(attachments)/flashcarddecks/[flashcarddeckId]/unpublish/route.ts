@@ -8,11 +8,7 @@ export async function PATCH(
   {
     params,
   }: {
-    params: {
-      courseId: string;
-      chapterId: string;
-      flashcarddeckId: string;
-    };
+    params: { courseId: string; chapterId: string; flashcarddeckId: string };
   }
 ) {
   try {
@@ -32,7 +28,7 @@ export async function PATCH(
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
-    const unpublishedFlashcard = await db.flashcardDeck.update({
+    const unpublishedFlashcard = await db.flashcarddeck.update({
       where: {
         id: params.flashcarddeckId,
         chapterId: params.chapterId,
