@@ -1,13 +1,13 @@
-"use client";
+"use client"
 
-import * as z from "zod";
-import axios from "axios";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { Pencil } from "lucide-react";
-import { useState } from "react";
-import toast from "react-hot-toast";
-import { useRouter } from "next/navigation";
+import * as z from "zod"
+import axios from "axios"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useForm } from "react-hook-form"
+import { Pencil } from "lucide-react"
+import { useState } from "react"
+import toast from "react-hot-toast"
+import { useRouter } from "next/navigation"
 
 import {
   Form,
@@ -15,42 +15,42 @@ import {
   FormField,
   FormItem,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+} from "@/components/ui/form"
+import { Input } from "@/components/ui/input"
+import { Button } from "@/components/ui/button"
 
-interface TextTitleFormProps {
+interface QuizTitleFormProps {
   initialData: {
-    title: string;
-  };
-  courseId: string;
+    title: string
+  }
+  courseId: string
   // quizId: string
 }
 
 const formSchema = z.object({
   title: z.string().min(1),
-});
+})
 
-export const TextTitleForm = ({
+export const QuizTitleForm = ({
   initialData,
   courseId,
 }: // quizId,
-TextTitleFormProps) => {
-  const [isEditing, setIsEditing] = useState(false);
+QuizTitleFormProps) => {
+  const [isEditing, setIsEditing] = useState(false)
 
-  const toggleEdit = () => setIsEditing((current) => !current);
+  const toggleEdit = () => setIsEditing((current) => !current)
 
-  const router = useRouter();
+  const router = useRouter()
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: initialData,
-  });
+  })
 
-  const { isSubmitting, isValid } = form.formState;
+  const { isSubmitting, isValid } = form.formState
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    console.log(values);
+    console.log(values)
     // try {
     //   await axios.patch(`/api/courses/${courseId}`, values)
     //   toast.success("Course updated")
@@ -59,12 +59,12 @@ TextTitleFormProps) => {
     // } catch {
     //   toast.error("Something went wrong")
     // }
-  };
+  }
 
   return (
     <div className="border bg-slate-100 rounded-md p-6 flex flex-col gap-4 w-full">
       <div className="font-medium flex justify-between">
-        PDF Files
+        Quiz title
         <Button
           onClick={toggleEdit}
           variant="underline"
@@ -87,7 +87,7 @@ TextTitleFormProps) => {
                   <FormControl>
                     <Input
                       disabled={isSubmitting}
-                      placeholder="e.g. 'Advanced web development file'"
+                      placeholder="e.g. 'Advanced web development quiz'"
                       {...field}
                     />
                   </FormControl>
@@ -117,5 +117,5 @@ TextTitleFormProps) => {
         </Form>
       )}
     </div>
-  );
-};
+  )
+}

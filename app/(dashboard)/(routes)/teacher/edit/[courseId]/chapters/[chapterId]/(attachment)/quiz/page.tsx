@@ -1,17 +1,15 @@
 import { auth } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
-import { db } from "@/lib/db";
 import { PencilRuler } from "lucide-react";
-import { Actions } from "./_components/actions";
-import { Banner } from "@/components/banner";
-import { VideoTitleForm } from "./_components/video-title-form";
-import { ChapterVideoForm } from "./_components/video-from";
 
-const video = async ({
-  params,
-}: {
-  params: { courseId: string; chapterId: string };
-}) => {
+import { db } from "@/lib/db";
+import { Banner } from "@/components/banner";
+
+import { QuizTitleForm } from "./_components/quiz-title-form";
+import { QuizForm } from "./_components/quiz-form";
+import { Actions } from "./_components/actions";
+
+const QuizPage = async ({ params }: { params: { courseId: string } }) => {
   const { userId } = auth();
 
   if (!userId) {
@@ -37,10 +35,9 @@ const video = async ({
     },
   });
 
-  const chapter = await db.chapter.findUnique({
-    where: {
-      id: params.chapterId,
-      courseId: params.courseId,
+  const categories = await db.category.findMany({
+    orderBy: {
+      name: "asc",
     },
   });
 
@@ -57,7 +54,7 @@ const video = async ({
         <div className="flex items-center w-4/5 max-w-7xl justify-between">
           <div className="flex flex-row gap-2 items-center justify-center">
             <PencilRuler />
-            <h1 className="text-2xl font-medium">PDF Files</h1>
+            <h1 className="text-2xl font-medium">Quiz</h1>
           </div>
 
           <Actions
@@ -69,20 +66,13 @@ const video = async ({
         </div>
 
         <div className="flex flex-col gap-8 w-4/5 max-w-7xl justify-center">
-          <VideoTitleForm
-            initialData={chapter}
-            courseId={course.id}
-            chapterId={params.chapterId}
-          />
+          <QuizTitleForm initialData={course} courseId={course.id} />
           <hr className="border-t-4 rounded-md border-gray-400" />
-          <ChapterVideoForm
-            initialData={chapter}
-            chapterId={params.chapterId}
-            courseId={params.courseId}
-          />
+          <QuizForm initialData={course} courseId={course.id} />
         </div>
       </div>
     </>
   );
 };
-export default video;
+
+export default QuizPage;

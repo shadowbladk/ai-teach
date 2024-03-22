@@ -1,10 +1,7 @@
 "use client";
 
-import * as z from "zod";
 import axios from "axios";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { Loader2, PlusCircle } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
@@ -19,39 +16,10 @@ interface ChaptersFormProps {
   courseId: string;
 }
 
-const formSchema = z.object({
-  title: z.string().min(1),
-});
-
 export const ChaptersForm = ({ initialData, courseId }: ChaptersFormProps) => {
-  const [isCreating, setIsCreating] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
 
-  const toggleCreating = () => {
-    setIsCreating((current) => !current);
-  };
-
   const router = useRouter();
-
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      title: "",
-    },
-  });
-
-  const { isSubmitting, isValid } = form.formState;
-
-  const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    try {
-      await axios.post(`/api/courses/${courseId}/chapters`, values);
-      toast.success("Chapter created");
-      toggleCreating();
-      router.refresh();
-    } catch {
-      toast.error("Something went wrong");
-    }
-  };
 
   const onReorder = async (updateData: { id: string; position: number }[]) => {
     try {
@@ -67,10 +35,6 @@ export const ChaptersForm = ({ initialData, courseId }: ChaptersFormProps) => {
     } finally {
       setIsUpdating(false);
     }
-  };
-
-  const onEdit = (id: string) => {
-    router.push(`/teacher/courses/${courseId}/chapters/${id}`);
   };
 
   return (
