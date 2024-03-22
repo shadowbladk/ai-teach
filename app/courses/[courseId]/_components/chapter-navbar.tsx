@@ -1,37 +1,46 @@
 "use client";
-import { useState, useEffect } from "react";
+
+import React, { useState } from "react";
 import { Course, Chapter } from "@prisma/client";
-import { Slider } from "./slider";
 import { ChapterCarousel } from "./chapter-carousel";
+import { ChapterTitleForm } from "./chapter-title";
 
 interface ChapterNavbarProps {
   course: Course & {
     chapters: Chapter[];
   };
+  initialChapterIndex: number; // Add a prop for the initial chapter index
 }
 
-export const ChapterNavbar = ({ course }: ChapterNavbarProps) => {
-  const [currentChapterTitle, setCurrentChapterTitle] = useState("");
+export const ChapterNavbar = ({
+  course,
+  initialChapterIndex,
+}: ChapterNavbarProps) => {
+  const [selectedChapterIndex, setSelectedChapterIndex] =
+    useState(initialChapterIndex);
 
-  useEffect(() => {
-    if (course.chapters.length > 0) {
-      setCurrentChapterTitle(course.chapters[0].title);
-    }
-  }, [course.chapters]);
-
-  const handleChapterClick = (title: string) => {
-    setCurrentChapterTitle(title);
+  const handleChapterChange = (index: number) => {
+    setSelectedChapterIndex(index);
   };
 
   return (
-    <div className="flex-col">
-      <div className="flex justify-center p-6">
-        <ChapterCarousel course={course} onSelectChapter={handleChapterClick} />
+    <div className="flex-col w-full justify-center px-12">
+      <div className="mx-auto flex flex-wrap justify-center">
+        <ChapterCarousel
+          course={course}
+          onSelectChapter={handleChapterChange}
+        />
       </div>
-      <div className="flex justify-center pb-6">
-        <h1 className="text-2xl font-extrabold text-black text-center">
-          {currentChapterTitle}
-        </h1>
+      <div className="flex max-w-[720px] justify-center mx-auto p-6">
+        {course.chapters.length > 0 ? (
+          <ChapterTitleForm
+            initialData={{
+              title: course.chapters[selectedChapterIndex]?.title,
+            }}
+          />
+        ) : (
+          <p>No chapters created</p>
+        )}
       </div>
     </div>
   );

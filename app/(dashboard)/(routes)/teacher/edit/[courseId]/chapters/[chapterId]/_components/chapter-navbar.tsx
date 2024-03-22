@@ -5,15 +5,19 @@ import { Course, Chapter } from "@prisma/client";
 import { ChapterTitleForm } from "./chapter-title-form";
 import { ChapterCarousel } from "./chapter-carousel";
 
-
 interface ChapterNavbarProps {
   course: Course & {
     chapters: Chapter[];
   };
+  initialChapterIndex: number; // Add a prop for the initial chapter index
 }
 
-export const ChapterNavbar = ({ course }: ChapterNavbarProps) => {
-  const [selectedChapterIndex, setSelectedChapterIndex] = useState(0);
+export const ChapterNavbar = ({
+  course,
+  initialChapterIndex,
+}: ChapterNavbarProps) => {
+  const [selectedChapterIndex, setSelectedChapterIndex] =
+    useState(initialChapterIndex);
 
   const handleChapterChange = (index: number) => {
     setSelectedChapterIndex(index);
@@ -28,14 +32,16 @@ export const ChapterNavbar = ({ course }: ChapterNavbarProps) => {
         />
       </div>
       <div className="flex max-w-[720px] justify-between mx-auto pt-6">
-      {course.chapters.length > 0 ? (
-        <ChapterTitleForm
-          initialData={course.chapters[selectedChapterIndex] ? { title: course.chapters[selectedChapterIndex].title } : { title: course.chapters[selectedChapterIndex - 1
-          ].title }}
-          courseId={course.id}
-          chapterId={course.chapters[selectedChapterIndex]?.id}/>
-          ) : (
-        <p>No chapters created</p>
+        {course.chapters.length > 0 ? (
+          <ChapterTitleForm
+            initialData={{
+              title: course.chapters[selectedChapterIndex]?.title,
+            }}
+            courseId={course.id}
+            chapterId={course.chapters[selectedChapterIndex]?.id}
+          />
+        ) : (
+          <p>No chapters created</p>
         )}
       </div>
     </div>

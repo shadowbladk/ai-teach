@@ -46,7 +46,6 @@ interface ChapterEditProps {
 export const ChapterEdit = ({course} : ChapterEditProps) => {
 
     const [isCreating, setIsCreating] = useState(false);
-    const [isLoading, setIsLoading] = useState(false);
 
     const toggleCreating = () => {
       setIsCreating((current) => !current);
@@ -77,18 +76,17 @@ export const ChapterEdit = ({course} : ChapterEditProps) => {
       }
     };
 
-    return (
-        
-          <Dialog>
-            <DialogTrigger asChild> 
-            {course.chapters.length === 0 ? (
-              <PlusCircle size={40} strokeWidth={1.5} />
+    return ( 
+      <Dialog>
+        <DialogTrigger asChild> 
+          {course.chapters.length === 0 ? (
+            <PlusCircle size={40} strokeWidth={1.5} />
             ) : (
-            <div className="px-auto pt-5 md:pt-8">
-              <Pencil size={20} />
-            </div>
-            )}   
-            </DialogTrigger>
+          <div className="px-auto pt-5 md:pt-8">
+            <Pencil size={20} />
+          </div>
+          )}   
+          </DialogTrigger>
             <DialogContent>
               <Tabs defaultValue="create">
                 <TabsList className="grid w-full grid-cols-2">

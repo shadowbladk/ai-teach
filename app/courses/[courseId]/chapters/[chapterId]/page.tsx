@@ -24,12 +24,17 @@ const chapterIdPage = async ({
       },
     },
   });
+
   const chapter = await db.chapter.findUnique({
     where: {
       id: params.chapterId,
       courseId: params.courseId,
     },
   });
+
+  const initialChapterIndex = course!.chapters.findIndex(
+    (ch) => ch.id === params.chapterId
+  );
 
   if (!course) {
     return redirect("/");
@@ -41,7 +46,10 @@ const chapterIdPage = async ({
         courseDescription={course.description!}
         coursePicture={course.imageUrl!}
       />
-      <ChapterNavbar course={course} />
+      <ChapterNavbar
+        course={course}
+        initialChapterIndex={initialChapterIndex}
+      />
       <div className="w-full justify-center px-6">
         <div className="max-w-[720px] mx-auto flex flex-wrap justify-center">
           <ChapterBox />
