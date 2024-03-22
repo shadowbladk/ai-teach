@@ -4,34 +4,27 @@ import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 
 export async function POST(
-  reg: Request,
-  {
-    params,
-  }: {
-    params: {
-      courseId: string;
-      chapterId: string;
-    };
-  }
+  req: Request,
+  { params }: { params: { courseId: string; chapterId: string } }
 ) {
   try {
     const { userId } = auth();
-    const { title } = await reg.json();
+    const { title } = await req.json();
 
     if (!userId) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
-    const flashcarddeck = await db.flashcarddeck.create({
+    const quiz = await db.question.create({
       data: {
         chapterId: params.chapterId,
-        title,
+        text: title,
       },
     });
 
-    return NextResponse.json(flashcarddeck);
+    return NextResponse.json(quiz);
   } catch (error) {
-    console.log("[FLASHCARDDECK]", error);
+    console.log("[QUIZ]", error);
     return new NextResponse("Internal Error", { status: 500 });
   }
 }

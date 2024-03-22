@@ -5,7 +5,11 @@ import { db } from "@/lib/db";
 
 export async function PATCH(
   req: Request,
-  { params }: { params: { courseId: string; chapterId: string; flashcarddeckId: string } }
+  {
+    params,
+  }: {
+    params: { courseId: string; chapterId: string; flashcarddeckId: string };
+  }
 ) {
   try {
     const { userId } = auth();
@@ -24,7 +28,7 @@ export async function PATCH(
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
-    const unpublishedFlashcard = await db.flashcardDeck.update({
+    const unpublishedFlashcard = await db.flashcarddeck.update({
       where: {
         id: params.flashcarddeckId,
         chapterId: params.chapterId,
