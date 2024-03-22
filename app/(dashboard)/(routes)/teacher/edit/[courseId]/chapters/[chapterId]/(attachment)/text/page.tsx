@@ -7,38 +7,38 @@ import { Actions } from "./_components/actions";
 import { Banner } from "@/components/banner";
 import { TextTitleForm } from "./_components/text-title-form";
 
-const text = async ({ params }: { params: { courseId: string } }) => {
+const text = async ({
+  params,
+}: {
+  params: { courseId: string; chapterId: string };
+}) => {
   const { userId } = auth();
 
   if (!userId) {
     return redirect("/");
   }
 
-  const course = await db.course.findUnique({
+  const chapter = await db.chapter.findUnique({
     where: {
-      id: params.courseId,
-      userId,
+      id: params.chapterId,
+      courseId: params.courseId,
     },
     include: {
-      chapters: {
+      documents: {
         orderBy: {
-          position: "asc",
-        },
-      },
-      attachments: {
-        orderBy: {
-          createdAt: "desc",
+          createdAt: "asc",
         },
       },
     },
   });
-  if (!course) {
+
+  if (!chapter) {
     return redirect("/");
   }
 
   return (
     <>
-      {!course.isPublished && (
+      {!chapter.isPublished && (
         <Banner label="This course is unpublished. It will not be visible to the students." />
       )}
       <div className="flex flex-col items-center justify-center w-full px-4 py-16 gap-8 ">
@@ -52,14 +52,18 @@ const text = async ({ params }: { params: { courseId: string } }) => {
             // disabled={!isComplete}
             disabled={true}
             courseId={params.courseId}
-            isPublished={course.isPublished}
+            isPublished={chapter.isPublished}
           />
         </div>
 
         <div className="flex flex-col gap-8 w-4/5 max-w-7xl justify-center">
-          <TextTitleForm initialData={course} courseId={course.id} />
+          {/* <TextTitleForm initialData={chapter} courseId={params.courseId} chapterId={params.chapterId} /> */}
           <hr className="border-t-4 rounded-md border-gray-400" />
-          <TextForm initialData={course} courseId={params.courseId} />
+          <TextForm
+            initialData={chapter}
+            courseId={params.courseId}
+            chapterId={params.chapterId}
+          />
         </div>
       </div>
     </>

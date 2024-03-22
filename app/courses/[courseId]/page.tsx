@@ -4,7 +4,11 @@ import { redirect } from "next/navigation";
 import CourseHero from "./_components/course-hero";
 import ChapterNavbar from "./_components/chapter-navbar";
 
-const CoursePage = async ({ params }: { params: { courseId: string } }) => {
+const CoursePage = async ({
+  params,
+}: {
+  params: { courseId: string; chapterId: string };
+}) => {
   const course = await db.course.findUnique({
     where: {
       id: params.courseId,
@@ -21,6 +25,10 @@ const CoursePage = async ({ params }: { params: { courseId: string } }) => {
     },
   });
 
+  const initialChapterIndex = course!.chapters.findIndex(
+    (ch) => ch.id === params.chapterId
+  );
+
   if (!course) {
     return redirect("/");
   }
@@ -32,7 +40,10 @@ const CoursePage = async ({ params }: { params: { courseId: string } }) => {
           courseDescription={course.description!}
           coursePicture={course.imageUrl!}
         />
-        <ChapterNavbar course={course} />
+        <ChapterNavbar
+          initialChapterIndex={initialChapterIndex}
+          course={course}
+        />
       </>
     );
   }

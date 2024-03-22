@@ -6,22 +6,27 @@ import { Pencil, PlusCircle, ImageIcon, File, Loader2, X } from "lucide-react";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
-import { Attachment, Course } from "@prisma/client";
+import { Chapter, Document } from "@prisma/client";
 import Image from "next/image";
 
 import { Button } from "@/components/ui/button";
 import { FileUpload } from "@/components/file-upload";
 
 interface TextFormProps {
-  initialData: Course & { attachments: Attachment[] };
+  initialData: Chapter & { documents: Document[] };
   courseId: string;
+  chapterId: string;
 }
 
 const formSchema = z.object({
   url: z.string().min(1),
 });
 
-export const TextForm = ({ initialData, courseId }: TextFormProps) => {
+export const TextForm = ({
+  initialData,
+  courseId,
+  chapterId,
+}: TextFormProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const [deletingId, setDeletingId] = useState<string | null>(null);
 
@@ -31,7 +36,10 @@ export const TextForm = ({ initialData, courseId }: TextFormProps) => {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      await axios.post(`/api/courses/${courseId}/attachments`, values);
+      await axios.post(
+        `/api/courses/${courseId}/chapters/${chapterId}/documents`,
+        values
+      );
       toast.success("Course updated");
       toggleEdit();
       router.refresh();
@@ -43,7 +51,7 @@ export const TextForm = ({ initialData, courseId }: TextFormProps) => {
   const onDelete = async (id: string) => {
     try {
       setDeletingId(id);
-      await axios.delete(`/api/courses/${courseId}/attachments/${id}`);
+      await axios.delete(`/api/courses/${courseId}/chapters/${chapterId}/documents/${id}`);
       toast.success("Attachment deleted");
       router.refresh();
     } catch {
@@ -69,28 +77,28 @@ export const TextForm = ({ initialData, courseId }: TextFormProps) => {
       </div>
       {!isEditing && (
         <>
-          {initialData.attachments.length === 0 && (
+          {initialData.documents.length === 0 && (
             <p className="text-sm mt-2 text-slate-500 italic">
               No attachments yet
             </p>
           )}
-          {initialData.attachments.length > 0 && (
+          {initialData.documents.length > 0 && (
             <div className="space-y-2">
-              {initialData.attachments.map((attachment) => (
+              {initialData.documents.map((documents) => (
                 <div
-                  key={attachment.id}
+                  key={documents.id}
                   className="flex items-center p-3 w-full bg-sky-100 border-sky-200 border text-sky-700 rounded-md"
                 >
                   <File className="h-4 w-4 mr-2 flex-shrink-0" />
-                  <p className="text-xs line-clamp-1">{attachment.name}</p>
-                  {deletingId === attachment.id && (
+                  <p className="text-xs line-clamp-1">{documents.name}</p>
+                  {deletingId === documents.id && (
                     <div>
                       <Loader2 className="h-4 w-4 animate-spin" />
                     </div>
                   )}
-                  {deletingId !== attachment.id && (
+                  {deletingId !== documents.id && (
                     <button
-                      onClick={() => onDelete(attachment.id)}
+                      onClick={() => onDelete(documents.id)}
                       className="ml-auto hover:opacity-75 transition"
                     >
                       <X className="h-4 w-4" />

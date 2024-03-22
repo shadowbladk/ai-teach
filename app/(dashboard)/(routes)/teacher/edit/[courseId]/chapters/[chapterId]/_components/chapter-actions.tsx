@@ -65,7 +65,7 @@ export const ChapterActions = ({
   };
 
   return (
-    <div className="flex justify-end gap-x-2">
+    <div className="flex justify-end items-center gap-x-2">
       <Button
         onClick={onClick}
         disabled={disabled || isLoading}

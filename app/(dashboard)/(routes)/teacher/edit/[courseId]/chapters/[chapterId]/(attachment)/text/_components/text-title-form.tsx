@@ -23,8 +23,8 @@ interface TextTitleFormProps {
   initialData: {
     title: string;
   };
+  chapterId: string;
   courseId: string;
-  // quizId: string
 }
 
 const formSchema = z.object({
@@ -33,9 +33,9 @@ const formSchema = z.object({
 
 export const TextTitleForm = ({
   initialData,
+  chapterId,
   courseId,
-}: // quizId,
-TextTitleFormProps) => {
+}: TextTitleFormProps) => {
   const [isEditing, setIsEditing] = useState(false);
 
   const toggleEdit = () => setIsEditing((current) => !current);
@@ -50,15 +50,17 @@ TextTitleFormProps) => {
   const { isSubmitting, isValid } = form.formState;
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    console.log(values);
-    // try {
-    //   await axios.patch(`/api/courses/${courseId}`, values)
-    //   toast.success("Course updated")
-    //   toggleEdit()
-    //   router.refresh()
-    // } catch {
-    //   toast.error("Something went wrong")
-    // }
+    try {
+      await axios.patch(
+        `/api/courses/${courseId}/chapters/${chapterId}/document`,
+        values
+      );
+      toast.success("Course updated");
+      toggleEdit();
+      router.refresh();
+    } catch {
+      toast.error("Something went wrong");
+    }
   };
 
   return (

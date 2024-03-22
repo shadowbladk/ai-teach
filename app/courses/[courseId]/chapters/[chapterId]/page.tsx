@@ -18,17 +18,27 @@ const chapterIdPage = async ({
         where: {
           isPublished: true,
         },
+        include: {
+          documents: {
+            orderBy: {
+              createdAt: "asc",
+            },
+          },
+          flashcarddecks: {
+            orderBy: {
+              createdAt: "asc",
+            },
+          },
+          questions: {
+            orderBy: {
+              createdAt: "asc",
+            },
+          },
+        },
         orderBy: {
           position: "asc",
         },
       },
-    },
-  });
-
-  const chapter = await db.chapter.findUnique({
-    where: {
-      id: params.chapterId,
-      courseId: params.courseId,
     },
   });
 
