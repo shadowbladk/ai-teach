@@ -3,46 +3,38 @@ import { NextResponse } from "next/server";
 
 import { db } from "@/lib/db";
 
-export async function PATCH(
+export async function DELETE(
   req: Request,
   {
     params,
-  }: {
-    params: { courseId: string; chapterId: string; flashcarddeckId: string };
-  }
+  }: { params: { courseId: string; chapterId: string; documentId: string } }
 ) {
   try {
     const { userId } = auth();
-    console.log(userId);
-    console.log(params);
     if (!userId) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
-    const ownCourse = await db.course.findUnique({
+    const courseOwner = await db.course.findUnique({
       where: {
         id: params.courseId,
-        userId,
+        userId: userId,
       },
     });
-    console.log(ownCourse);
-    if (!ownCourse) {
+    if (!courseOwner) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
-    const publishedFlashcard = await db.flashcarddeck.update({
+    const deleteDocument = await db.document.delete({
       where: {
-        id: params.flashcarddeckId,
+        id: params.documentId,
         chapterId: params.chapterId,
-      },
-      data: {
-        isPublic: true,
       },
     });
 
-    return NextResponse.json(publishedFlashcard);
+    return NextResponse.json(deleteDocument);
   } catch (error) {
-    console.log("[FLASHCARD_PUBLISH]", error);
+    console.log("[DOCUMENT_ID]", error);
     return new NextResponse("Internal Error", { status: 500 });
   }
 }

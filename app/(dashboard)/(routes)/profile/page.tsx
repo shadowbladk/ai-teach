@@ -3,7 +3,7 @@ import { redirect } from "next/navigation"
 import { CheckCircle, Clock } from "lucide-react"
 
 import { getDashboardCourses } from "@/actions/get-dashboard-courses"
-import { CoursesList } from "@/components/courses-list"
+import { getCoursesForInstructor } from "@/actions/get-courses-for-instuctor"
 
 import { InfoCard } from "./_components/info-card"
 import { Toggle } from "./_components/toggle"
@@ -21,6 +21,12 @@ export default async function Dashboard() {
   const { completedCourses, coursesInProgress } = await getDashboardCourses(
     userId
   )
+
+  const teachingCourses = await getCoursesForInstructor({
+    userId,
+    isPublished: undefined,
+  })
+
 
   return (
     <>
@@ -46,7 +52,7 @@ export default async function Dashboard() {
           </div>
         </div>
       </section>
-      <section className="flex flex-col justify-center items-center px-12 py-24 gap-14">
+      <section className="flex flex-col justify-center items-center px-12 py-20 gap-14">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-4/5 max-w-4xl">
           <InfoCard
             icon={Clock}
@@ -60,10 +66,10 @@ export default async function Dashboard() {
             variant="success"
           />
         </div>
-        {/* <CoursesList items={[...coursesInProgress, ...completedCourses]} /> */}
-
-        <Toggle />
-
+        <Toggle
+          enrollCourses={[...coursesInProgress, ...completedCourses]}
+          teachingCourses={teachingCourses}
+        />
       </section>
     </>
   )

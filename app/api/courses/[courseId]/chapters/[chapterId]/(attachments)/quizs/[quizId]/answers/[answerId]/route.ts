@@ -1,14 +1,18 @@
+import { db } from "@/lib/db";
 import { auth } from "@clerk/nextjs";
 import { NextResponse } from "next/server";
 
-import { db } from "@/lib/db";
-
-export async function POST(
+export async function DELETE(
   req: Request,
   {
     params,
   }: {
-    params: { courseId: string; chapterId: string; flashcarddeckId: string };
+    params: {
+      courseId: string;
+      chapterId: string;
+      quizId: string;
+      answerId: string;
+    };
   }
 ) {
   try {
@@ -28,14 +32,15 @@ export async function POST(
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
-    const flashcard = await db.flashcard.create({
-      data: {
-        flashcarddeckId: params.flashcarddeckId,
+    const deleteAnswer = await db.answer.delete({
+      where: {
+        id: params.answerId,
       },
     });
-    return NextResponse.json(flashcard);
+
+    return NextResponse.json(deleteAnswer);
   } catch (error) {
-    console.log("[FLASHCARD]", error);
+    console.log("[ANSWER_ID]", error);
     return new NextResponse("Internal Error", { status: 500 });
   }
 }

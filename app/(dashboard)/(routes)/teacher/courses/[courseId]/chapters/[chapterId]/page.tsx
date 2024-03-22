@@ -30,7 +30,7 @@ const ChapterIdPage = async ({
       courseId: params.courseId,
     },
     include: {
-      FlashcardDeck: {
+      flashcarddecks: {
         orderBy: {
           createdAt: "desc",
         },
@@ -130,7 +130,7 @@ const ChapterIdPage = async ({
             /> */}
           {/* </div> */}
         </div>
-        {chapter.FlashcardDeck.map((deck, index) => (
+        {chapter.flashcarddecks.map((deck, index) => (
           <>
             <button>
               <Link
@@ -150,4 +150,3 @@ const ChapterIdPage = async ({
 };
 
 export default ChapterIdPage;
-

@@ -1,18 +1,17 @@
-import { auth } from "@clerk/nextjs";
 import { NextResponse } from "next/server";
 
 import { db } from "@/lib/db";
+import { auth } from "@clerk/nextjs";
 
 export async function POST(
   req: Request,
   {
     params,
-  }: {
-    params: { courseId: string; chapterId: string; flashcarddeckId: string };
-  }
+  }: { params: { courseId: string; chapterId: string; quizId: string } }
 ) {
   try {
     const { userId } = auth();
+    const { text } = await req.json();
     if (!userId) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
@@ -23,19 +22,21 @@ export async function POST(
         userId: userId,
       },
     });
-
     if (!courseOwner) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
-    const flashcard = await db.flashcard.create({
+    const answer = await db.answer.create({
       data: {
-        flashcarddeckId: params.flashcarddeckId,
+        questionId: params.quizId,
+        text: text,
+        isCorrect: false,
       },
     });
-    return NextResponse.json(flashcard);
+
+    return NextResponse.json(answer);
   } catch (error) {
-    console.log("[FLASHCARD]", error);
+    console.log("[ANSWER]", error);
     return new NextResponse("Internal Error", { status: 500 });
   }
 }

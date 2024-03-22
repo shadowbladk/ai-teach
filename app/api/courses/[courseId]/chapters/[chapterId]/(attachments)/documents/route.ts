@@ -5,14 +5,12 @@ import { db } from "@/lib/db";
 
 export async function POST(
   req: Request,
-  {
-    params,
-  }: {
-    params: { courseId: string; chapterId: string; flashcarddeckId: string };
-  }
+  { params }: { params: { courseId: string; chapterId: string } }
 ) {
   try {
     const { userId } = auth();
+    const { url } = await req.json();
+
     if (!userId) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
@@ -28,14 +26,17 @@ export async function POST(
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
-    const flashcard = await db.flashcard.create({
+    const document = await db.document.create({
       data: {
-        flashcarddeckId: params.flashcarddeckId,
+        url: url,
+        name: url.split("/").pop(),
+        chapterId: params.chapterId,
       },
     });
-    return NextResponse.json(flashcard);
+
+    return NextResponse.json(document);
   } catch (error) {
-    console.log("[FLASHCARD]", error);
+    console.log("[DOCUMENT]", error);
     return new NextResponse("Internal Error", { status: 500 });
   }
 }
