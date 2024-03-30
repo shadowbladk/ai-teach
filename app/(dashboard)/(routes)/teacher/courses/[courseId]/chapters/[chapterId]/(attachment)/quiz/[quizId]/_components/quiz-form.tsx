@@ -13,7 +13,7 @@ import { PlusCircle } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import { QuizAnswerForm } from "./quiz-answer-form"
-import { quiz } from "./mock-quiz"
+// import { quiz } from "./mock-quiz"
 import { QuizQuestionForm } from "./quiz-question-form"
 
 import {
@@ -34,8 +34,9 @@ interface QuizFormProps {
   quizId: string
 }
 
-export const QuizForm = ({ initialData, courseId }: QuizFormProps) => {
-  const [questions, setQuestions] = useState(quiz)
+export const QuizForm = ({ initialData, courseId, chapterId,
+  quizId, }: QuizFormProps) => {
+  const [questions, setQuestions] = useState(initialData)
 
   const [api, setApi] = React.useState<CarouselApi>()
   const [current, setCurrent] = React.useState(0)
@@ -92,7 +93,7 @@ export const QuizForm = ({ initialData, courseId }: QuizFormProps) => {
               <div className="flex flex-col gap-4">
                 <QuizAnswerForm
                   key={index}
-                  initialData={initialData}
+                  initialData={question}
                   courseId={courseId}
                 />
               </div>
