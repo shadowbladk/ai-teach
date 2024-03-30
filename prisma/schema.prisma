@@ -105,7 +105,7 @@ model Flashcarddeck {
 
 model Answer {
   id         String   @id @default(uuid())
-  text       String   @db.Text
+  text       String?  @db.Text
   isCorrect  Boolean
   questionId String
   createdAt  DateTime @default(now())
@@ -127,8 +127,20 @@ model Enrollment {
 }
 
 model Question {
+  id            String   @id @default(uuid())
+  text          String?  @db.Text
+  questionSetId String
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  chapter       Chapter  @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+
+  @@index([questionSetId])
+}
+
+model Document {
   id        String   @id @default(uuid())
-  text      String   @db.Text
+  name      String   @db.Text
+  url       String   @db.Text
   chapterId String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -137,14 +149,13 @@ model Question {
   @@index([chapterId])
 }
 
-model Document {
-  id        String   @id @default(uuid())
-  name      String
-  url       String   @db.Text
-  chapterId String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  chapter   Chapter  @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+model QuestionSet {
+  id          String   @id
+  title       String   @db.Text
+  isPublished Boolean  @default(false)
+  chapterId   String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime
 
   @@index([chapterId])
 }

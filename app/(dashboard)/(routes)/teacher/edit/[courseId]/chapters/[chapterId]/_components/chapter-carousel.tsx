@@ -46,11 +46,9 @@ export const ChapterCarousel = ({
               </CarouselItem>
             </div>
           ))}
-          <CarouselItem>
-            <div className="pt-3 md:pt-5">
-              <ChapterEdit course={course} />
-            </div>
-          </CarouselItem>
+          <div className="pt-3 md:pt-5">
+            <ChapterEdit course={course} />
+          </div>
         </CarouselContent>
         <CarouselPrevious />
         <CarouselNext />
