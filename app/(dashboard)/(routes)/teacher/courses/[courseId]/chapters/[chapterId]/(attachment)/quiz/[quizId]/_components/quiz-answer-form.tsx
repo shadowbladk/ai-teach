@@ -8,7 +8,7 @@ import { Pencil } from "lucide-react"
 import { useState, useEffect } from "react"
 import toast from "react-hot-toast"
 import { useRouter } from "next/navigation"
-import { Course } from "@prisma/client"
+import { Course, Question } from "@prisma/client"
 
 import {
   Form,
@@ -23,11 +23,13 @@ import { Textarea } from "@/components/ui/textarea"
 import { Input } from "@/components/ui/input"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Label } from "@/components/ui/label"
+import { db } from "@/lib/db"
 
 interface QuizAnswerFormProps {
-  initialData: Course
+  initialData: Question
   courseId: string
-  // allAnswers: ChoiceProps[] | null
+  chapterId: string
+  questionsetId: string
 }
 
 interface ChoiceProps {
@@ -42,7 +44,9 @@ const formSchema = z.object({
 export const QuizAnswerForm = ({
   initialData,
   courseId,
-}: // allAnswers,
+  chapterId,
+  questionsetId,
+}:
 QuizAnswerFormProps) => {
   const [isEditing, setIsEditing] = useState(false)
   const [question, setQuestion] = useState("")
@@ -64,9 +68,11 @@ QuizAnswerFormProps) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      description: initialData?.description || "",
+      description: initialData?.text || "",
     },
   })
+
+  
 
   const { isSubmitting, isValid } = form.formState
 
@@ -130,10 +136,10 @@ QuizAnswerFormProps) => {
                       <p
                         className={cn(
                           "text-sm",
-                          !initialData.description && "text-slate-500 italic"
+                          !initialData.text && "text-slate-500 italic"
                         )}
                       >
-                        {initialData.description || "No question"}
+                        {initialData.text || "No question"}
                       </p>
                       <div className="font-medium flex justify-between">
                         Answer

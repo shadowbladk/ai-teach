@@ -34,8 +34,12 @@ interface QuizFormProps {
   questionsetId: string
 }
 
-export const QuizForm = ({ initialData, courseId, chapterId,
-  questionsetId, }: QuizFormProps) => {
+export const QuizForm = ({
+  initialData,
+  courseId,
+  chapterId,
+  questionsetId,
+}: QuizFormProps) => {
   const [questions, setQuestions] = useState(initialData)
 
   const [api, setApi] = React.useState<CarouselApi>()
@@ -57,27 +61,22 @@ export const QuizForm = ({ initialData, courseId, chapterId,
 
   const router = useRouter()
 
-  const handleQuestionAdd = async() => {
+  const handleQuestionAdd = async () => {
+    let newQuestion
     try {
       let result = await axios.post(
         `/api/courses/${courseId}/chapters/${chapterId}/questionset/${questionsetId}/questions`
       )
       toast.success("Question created")
-      // newCard = await result.data
+      newQuestion = await result.data
       router.refresh()
     } catch {
       toast.error("Something went wrong")
     }
+    setQuestions([...questions, newQuestion])
+    console.log(newQuestion)
     setCurrent(count + 1)
     setCount(count + 1)
-    // setQuestions([...questions, { question: "", choices: [] }])
-  }
-
-  const handleQuestionRemove = (index: number) => {
-    console.log(index)
-    // const items = [...questions]
-    // items.splice(index, 1)
-    // setQuestions(items)
   }
 
   return (
@@ -105,6 +104,8 @@ export const QuizForm = ({ initialData, courseId, chapterId,
                   key={index}
                   initialData={question}
                   courseId={courseId}
+                  chapterId={chapterId}
+                  questionsetId={questionsetId}
                 />
               </div>
             </CarouselItem>
