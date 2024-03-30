@@ -7,7 +7,7 @@ export async function DELETE(
   req: Request,
   {
     params,
-  }: { params: { courseId: string; chapterId: string; quizId: string } }
+  }: { params: { courseId: string; chapterId: string; questionId: string } }
 ) {
   try {
     const { userId } = auth();
@@ -28,13 +28,13 @@ export async function DELETE(
 
     const deleteQuiz = await db.question.delete({
       where: {
-        id: params.quizId,
+        id: params.questionId,
       },
     });
 
     return NextResponse.json(deleteQuiz);
   } catch (error) {
-    console.log("[QUIZ_ID]", error);
+    console.log("[QUESTION_ID]", error);
     return new NextResponse("Internal Error", { status: 500 });
   }
 }
@@ -44,7 +44,7 @@ export async function PATCH(
   {
     params,
   }: {
-    params: { courseId: string; chapterId: string; quizId: string };
+    params: { courseId: string; chapterId: string; questionId: string };
   }
 ) {
   try {
@@ -67,7 +67,7 @@ export async function PATCH(
 
     const quiz = await db.question.update({
       where: {
-        id: params.quizId,
+        id: params.questionId,
       },
       data: {
         ...values,
@@ -75,7 +75,7 @@ export async function PATCH(
     });
     return NextResponse.json(quiz);
   } catch (error) {
-    console.log("[QUIZ_ID]", error);
+    console.log("[QUESTION_ID]", error);
     return new NextResponse("Internal Error", { status: 500 });
   }
 }

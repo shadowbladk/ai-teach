@@ -60,8 +60,8 @@ model Chapter {
 
   userProgress   UserProgress[]
   flashcarddecks Flashcarddeck[]
-  questions      Question[]
   documents      Document[]
+  questionSet    QuestionSet[]
 
   @@index([courseId])
 }
@@ -94,7 +94,7 @@ model Flashcard {
 
 model Flashcarddeck {
   id         String      @id @default(uuid())
-  title      String      @db.Text
+  title      String     @db.Text
   isPublic   Boolean     @default(false)
   chapterId  String
   createdAt  DateTime    @default(now())
@@ -129,20 +129,33 @@ model Enrollment {
 }
 
 model Question {
-  id        String  @id @default(uuid())
-  text      String  @db.Text
-  chapterId String
-  chapter   Chapter @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+  id            String      @id @default(uuid())
+  text          String      @db.Text
+  questionSetId String
+  questionSet   QuestionSet @relation(fields: [questionSetId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@index([questionSetId])
+}
+
+model QuestionSet {
+  id        String  @id @default(uuid())
+  title     String? @db.Text
+  chapterId String
+  chapter   Chapter @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  Question  Question[]
 
   @@index([chapterId])
 }
 
 model Document {
   id        String   @id @default(uuid())
-  name      String
+  name      String   @db.Text
   url       String   @db.Text
   chapterId String
   chapter   Chapter  @relation(fields: [chapterId], references: [id], onDelete: Cascade)
