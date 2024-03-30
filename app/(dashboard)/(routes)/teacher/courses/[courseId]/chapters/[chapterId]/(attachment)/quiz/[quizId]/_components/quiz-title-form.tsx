@@ -25,7 +25,7 @@ interface QuizTitleFormProps {
   }
   courseId: string
   chapterId: string
-  quizId: string
+  questionsetId: string
 }
 
 const formSchema = z.object({
@@ -36,7 +36,7 @@ export const QuizTitleForm = ({
   initialData,
   courseId,
   chapterId,
-  quizId,
+  questionsetId,
 }: 
 QuizTitleFormProps) => {
   const [isEditing, setIsEditing] = useState(false)
@@ -55,7 +55,7 @@ QuizTitleFormProps) => {
   const onSubmit = async (value: z.infer<typeof formSchema>) => {
     try {
       await axios.patch(
-        `/api/courses/${courseId}/chapters/${chapterId}/questionset/${quizId}`,
+        `/api/courses/${courseId}/chapters/${chapterId}/questionset/${questionsetId}`,
         value
       )
       toast.success("Question set updated")
