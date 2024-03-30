@@ -65,10 +65,10 @@ const QuizPage = async ({
         </div>
 
         <div className="flex flex-col gap-8 w-4/5 max-w-7xl justify-center">
-          {/* <QuizTitleForm initialData={quiz.title}
+          <QuizTitleForm initialData={quiz}
             courseId={params.courseId}
             chapterId={params.chapterId}
-            quizId={params.quizId} /> */}
+            quizId={params.quizId} />
           <hr className="border-t-4 rounded-md border-gray-400" />
           <QuizForm initialData={quiz.Question}
             courseId={params.courseId}
