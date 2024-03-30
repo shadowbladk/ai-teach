@@ -143,7 +143,7 @@ model Question {
 model QuestionSet {
   id        String  @id @default(uuid())
   title     String? @db.Text
-  isPublic  Boolean @default(false)
+  isPublished  Boolean @default(false)
   chapterId String
   chapter   Chapter @relation(fields: [chapterId], references: [id], onDelete: Cascade)
 
