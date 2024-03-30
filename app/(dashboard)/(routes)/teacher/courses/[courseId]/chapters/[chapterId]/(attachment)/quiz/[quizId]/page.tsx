@@ -18,7 +18,7 @@ const QuizPage = async ({
   params: {
     courseId: string
     chapterId: string
-    quizId: string
+    questionsetId: string
   }
 }) => {
   const { userId } = auth()
@@ -29,7 +29,7 @@ const QuizPage = async ({
 
   const quiz = await db.questionSet.findUnique({
     where: {
-      id: params.quizId,
+      id: params.questionsetId,
     },
     include: {
       Question: {
@@ -68,12 +68,12 @@ const QuizPage = async ({
           <QuizTitleForm initialData={quiz}
             courseId={params.courseId}
             chapterId={params.chapterId}
-            quizId={params.quizId} />
+            questionsetId={params.questionsetId} />
           <hr className="border-t-4 rounded-md border-gray-400" />
           <QuizForm initialData={quiz.Question}
             courseId={params.courseId}
             chapterId={params.chapterId}
-            quizId={params.quizId} />
+            questionsetId={params.questionsetId} />
         </div>
       </div>
     </>
