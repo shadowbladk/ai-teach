@@ -1,40 +1,48 @@
-"use client"
+"use client";
 
-import { useState, useRef } from "react"
-import Draggable from "react-draggable"
-import { Resizable } from "re-resizable"
+import { useState, useRef } from "react";
+import Draggable from "react-draggable";
+import { Resizable } from "re-resizable";
 
-import { X, Send, Bot } from "lucide-react"
+import { X, Send, Bot } from "lucide-react";
 
-import { AIChatBox } from "@/components/chat-ai"
-import { UserChatBox } from "@/components/chat-user"
+import { AIChatBox } from "@/components/chat-ai";
+import { UserChatBox } from "@/components/chat-user";
+import axios from "axios";
+import { set } from "zod";
 
 interface ChatProps {
-  text: string
-  type: string
+  text: string;
+  type: string;
 }
 
 export const Chat = () => {
-  const [chat, setChat] = useState(false)
-  const [messages, setMessages] = useState<ChatProps[]>([])
-  const [message, setMessage] = useState<ChatProps>({ text: "", type: "" })
-  let allMessages: ChatProps[] = messages
+  const [chat, setChat] = useState(false);
+  const [messages, setMessages] = useState<ChatProps[]>([]);
+  const [message, setMessage] = useState<ChatProps>({ text: "", type: "" });
+  let allMessages: ChatProps[] = messages;
 
-  const chatRef = useRef<null | HTMLDivElement>(null)
+  const chatRef = useRef<null | HTMLDivElement>(null);
+
+  const getMessages = async () => {
+    return await axios.post("/api/chat-ai", { message: message.text });
+  };
 
   const submit = async (e: any) => {
-    e.preventDefault()
-    if (message?.text === "") return
-    allMessages.push(message)
-    setMessages(allMessages)
-    setMessage({ text: "", type: "" })
+    e.preventDefault();
+    if (message?.text === "") return;
+    allMessages.push(message);
+    setMessages(allMessages);
+    setMessage({ text: "", type: "ai" });
     setTimeout(() => {
       chatRef.current?.scrollIntoView({
         behavior: "smooth",
         block: "end",
-      })
-    }, 100)
-  }
+      });
+    }, 100);
+    allMessages.push({ text: (await getMessages()).data, type: "ai" });
+    setMessages(allMessages);
+  };
 
   return (
     <>
@@ -70,9 +78,9 @@ export const Chat = () => {
                 <AIChatBox AIText="Welcome to the Ai Teach! What can I help you with?" />
                 {messages.map((message, index) => {
                   if (message.type === "ai") {
-                    return <AIChatBox key={index} AIText={message.text} />
+                    return <AIChatBox key={index} AIText={message.text} />;
                   }
-                  return <UserChatBox key={index} UserText={message.text} />
+                  return <UserChatBox key={index} UserText={message.text} />;
                 })}
               </div>
             </div>
@@ -87,7 +95,7 @@ export const Chat = () => {
                 }
                 onKeyDown={(e) => {
                   if (e.key === "Enter") {
-                    submit(e)
+                    submit(e);
                   }
                 }}
               />
@@ -100,5 +108,5 @@ export const Chat = () => {
         </div>
       </Draggable>
     </>
-  )
-}
+  );
+};
