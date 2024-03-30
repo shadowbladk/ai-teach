@@ -3,6 +3,38 @@ import { NextResponse } from "next/server";
 
 import { db } from "@/lib/db";
 
+export async function DELETE(
+  req: Request,
+  {
+    params,
+  }: {
+    params: {
+      courseId: string;
+      chapterId: string;
+      questionsetId: string;
+    };
+  }
+) {
+  try {
+    const { userId } = auth();
+    if (!userId) {
+      return new NextResponse("Unauthorized", { status: 401 });
+    }
+
+    const deleteQuestionSet = await db.questionSet.delete({
+      where: {
+        id: params.questionsetId,
+        chapterId: params.chapterId,
+      },
+    });
+
+    return NextResponse.json(deleteQuestionSet);
+  } catch (error) {
+    console.log("[QUESTION_SET_ID]", error);
+    return new NextResponse("Internal Error", { status: 500 });
+  }
+}
+
 export async function PATCH(
   req: Request,
   {
@@ -26,7 +58,7 @@ export async function PATCH(
     const questionSet = await db.questionSet.update({
       where: {
         id: params.questionsetId,
-        chapterId: params.chapterId
+        chapterId: params.chapterId,
       },
       data: {
         ...value,
