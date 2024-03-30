@@ -15,16 +15,16 @@ export async function POST(
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
-    const quiz = await db.question.create({
+    const questionSet = await db.questionSet.create({
       data: {
         chapterId: params.chapterId,
-        text: title,
+        title: title,
       },
     });
 
-    return NextResponse.json(quiz);
+    return NextResponse.json(questionSet);
   } catch (error) {
-    console.log("[QUIZ]", error);
-    return new NextResponse("Internal Error", { status: 500 });
+    console.log("QUESTION_SET", error);
+    return new NextResponse("Internal error", { status: 500 });
   }
 }
