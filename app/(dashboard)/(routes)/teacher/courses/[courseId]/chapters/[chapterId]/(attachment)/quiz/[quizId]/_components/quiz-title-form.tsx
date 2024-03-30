@@ -24,7 +24,8 @@ interface QuizTitleFormProps {
     title: string
   }
   courseId: string
-  // quizId: string
+  chapterId: string
+  quizId: string
 }
 
 const formSchema = z.object({
@@ -34,7 +35,9 @@ const formSchema = z.object({
 export const QuizTitleForm = ({
   initialData,
   courseId,
-}: // quizId,
+  chapterId,
+  quizId,
+}: 
 QuizTitleFormProps) => {
   const [isEditing, setIsEditing] = useState(false)
 
@@ -49,16 +52,18 @@ QuizTitleFormProps) => {
 
   const { isSubmitting, isValid } = form.formState
 
-  const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    console.log(values)
-    // try {
-    //   await axios.patch(`/api/courses/${courseId}`, values)
-    //   toast.success("Course updated")
-    //   toggleEdit()
-    //   router.refresh()
-    // } catch {
-    //   toast.error("Something went wrong")
-    // }
+  const onSubmit = async (value: z.infer<typeof formSchema>) => {
+    try {
+      await axios.patch(
+        `/api/courses/${courseId}/chapters/${chapterId}/questionset/${quizId}`,
+        value
+      )
+      toast.success("Question set updated")
+      toggleEdit()
+      router.refresh()
+    } catch {
+      toast.error("Something went wrong")
+    }
   }
 
   return (

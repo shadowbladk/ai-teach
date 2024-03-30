@@ -12,47 +12,43 @@ import { QuizAnswerForm } from "./_components/quiz-answer-form"
 import { Actions } from "./_components/actions"
 import { Button } from "@/components/ui/button"
 
-const QuizPage = async ({ params }: { params: { courseId: string } }) => {
+const QuizPage = async ({
+  params,
+}: {
+  params: {
+    courseId: string
+    chapterId: string
+    quizId: string
+  }
+}) => {
   const { userId } = auth()
 
   if (!userId) {
     return redirect("/")
   }
 
-  const course = await db.course.findUnique({
+  const quiz = await db.questionSet.findUnique({
     where: {
-      id: params.courseId,
-      userId,
+      id: params.quizId,
     },
     include: {
-      chapters: {
+      Question: {
         orderBy: {
-          position: "asc",
-        },
-      },
-      attachments: {
-        orderBy: {
-          createdAt: "desc",
+          updatedAt: "desc",
         },
       },
     },
-  })
+  });
 
-  const categories = await db.category.findMany({
-    orderBy: {
-      name: "asc",
-    },
-  })
-
-  if (!course) {
+  if (!quiz) {
     return redirect("/")
   }
 
   return (
     <>
-      {!course.isPublished && (
+      {/* {!quiz?.isPublished && ( */}
         <Banner label="This course is unpublished. It will not be visible to the students." />
-      )}
+      {/* )} */}
       <div className="flex flex-col items-center justify-center w-full px-4 py-16 gap-8 ">
         <div className="flex items-center w-4/5 max-w-7xl justify-between">
           <div className="flex flex-row gap-2 items-center justify-center">
@@ -60,18 +56,24 @@ const QuizPage = async ({ params }: { params: { courseId: string } }) => {
             <h1 className="text-2xl font-medium">Quiz</h1>
           </div>
 
-          <Actions
+          {/* <Actions
             // disabled={!isComplete}
             disabled={true}
             courseId={params.courseId}
             isPublished={course.isPublished}
-          />
+          /> */}
         </div>
 
         <div className="flex flex-col gap-8 w-4/5 max-w-7xl justify-center">
-          <QuizTitleForm initialData={course} courseId={course.id} />
+          {/* <QuizTitleForm initialData={quiz.title}
+            courseId={params.courseId}
+            chapterId={params.chapterId}
+            quizId={params.quizId} /> */}
           <hr className="border-t-4 rounded-md border-gray-400" />
-          <QuizForm initialData={course} courseId={course.id} />
+          <QuizForm initialData={quiz.Question}
+            courseId={params.courseId}
+            chapterId={params.chapterId}
+            quizId={params.quizId} />
         </div>
       </div>
     </>

@@ -4,11 +4,10 @@ import * as z from "zod"
 import axios from "axios"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
-import { Pencil } from "lucide-react"
 import { useState } from "react"
 import toast from "react-hot-toast"
 import { useRouter } from "next/navigation"
-import { Course } from "@prisma/client"
+import { Course, Question } from "@prisma/client"
 import { PlusCircle } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
@@ -29,13 +28,11 @@ import {
 import React from "react"
 
 interface QuizFormProps {
-  initialData: Course
+  initialData: Question[]
   courseId: string
+  chapterId: string
+  quizId: string
 }
-
-const formSchema = z.object({
-  description: z.string().min(1),
-})
 
 export const QuizForm = ({ initialData, courseId }: QuizFormProps) => {
   const [questions, setQuestions] = useState(quiz)
@@ -58,13 +55,6 @@ export const QuizForm = ({ initialData, courseId }: QuizFormProps) => {
   }, [api])
 
   const router = useRouter()
-
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      description: initialData?.description || "",
-    },
-  })
 
   const handleQuestionAdd = () => {
     setCurrent(count + 1)
