@@ -45,10 +45,13 @@ export const QuizForm = ({
     (Question & { answers: Answer[] })[]
   >(JSON.parse(JSON.stringify(data)))
   const [api, setApi] = React.useState<CarouselApi>()
-  const [current, setCurrent] = React.useState(questions ? 1 : 0)
+  const [current, setCurrent] = React.useState(questions.length != 0 ? 1 : 0)
   const [count, setCount] = React.useState(questions.length)
 
   const [isEditing, setIsEditing] = useState(false)
+  const [answers, setAnswers] = useState<string[]>(
+    Array(questions.length).fill("5")
+  )
   const [selectedValue, setSelectedValue] = useState("")
   const [correctAnswer, setCorrectAnswer] = useState("")
 
@@ -63,6 +66,7 @@ export const QuizForm = ({
   const onCancel = (index: number) => {
     setQuestions((prevItems: (Question & { answers: Answer[] })[]) => {
       const updatedItems: (Question & { answers: Answer[] })[] = [...prevItems]
+      console.log(data)
       updatedItems[index] = JSON.parse(JSON.stringify(data[index]))
       return updatedItems
     })
@@ -70,12 +74,17 @@ export const QuizForm = ({
     toggleEdit()
   }
 
+  const move = () => {
+    setSelectedValue(api ? answers[api.selectedScrollSnap()] : "5")
+    setCorrectAnswer(api ? answers[api.selectedScrollSnap()] : "5")
+  }
+
   const onSubmit = async (index: number) => {
     let question = questions[index]
     let questionId = question.id
     try {
       let valueQuestion = { text: questions[index].text }
-      let resultQ = await axios.patch(
+      await axios.patch(
         `/api/courses/${courseId}/chapters/${chapterId}/questionset/${questionsetId}/questions/${questionId}`,
         valueQuestion
       )
@@ -91,12 +100,14 @@ export const QuizForm = ({
             : (question.answers[i].isCorrect = false)
         }
         let answerId = question.answers[i].id
-        let result = await axios.patch(
+        await axios.patch(
           `/api/courses/${courseId}/chapters/${chapterId}/questionset/${questionsetId}/questions/${questionId}/answers/${answerId}`,
           valueAnswer
         )
       }
       setData(JSON.parse(JSON.stringify(questions)))
+      answers[index] = selectedValue
+      setCorrectAnswer(selectedValue)
       toast.success("Question updated")
       toggleEdit()
       router.refresh()
@@ -136,13 +147,8 @@ export const QuizForm = ({
 
   const handleQuestionRemove = async (index: number) => {
     try {
-      let question = questions[index]
-      let questionId = question.id
-      for (let i = 0; i < 4; i++) {
-        await axios.delete(
-          `/api/courses/${courseId}/chapters/${chapterId}/questionset/${questionsetId}/questions/${questionId}/answers/${question.answers[i].id}`
-        )
-      }
+      let questionId = questions[index].id
+
       await axios.delete(
         `/api/courses/${courseId}/chapters/${chapterId}/questionset/${questionsetId}/questions/${questionId}`
       )
@@ -152,12 +158,14 @@ export const QuizForm = ({
       toast.error("Something went wrong")
     }
     questions.splice(index, 1)
+    answers.splice(index, 1)
     setCount(questions.length)
     questions.length == 0
       ? setCurrent(0)
       : index == questions.length
       ? setCurrent(current - 1)
       : setCurrent(current)
+    move()
     toggleEdit()
   }
 
@@ -171,6 +179,15 @@ export const QuizForm = ({
     api.on("select", () => {
       setCurrent(api.selectedScrollSnap() + 1)
     })
+
+    questions.map((question, index: number) => {
+      question?.answers.map((answer: Answer, i: number) => {
+        answer.isCorrect ? (answers[index] = String(i)) : null
+      })
+    })
+    setSelectedValue(answers[0])
+    setCorrectAnswer(answers[0])
+    console.log(answers)
   }, [api])
 
   const router = useRouter()
@@ -196,6 +213,9 @@ export const QuizForm = ({
     }
     setQuestions([newQuestion, ...questions])
     setCount(count + 1)
+    setAnswers(["5", ...answers])
+    setSelectedValue("5")
+    setCorrectAnswer("5")
     api?.scrollTo(0)
   }
 
@@ -216,134 +236,146 @@ export const QuizForm = ({
           Add new question
         </Button>
       </div>
-      <Carousel setApi={setApi} className="w-full ">
-        <CarouselContent>
-          {questions.map((question, index: number) => (
-            <CarouselItem key={index}>
-              <div className="flex flex-col gap-4">
-                <div className="border bg-slate-100 rounded-md p-6 flex flex-col gap-4">
-                  <div className="font-medium flex justify-between">
-                    Question
-                    <Button
-                      onClick={(e) => handleQuestionEdit(index)}
-                      variant="underline"
-                      size="ghost"
-                      className={isEditing ? "hidden" : "flex"}
-                    >
-                      <Pencil className="h-4 w-4 mr-1" />
-                      Edit question
-                    </Button>
-                  </div>
+      {questions.length != 0 && (
+        <Carousel setApi={setApi} className="w-full ">
+          <CarouselContent>
+            {questions.map((question, index: number) => (
+              <CarouselItem key={index}>
+                <div className="flex flex-col gap-4">
+                  <div className="border bg-slate-100 rounded-md p-6 flex flex-col gap-4">
+                    <div className="font-medium flex justify-between">
+                      Question
+                      <Button
+                        onClick={(e) => handleQuestionEdit(index)}
+                        variant="underline"
+                        size="ghost"
+                        className={isEditing ? "hidden" : "flex"}
+                      >
+                        <Pencil className="h-4 w-4 mr-1" />
+                        Edit question
+                      </Button>
+                    </div>
 
-                  {!isEditing && (
-                    <>
-                      <section className="flex flex-col gap-4">
-                        <p
-                          className={cn(
-                            "text-sm",
-                            !question.text && "text-slate-500 italic"
-                          )}
-                        >
-                          {question.text || "No question"}
-                        </p>
-                        <div className="font-medium flex justify-between">
-                          Answer
-                        </div>
-                        <RadioGroup
-                          className="flex flex-col space-y-3"
-                          disabled={true}
-                        >
-                          {question.answers.map((answer: Answer, i: any) => (
-                            <div className="flex flex-row items-center space-x-3 space-y-0">
-                              <RadioGroupItem
-                                value={i}
-                                checked={selectedValue === i.toString()}
-                              />
-                              <p
-                                className={cn(
-                                  "text-sm",
-                                  !answer.text && "text-slate-500 italic"
-                                )}
-                              >
-                                {answer.text || "No answer"}
-                              </p>
-                            </div>
-                          ))}
-                        </RadioGroup>
-                      </section>
-                    </>
-                  )}
-                  {isEditing && (
-                    <>
-                      <section className="flex flex-col gap-4">
-                        <Textarea
-                          placeholder="e.g. 'Question... ?'"
-                          value={question?.text || ""}
-                          onChange={(e) =>
-                            updateQuestion(index, e.target.value)
-                          }
-                        />
-                        <div className="font-medium flex justify-between">
-                          Answer
-                        </div>
-                        <div className="flex flex-col space-y-1">
-                          {question.answers.map((answer: Answer, i: any) => (
-                            <div className="flex items-center space-x-3 space-y-0">
-                              <input
-                                type="radio"
-                                id={i}
-                                value={i}
-                                checked={selectedValue === i.toString()}
-                                onChange={handleRadioChange}
-                              />
-                              <Input
-                                placeholder={`e.g. 'Choice ${i + 1}'`}
-                                value={answer?.text || ""}
-                                onChange={(e) =>
-                                  updateAnswerAtIndex(index, i, e.target.value)
-                                }
-                              />
-                            </div>
-                          ))}
-                        </div>
-                      </section>
-
-                      <div className="flex flex-row justify-between pt-4">
-                        <Button
-                          variant="warning"
-                          size="sm_l"
-                          onClick={(e) => handleQuestionRemove(index)}
-                        >
-                          Delete
-                        </Button>
-                        <div className="flex justify-end gap-4">
-                          <Button
-                            variant="underline"
-                            size="ghost"
-                            onClick={(e) => onCancel(index)}
+                    {!isEditing && (
+                      <>
+                        <section className="flex flex-col gap-4">
+                          <p
+                            className={cn(
+                              "text-sm",
+                              !question?.text && "text-slate-500 italic"
+                            )}
                           >
-                            Cancel
-                          </Button>
+                            {question?.text || "No question"}
+                          </p>
+                          <div className="font-medium flex justify-between">
+                            Answer
+                          </div>
+                          <RadioGroup
+                            className="flex flex-col space-y-3"
+                            disabled={true}
+                          >
+                            {question?.answers.map((answer: Answer, i: any) => (
+                              <div className="flex flex-row items-center space-x-3 space-y-0">
+                                <RadioGroupItem
+                                  value={i}
+                                  checked={selectedValue === i.toString()}
+                                />
+                                <p
+                                  className={cn(
+                                    "text-sm",
+                                    !answer.text && "text-slate-500 italic"
+                                  )}
+                                >
+                                  {answer.text || "No answer"}
+                                </p>
+                              </div>
+                            ))}
+                          </RadioGroup>
+                        </section>
+                      </>
+                    )}
+                    {isEditing && (
+                      <>
+                        <section className="flex flex-col gap-4">
+                          <Textarea
+                            placeholder="e.g. 'Question... ?'"
+                            value={question?.text || ""}
+                            onChange={(e) =>
+                              updateQuestion(index, e.target.value)
+                            }
+                          />
+                          <div className="font-medium flex justify-between">
+                            Answer
+                          </div>
+                          <div className="flex flex-col space-y-1">
+                            {question.answers.map((answer: Answer, i: any) => (
+                              <div className="flex items-center space-x-3 space-y-0">
+                                <input
+                                  type="radio"
+                                  id={i}
+                                  value={i}
+                                  checked={selectedValue === i.toString()}
+                                  onChange={handleRadioChange}
+                                />
+                                <Input
+                                  placeholder={`e.g. 'Choice ${i + 1}'`}
+                                  value={answer?.text || ""}
+                                  onChange={(e) =>
+                                    updateAnswerAtIndex(
+                                      index,
+                                      i,
+                                      e.target.value
+                                    )
+                                  }
+                                />
+                              </div>
+                            ))}
+                          </div>
+                        </section>
+
+                        <div className="flex flex-row justify-between pt-4">
                           <Button
-                            type="submit"
+                            variant="warning"
                             size="sm_l"
-                            variant="primary"
-                            onClick={(e) => onSubmit(index)}
+                            onClick={(e) => handleQuestionRemove(index)}
                           >
-                            Save
+                            Delete
                           </Button>
+                          <div className="flex justify-end gap-4">
+                            <Button
+                              variant="underline"
+                              size="ghost"
+                              onClick={(e) => onCancel(index)}
+                            >
+                              Cancel
+                            </Button>
+                            <Button
+                              type="submit"
+                              size="sm_l"
+                              variant="primary"
+                              onClick={(e) => onSubmit(index)}
+                            >
+                              Save
+                            </Button>
+                          </div>
                         </div>
-                      </div>
-                    </>
-                  )}
+                      </>
+                    )}
+                  </div>
                 </div>
-              </div>
-            </CarouselItem>
-          ))}
-        </CarouselContent>
-        <CarouselPrevious disabled={isEditing || !api?.canScrollPrev()} />
-        <CarouselNext disabled={isEditing || !api?.canScrollNext()} />
-      </Carousel>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+          <CarouselPrevious
+            disabled={isEditing || !api?.canScrollPrev()}
+            onClick={(e) => (api?.scrollPrev(), move())}
+          />
+          <CarouselNext
+            disabled={isEditing || !api?.canScrollNext()}
+            onClick={(e) => (api?.scrollNext(), move())}
+          />
+        </Carousel>
+      )}
     </div>
   )
 }

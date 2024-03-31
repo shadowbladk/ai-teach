@@ -10,15 +10,21 @@ import { Button } from "@/components/ui/button";
 import { ConfirmModal } from "@/components/modals/confirm-modal";
 import { useConfettiStore } from "@/hooks/use-confetti-store";
 
+import { Question, Answer } from "@prisma/client"
+
 interface ActionsProps {
   disabled: boolean;
   courseId: string;
+  chapterId: string;
+  questionSetId: string;
   isPublished: boolean;
 };
 
 export const Actions = ({
   disabled,
   courseId,
+  chapterId,
+  questionSetId,
   isPublished
 }: ActionsProps) => {
   const router = useRouter();
@@ -30,11 +36,11 @@ export const Actions = ({
       setIsLoading(true);
 
       if (isPublished) {
-        await axios.patch(`/api/courses/${courseId}/unpublish`);
-        toast.success("Course unpublished");
+        await axios.patch(`/api/courses/${courseId}/chapters/${chapterId}/questionset/${questionSetId}/unpublish`);
+        toast.success("Question unpublished");
       } else {
-        await axios.patch(`/api/courses/${courseId}/publish`);
-        toast.success("Course published");
+        await axios.patch(`/api/courses/${courseId}/chapters/${chapterId}/questionset/${questionSetId}/publish`);
+        toast.success("Question published");
         confetti.onOpen();
       }
 
@@ -49,10 +55,10 @@ export const Actions = ({
   const onDelete = async () => {
     try {
       setIsLoading(true);
+      
+      await axios.delete(`/api/courses/${courseId}/chapters/${chapterId}/questionset/${questionSetId}`);
 
-      await axios.delete(`/api/courses/${courseId}`);
-
-      toast.success("Course deleted");
+      toast.success("Question deleted");
       router.refresh();
       router.push(`/teacher/courses`);
     } catch {

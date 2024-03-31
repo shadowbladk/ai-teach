@@ -8,7 +8,6 @@ import { Banner } from "@/components/banner"
 
 import { QuizTitleForm } from "./_components/quiz-title-form"
 import { QuizForm } from "./_components/quiz-form"
-import { QuizAnswerForm } from "./_components/quiz-answer-form"
 import { Actions } from "./_components/actions"
 import { Button } from "@/components/ui/button"
 
@@ -27,7 +26,7 @@ const QuizPage = async ({
     return redirect("/")
   }
 
-  const quiz = await db.questionSet.findUnique({
+  const questionSet = await db.questionSet.findUnique({
     where: {
       id: params.quizId,
     },
@@ -42,45 +41,46 @@ const QuizPage = async ({
               updatedAt: "desc",
             },
           },
-        }
+        },
       },
     },
   })
 
-  if (!quiz) {
+  if (!questionSet) {
     return redirect("/")
   }
 
   return (
     <>
-      {/* {!quiz?.isPublished && ( */}
+      {!questionSet?.isPublished && (
       <Banner label="This course is unpublished. It will not be visible to the students." />
-      {/* )} */}
+      )} 
       <div className="flex flex-col items-center justify-center w-full px-4 py-16 gap-8 ">
         <div className="flex items-center w-4/5 max-w-7xl justify-between">
           <div className="flex flex-row gap-2 items-center justify-center">
             <PencilRuler />
-            <h1 className="text-2xl font-medium">Quiz</h1>
+            <h1 className="text-2xl font-medium">Question set</h1>
           </div>
 
-          {/* <Actions
-            // disabled={!isComplete}
-            disabled={true}
+          <Actions
+            disabled={false}
             courseId={params.courseId}
-            isPublished={course.isPublished}
-          /> */}
+            chapterId={params.chapterId}
+            questionSetId={params.quizId}
+            isPublished={questionSet.isPublished}
+          />
         </div>
 
         <div className="flex flex-col gap-8 w-4/5 max-w-7xl justify-center">
           <QuizTitleForm
-            initialData={quiz}
+            initialData={questionSet}
             courseId={params.courseId}
             chapterId={params.chapterId}
             questionsetId={params.quizId}
           />
           <hr className="border-t-4 rounded-md border-gray-400" />
           <QuizForm
-            initialData={quiz.Question}
+            initialData={questionSet.Question}
             courseId={params.courseId}
             chapterId={params.chapterId}
             questionsetId={params.quizId}

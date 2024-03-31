@@ -48,6 +48,7 @@ export async function PATCH(
   }
 ) {
   try {
+    
     const { userId } = auth();
     const values = await req.json();
     if (!userId) {
@@ -64,7 +65,7 @@ export async function PATCH(
     if (!courseOwner) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
-
+    
     const quiz = await db.question.update({
       where: {
         id: params.questionId,
