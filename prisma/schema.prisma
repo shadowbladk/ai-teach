@@ -158,14 +158,14 @@ model QuestionSet {
 }
 
 model Document {
-  id        String   @id @default(uuid())
-  name      String   @db.Text
-  url       String   @db.Text
+  id          String   @id @default(uuid())
+  title       String   @db.Text
+  url         String   @db.Text
   isPublished Boolean  @default(false)
-  chapterId String
-  chapter   Chapter  @relation(fields: [chapterId], references: [id], onDelete: Cascade)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  chapterId   String
+  chapter     Chapter  @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
   @@index([chapterId])
 }
