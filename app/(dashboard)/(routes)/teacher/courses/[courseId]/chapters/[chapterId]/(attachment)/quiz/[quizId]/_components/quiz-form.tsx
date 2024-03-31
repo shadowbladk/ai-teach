@@ -1,23 +1,20 @@
 "use client"
 
-import * as z from "zod"
 import axios from "axios"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { useState, useEffect, SetStateAction } from "react"
+import { useState, SetStateAction } from "react"
 import toast from "react-hot-toast"
 import { useRouter } from "next/navigation"
-import { Course, Question, Answer } from "@prisma/client"
+
+import { Question, Answer } from "@prisma/client"
+
 import { PlusCircle, Pencil } from "lucide-react"
+
 import { Textarea } from "@/components/ui/textarea"
 import { Input } from "@/components/ui/input"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
-
 import { Button } from "@/components/ui/button"
+
 import { cn } from "@/lib/utils"
-import { QuizAnswerForm } from "./quiz-answer-form"
-// import { quiz } from "./mock-quiz"
-import { QuizQuestionForm } from "./quiz-question-form"
 
 import {
   Carousel,
@@ -43,7 +40,6 @@ export const QuizForm = ({
   chapterId,
   questionsetId,
 }: QuizFormProps) => {
-  // const [questions, setQuestions] = useState(initialData)
   const [data, setData] = useState(initialData)
   const [questions, setQuestions] = useState<
     (Question & { answers: Answer[] })[]
@@ -169,7 +165,6 @@ export const QuizForm = ({
     if (!api) {
       return
     }
-    // console.log("api", api)
     setCount(api.scrollSnapList().length)
     setCurrent(api.selectedScrollSnap() + 1)
 
@@ -181,7 +176,6 @@ export const QuizForm = ({
   const router = useRouter()
 
   const handleQuestionAdd = async () => {
-    // console.log("questions", questions)
     let newQuestion
     try {
       let result = await axios.post(
@@ -195,8 +189,6 @@ export const QuizForm = ({
         )
         newQuestion.answers.push(await answer.data)
       }
-
-      // console.log("newQuestion", newQuestion)
       toast.success("Question created")
       router.refresh()
     } catch {
@@ -205,19 +197,6 @@ export const QuizForm = ({
     setQuestions([newQuestion, ...questions])
     setCount(count + 1)
     api?.scrollTo(0)
-    // if (!api) {
-    //   return
-    // }
-    // // let length = await api.scrollSnapList().length
-    // // console.log("api", length)
-    // // api.scrollTo(length)
-    // // api.scrollNext()
-    // api.scrollTo(questions.length + 2)
-    // api.scrollNext()
-    // setCount(questions.length + 1)
-    // setCurrent(questions.length + 1)
-    // console.log("current", current)
-    // console.log("count", count)
   }
 
   return (
@@ -298,7 +277,6 @@ export const QuizForm = ({
                     <>
                       <section className="flex flex-col gap-4">
                         <Textarea
-                          // disabled={isSubmitting}
                           placeholder="e.g. 'Question... ?'"
                           value={question?.text || ""}
                           onChange={(e) =>
@@ -316,13 +294,9 @@ export const QuizForm = ({
                                 id={i}
                                 value={i}
                                 checked={selectedValue === i.toString()}
-                                onChange={
-                                  handleRadioChange
-                                  // setRadioChange(index, i, i.toString())
-                                }
+                                onChange={handleRadioChange}
                               />
                               <Input
-                                // disabled={isSubmitting}
                                 placeholder={`e.g. 'Choice ${i + 1}'`}
                                 value={answer?.text || ""}
                                 onChange={(e) =>
@@ -336,7 +310,6 @@ export const QuizForm = ({
 
                       <div className="flex flex-row justify-between pt-4">
                         <Button
-                          // disabled={questions.length == 1}
                           variant="warning"
                           size="sm_l"
                           onClick={(e) => handleQuestionRemove(index)}
@@ -347,13 +320,11 @@ export const QuizForm = ({
                           <Button
                             variant="underline"
                             size="ghost"
-                            // className={isEditing ? "flex" : "hidden"}
                             onClick={(e) => onCancel(index)}
                           >
                             Cancel
                           </Button>
                           <Button
-                            // disabled={!isValid || isSubmitting}
                             type="submit"
                             size="sm_l"
                             variant="primary"
