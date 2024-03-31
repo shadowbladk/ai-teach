@@ -161,6 +161,7 @@ model Document {
   id        String   @id @default(uuid())
   name      String   @db.Text
   url       String   @db.Text
+  isPublished Boolean  @default(false)
   chapterId String
   chapter   Chapter  @relation(fields: [chapterId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
