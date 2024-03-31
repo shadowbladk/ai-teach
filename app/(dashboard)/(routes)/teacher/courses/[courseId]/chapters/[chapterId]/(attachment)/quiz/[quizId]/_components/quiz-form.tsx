@@ -75,7 +75,6 @@ export const QuizForm = ({
   }
 
   const onSubmit = async (index: number) => {
-
     let question = questions[index]
     let questionId = question.id
     try {
@@ -84,7 +83,7 @@ export const QuizForm = ({
         `/api/courses/${courseId}/chapters/${chapterId}/questionset/${questionsetId}/questions/${questionId}`,
         valueQuestion
       )
-  
+
       for (let i = 0; i < 4; i++) {
         let valueAnswer = {
           text: question.answers[i].text,
@@ -100,7 +99,6 @@ export const QuizForm = ({
           `/api/courses/${courseId}/chapters/${chapterId}/questionset/${questionsetId}/questions/${questionId}/answers/${answerId}`,
           valueAnswer
         )
-
       }
       setData(JSON.parse(JSON.stringify(questions)))
       toast.success("Question updated")
@@ -140,20 +138,45 @@ export const QuizForm = ({
     toggleEdit()
   }
 
+  const handleQuestionRemove = async (index: number) => {
+    try {
+      let question = questions[index]
+      let questionId = question.id
+      for (let i = 0; i < 4; i++) {
+        await axios.delete(
+          `/api/courses/${courseId}/chapters/${chapterId}/questionset/${questionsetId}/questions/${questionId}/answers/${question.answers[i].id}`
+        )
+      }
+      await axios.delete(
+        `/api/courses/${courseId}/chapters/${chapterId}/questionset/${questionsetId}/questions/${questionId}`
+      )
+      toast.success("Question deleted")
+      router.refresh()
+    } catch {
+      toast.error("Something went wrong")
+    }
+    questions.splice(index, 1)
+    setCount(questions.length)
+    questions.length == 0
+      ? setCurrent(0)
+      : index == questions.length
+      ? setCurrent(current - 1)
+      : setCurrent(current)
+    toggleEdit()
+  }
 
+  React.useEffect(() => {
+    if (!api) {
+      return
+    }
+    // console.log("api", api)
+    setCount(api.scrollSnapList().length)
+    setCurrent(api.selectedScrollSnap() + 1)
 
-  // React.useEffect(() => {
-  //   if (!api) {
-  //     return
-  //   }
-  //   console.log("api", api)
-  //   setCount(api.scrollSnapList().length)
-  //   setCurrent(api.selectedScrollSnap() + 1)
-
-  //   api.on("select", () => {
-  //     setCurrent(api.selectedScrollSnap() + 1)
-  //   })
-  // }, [api])
+    api.on("select", () => {
+      setCurrent(api.selectedScrollSnap() + 1)
+    })
+  }, [api])
 
   const router = useRouter()
 
@@ -179,7 +202,9 @@ export const QuizForm = ({
     } catch {
       toast.error("Something went wrong")
     }
-    setQuestions([...questions, newQuestion])
+    setQuestions([newQuestion, ...questions])
+    setCount(count + 1)
+    api?.scrollTo(0)
     // if (!api) {
     //   return
     // }
@@ -206,6 +231,7 @@ export const QuizForm = ({
           variant="underline"
           size="ghost"
           className="justify-self-end col-start-3"
+          disabled={isEditing}
         >
           <PlusCircle className="w-4 h-4 mr-2" />
           Add new question
@@ -313,7 +339,7 @@ export const QuizForm = ({
                           // disabled={questions.length == 1}
                           variant="warning"
                           size="sm_l"
-                          // onClick={(e) => handleQuestionRemove(current)}
+                          onClick={(e) => handleQuestionRemove(index)}
                         >
                           Delete
                         </Button>
@@ -344,8 +370,8 @@ export const QuizForm = ({
             </CarouselItem>
           ))}
         </CarouselContent>
-        <CarouselPrevious />
-        <CarouselNext />
+        <CarouselPrevious disabled={isEditing || !api?.canScrollPrev()} />
+        <CarouselNext disabled={isEditing || !api?.canScrollNext()} />
       </Carousel>
     </div>
   )
