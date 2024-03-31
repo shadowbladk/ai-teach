@@ -19,23 +19,25 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
-interface TextTitleFormProps {
+interface DocumentTitleFormProps {
   initialData: {
-    title: string;
+    name: string;
   };
   chapterId: string;
   courseId: string;
+  documentId: string;
 }
 
 const formSchema = z.object({
-  title: z.string().min(1),
+  name: z.string().min(1),
 });
 
-export const TextTitleForm = ({
+export const DocumentTitleForm = ({
   initialData,
   chapterId,
   courseId,
-}: TextTitleFormProps) => {
+  documentId,
+}: DocumentTitleFormProps) => {
   const [isEditing, setIsEditing] = useState(false);
 
   const toggleEdit = () => setIsEditing((current) => !current);
@@ -52,10 +54,10 @@ export const TextTitleForm = ({
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       await axios.patch(
-        `/api/courses/${courseId}/chapters/${chapterId}/document`,
+        `/api/courses/${courseId}/chapters/${chapterId}/documents/`,
         values
       );
-      toast.success("Course updated");
+      toast.success("PDF updated");
       toggleEdit();
       router.refresh();
     } catch {
@@ -77,19 +79,19 @@ export const TextTitleForm = ({
           Edit title
         </Button>
       </div>
-      {!isEditing && <p className="text-sm">{initialData.title}</p>}
+      {!isEditing && <p className="text-sm">{initialData.name}</p>}
       {isEditing && (
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <FormField
               control={form.control}
-              name="title"
+              name="name"
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
                     <Input
                       disabled={isSubmitting}
-                      placeholder="e.g. 'Advanced web development file'"
+                      placeholder="e.g. PDF Files"
                       {...field}
                     />
                   </FormControl>

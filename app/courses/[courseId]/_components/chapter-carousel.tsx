@@ -27,7 +27,7 @@ export const ChapterCarousel = ({
       <Carousel className="flex-row max-w-[300px] md:max-w-[600px]">
         <CarouselContent>
           {course.chapters.map((chapter, index) => (
-            <div className="p-1 md:p-3">
+            <div className="pt-1">
               <CarouselItem key={index} className="basis-1/3 md:basis-1/4">
                 <Link
                   href={`/courses/${chapter.courseId}/chapters/${chapter.id}`}

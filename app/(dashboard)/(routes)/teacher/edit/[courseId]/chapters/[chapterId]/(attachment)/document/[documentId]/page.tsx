@@ -1,16 +1,16 @@
 import { auth } from "@clerk/nextjs";
-import { TextForm } from "./_components/text-form";
+import { DocumentForm } from "./_components/document-form";
 import { redirect } from "next/navigation";
 import { db } from "@/lib/db";
 import { PencilRuler } from "lucide-react";
 import { Actions } from "./_components/actions";
 import { Banner } from "@/components/banner";
-import { TextTitleForm } from "./_components/text-title-form";
+import { DocumentTitleForm } from "./_components/document-title-form";
 
-const text = async ({
+const Document = async ({
   params,
 }: {
-  params: { courseId: string; chapterId: string };
+  params: { courseId: string; chapterId: string; documentId: string };
 }) => {
   const { userId } = auth();
 
@@ -18,28 +18,24 @@ const text = async ({
     return redirect("/");
   }
 
-  const chapter = await db.chapter.findUnique({
+  console.log(params);
+  const document = await db.document.findUnique({
     where: {
-      id: params.chapterId,
-      courseId: params.courseId,
-    },
-    include: {
-      documents: {
-        orderBy: {
-          createdAt: "asc",
-        },
-      },
+      id: params.documentId,
     },
   });
 
-  if (!chapter) {
+  if (!document) {
     return redirect("/");
   }
 
+  const requiredFields = [document.name, document.url];
+  const isComplete = requiredFields.every(Boolean);
+
   return (
     <>
-      {!chapter.isPublished && (
-        <Banner label="This course is unpublished. It will not be visible to the students." />
+      {!document.isPublished && (
+        <Banner label="This PDF is unpublished. It will not be visible to the students." />
       )}
       <div className="flex flex-col items-center justify-center w-full px-4 py-16 gap-8 ">
         <div className="flex items-center w-4/5 max-w-7xl justify-between">
@@ -49,24 +45,31 @@ const text = async ({
           </div>
 
           <Actions
-            // disabled={!isComplete}
-            disabled={true}
+            disabled={!isComplete}
             courseId={params.courseId}
-            isPublished={chapter.isPublished}
+            chapterId={params.chapterId}
+            documentId={params.documentId}
+            isPublished={document.isPublished}
           />
         </div>
 
         <div className="flex flex-col gap-8 w-4/5 max-w-7xl justify-center">
-          {/* <TextTitleForm initialData={chapter} courseId={params.courseId} chapterId={params.chapterId} /> */}
-          <hr className="border-t-4 rounded-md border-gray-400" />
-          <TextForm
-            initialData={chapter}
+          <DocumentTitleForm
+            initialData={document}
             courseId={params.courseId}
             chapterId={params.chapterId}
+            documentId={params.documentId}
+          />
+          <hr className="border-t-4 rounded-md border-gray-400" />
+          <DocumentForm
+            initialData={document}
+            courseId={params.courseId}
+            chapterId={params.chapterId}
+            documentId={params.documentId}
           />
         </div>
       </div>
     </>
   );
 };
-export default text;
+export default Document;

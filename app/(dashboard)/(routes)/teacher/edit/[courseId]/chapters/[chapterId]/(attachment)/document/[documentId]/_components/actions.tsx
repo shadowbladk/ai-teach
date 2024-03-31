@@ -13,13 +13,17 @@ import { useConfettiStore } from "@/hooks/use-confetti-store";
 interface ActionsProps {
   disabled: boolean;
   courseId: string;
+  chapterId: string;
+  documentId: string;
   isPublished: boolean;
-};
+}
 
 export const Actions = ({
   disabled,
   courseId,
-  isPublished
+  chapterId,
+  documentId,
+  isPublished,
 }: ActionsProps) => {
   const router = useRouter();
   const confetti = useConfettiStore();
@@ -30,10 +34,14 @@ export const Actions = ({
       setIsLoading(true);
 
       if (isPublished) {
-        await axios.patch(`/api/courses/${courseId}/unpublish`);
+        await axios.patch(
+          `/api/courses/${courseId}/chapters/${chapterId}/documents/${documentId}/unpublish`
+        );
         toast.success("Course unpublished");
       } else {
-        await axios.patch(`/api/courses/${courseId}/publish`);
+        await axios.patch(
+          `/api/courses/${courseId}/chapters/${chapterId}/documents/${documentId}/publish`
+        );
         toast.success("Course published");
         confetti.onOpen();
       }
@@ -44,13 +52,15 @@ export const Actions = ({
     } finally {
       setIsLoading(false);
     }
-  }
-  
+  };
+
   const onDelete = async () => {
     try {
       setIsLoading(true);
 
-      await axios.delete(`/api/courses/${courseId}`);
+      await axios.delete(
+        `/api/courses/${courseId}/chapters/${chapterId}/documents/${documentId}`
+      );
 
       toast.success("Course deleted");
       router.refresh();
@@ -60,7 +70,7 @@ export const Actions = ({
     } finally {
       setIsLoading(false);
     }
-  }
+  };
 
   return (
     <div className="flex items-center gap-x-2">
@@ -78,5 +88,5 @@ export const Actions = ({
         </Button>
       </ConfirmModal>
     </div>
-  )
-}
+  );
+};

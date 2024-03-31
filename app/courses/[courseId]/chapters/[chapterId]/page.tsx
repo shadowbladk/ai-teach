@@ -29,7 +29,7 @@ const chapterIdPage = async ({
               createdAt: "asc",
             },
           },
-          questions: {
+          questionSet: {
             orderBy: {
               createdAt: "asc",
             },
@@ -62,7 +62,19 @@ const chapterIdPage = async ({
       />
       <div className="w-full justify-center px-6">
         <div className="max-w-[720px] mx-auto flex flex-wrap justify-center">
-          <ChapterBox />
+          {course.chapters.map((chapter) => (
+            <div key={chapter.id}>
+              {chapter.documents.map((document) => (
+                <ChapterBox key={document.id} name={document.name} />
+              ))}
+              {chapter.flashcarddecks.map((flashcard) => (
+                <ChapterBox key={flashcard.id} name={flashcard.title} />
+              ))}
+              {chapter.questionSet.map((question) => (
+                <ChapterBox key={question.id} name={question.title} />
+              ))}
+            </div>
+          ))}
         </div>
       </div>
     </>

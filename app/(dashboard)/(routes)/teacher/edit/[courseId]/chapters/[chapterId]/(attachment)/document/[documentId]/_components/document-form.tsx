@@ -12,21 +12,23 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { FileUpload } from "@/components/file-upload";
 
-interface TextFormProps {
-  initialData: Chapter & { documents: Document[] };
+interface DocumentFormProps {
+  initialData: Document;
   courseId: string;
   chapterId: string;
+  documentId: string;
 }
 
 const formSchema = z.object({
   url: z.string().min(1),
 });
 
-export const TextForm = ({
+export const DocumentForm = ({
   initialData,
   courseId,
   chapterId,
-}: TextFormProps) => {
+  documentId,
+}: DocumentFormProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const [deletingId, setDeletingId] = useState<string | null>(null);
 
@@ -51,7 +53,9 @@ export const TextForm = ({
   const onDelete = async (id: string) => {
     try {
       setDeletingId(id);
-      await axios.delete(`/api/courses/${courseId}/chapters/${chapterId}/documents/${id}`);
+      await axios.delete(
+        `/api/courses/${courseId}/chapters/${chapterId}/documents/${id}`
+      );
       toast.success("Attachment deleted");
       router.refresh();
     } catch {
@@ -77,39 +81,38 @@ export const TextForm = ({
       </div>
       {!isEditing && (
         <>
-          {initialData.documents.length === 0 && (
+          {!initialData && (
             <p className="text-sm mt-2 text-slate-500 italic">
               No attachments yet
             </p>
           )}
-          {initialData.documents.length > 0 && (
+          {initialData && (
             <div className="space-y-2">
-              {initialData.documents.map((documents) => (
-                <div
-                  key={documents.id}
-                  className="flex items-center p-3 w-full bg-sky-100 border-sky-200 border text-sky-700 rounded-md"
-                >
-                  <File className="h-4 w-4 mr-2 flex-shrink-0" />
-                  <p className="text-xs line-clamp-1">{documents.name}</p>
-                  {deletingId === documents.id && (
-                    <div>
-                      <Loader2 className="h-4 w-4 animate-spin" />
-                    </div>
-                  )}
-                  {deletingId !== documents.id && (
-                    <button
-                      onClick={() => onDelete(documents.id)}
-                      className="ml-auto hover:opacity-75 transition"
-                    >
-                      <X className="h-4 w-4" />
-                    </button>
-                  )}
-                </div>
-              ))}
+              <div
+                key={initialData.id}
+                className="flex items-center p-3 w-full bg-sky-100 border-sky-200 border text-sky-700 rounded-md"
+              >
+                <File className="h-4 w-4 mr-2 flex-shrink-0" />
+                <p className="text-xs line-clamp-1">{initialData.name}</p>
+                {deletingId === initialData.id && (
+                  <div>
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                  </div>
+                )}
+                {deletingId !== initialData.id && (
+                  <button
+                    onClick={() => onDelete(initialData.id)}
+                    className="ml-auto hover:opacity-75 transition"
+                  >
+                    <X className="h-4 w-4" />
+                  </button>
+                )}
+              </div>
             </div>
           )}
         </>
       )}
+
       {isEditing && (
         <div>
           <FileUpload
