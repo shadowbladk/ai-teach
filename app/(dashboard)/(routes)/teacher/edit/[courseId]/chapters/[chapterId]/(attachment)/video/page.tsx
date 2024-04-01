@@ -4,8 +4,8 @@ import { db } from "@/lib/db";
 import { PencilRuler } from "lucide-react";
 import { Actions } from "./_components/actions";
 import { Banner } from "@/components/banner";
-import { VideoTitleForm } from "./_components/video-title-form";
-import { ChapterVideoForm } from "./_components/video-from";
+// import { VideoTitleForm } from "./_components/video-title-form";
+// import { ChapterVideoForm } from "./_components/video-from";
 
 const video = async ({
   params,
@@ -69,17 +69,17 @@ const video = async ({
         </div>
 
         <div className="flex flex-col gap-8 w-4/5 max-w-7xl justify-center">
-          <VideoTitleForm
+          {/* <VideoTitleForm
             initialData={chapter}
             courseId={course.id}
             chapterId={params.chapterId}
-          />
+          /> */}
           <hr className="border-t-4 rounded-md border-gray-400" />
-          <ChapterVideoForm
+          {/* <ChapterVideoForm
             initialData={chapter}
             chapterId={params.chapterId}
             courseId={params.courseId}
-          />
+          /> */}
         </div>
       </div>
     </>

@@ -35,12 +35,12 @@ const videoPage = async ({
             Keywords and Identifiers
           </h1>
           <div className="w-[700px] p-6 items-center">
-            <VideoPlayer
+            {/* <VideoPlayer
               playbackId={}
               courseId={}
               chapterId={}
               completeOnEnd={false}
-            />
+            /> */}
           </div>
         </section>
       </div>
