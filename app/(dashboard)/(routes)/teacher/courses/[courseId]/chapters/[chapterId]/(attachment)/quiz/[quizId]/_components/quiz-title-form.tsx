@@ -18,42 +18,38 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
+import { QuestionSet } from "@prisma/client"
 
 interface QuizTitleFormProps {
-  initialData: {
-    title: string
-  }
+  initialData: QuestionSet
   courseId: string
   chapterId: string
   questionsetId: string
 }
-
-const formSchema = z.object({
-  title: z.string().min(1),
-})
 
 export const QuizTitleForm = ({
   initialData,
   courseId,
   chapterId,
   questionsetId,
-}: 
-QuizTitleFormProps) => {
+}: QuizTitleFormProps) => {
   const [isEditing, setIsEditing] = useState(false)
+  const [title, setTitle] = useState(initialData.title)
 
   const toggleEdit = () => setIsEditing((current) => !current)
 
   const router = useRouter()
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: initialData,
-  })
+  const onCancel = () => {
+    setTitle(initialData.title)
+    toggleEdit()
+  }
 
-  const { isSubmitting, isValid } = form.formState
-
-  const onSubmit = async (value: z.infer<typeof formSchema>) => {
+  const onSubmit = async (newTitle: string) => {
     try {
+      let value = {
+        title: newTitle,
+      }
       await axios.patch(
         `/api/courses/${courseId}/chapters/${chapterId}/questionset/${questionsetId}`,
         value
@@ -68,58 +64,50 @@ QuizTitleFormProps) => {
 
   return (
     <div className="border bg-slate-100 rounded-md p-6 flex flex-col gap-4 w-full">
-      {!isEditing && (<div className="font-medium flex justify-between">
-        {initialData.title}
-        <Button
-          onClick={toggleEdit}
-          variant="underline"
-          size="ghost"
-          className={isEditing ? "hidden" : "flex"}
-        >
-          <Pencil className="h-4 w-4 mr-1" />
-          Edit title
-        </Button>
-      </div>
+      {!isEditing && (
+        <div className="font-medium flex justify-between">
+          {title}
+          <Button
+            onClick={toggleEdit}
+            variant="underline"
+            size="ghost"
+            className={isEditing ? "hidden" : "flex"}
+          >
+            <Pencil className="h-4 w-4 mr-1" />
+            Edit title
+          </Button>
+        </div>
       )}
       {isEditing && (
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 pt-2">
-            <FormField
-              control={form.control}
-              name="title"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Input
-                      disabled={isSubmitting}
-                      placeholder="e.g. 'Advanced web development quiz'"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <div className="flex justify-end gap-4">
-              <Button
-                onClick={toggleEdit}
-                variant="underline"
-                size="ghost"
-                className={isEditing ? "flex" : "hidden"}
-              >
-                Cancel
-              </Button>
-              <Button
-                disabled={!isValid || isSubmitting}
-                type="submit"
-                size="sm_l"
-                variant="primary"
-              >
-                Save
-              </Button>
-            </div>
-          </form>
-        </Form>
+        <>
+          <Input
+            placeholder="e.g. 'Advanced web development quiz'"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+          />
+          <div className="flex justify-end gap-4">
+            <Button
+              onClick={(e) =>
+                onCancel()
+              }
+              variant="underline"
+              size="ghost"
+              className={isEditing ? "flex" : "hidden"}
+            >
+              Cancel
+            </Button>
+            <Button
+              type="submit"
+              size="sm_l"
+              variant="primary"
+              onClick={(e) =>
+                onSubmit(title)
+              }
+            >
+              Save
+            </Button>
+          </div>
+        </>
       )}
     </div>
   )
