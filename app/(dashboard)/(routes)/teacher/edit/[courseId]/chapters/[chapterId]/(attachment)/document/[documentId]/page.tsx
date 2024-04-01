@@ -29,7 +29,7 @@ const Document = async ({
     return redirect("/");
   }
 
-  const requiredFields = [document.name, document.url];
+  const requiredFields = [document.title, document.url];
   const isComplete = requiredFields.every(Boolean);
 
   return (

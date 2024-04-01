@@ -62,9 +62,9 @@ export const Actions = ({
         `/api/courses/${courseId}/chapters/${chapterId}/documents/${documentId}`
       );
 
-      toast.success("Course deleted");
+      toast.success("Document deleted");
       router.refresh();
-      router.push(`/teacher/courses`);
+      router.push(`/teacher/edit/${courseId}/chapters/${chapterId}`);
     } catch {
       toast.error("Something went wrong");
     } finally {

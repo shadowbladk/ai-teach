@@ -21,7 +21,7 @@ import { Button } from "@/components/ui/button";
 
 interface DocumentTitleFormProps {
   initialData: {
-    name: string;
+    title: string;
   };
   chapterId: string;
   courseId: string;
@@ -29,7 +29,7 @@ interface DocumentTitleFormProps {
 }
 
 const formSchema = z.object({
-  name: z.string().min(1),
+  title: z.string().min(1),
 });
 
 export const DocumentTitleForm = ({
@@ -54,7 +54,7 @@ export const DocumentTitleForm = ({
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       await axios.patch(
-        `/api/courses/${courseId}/chapters/${chapterId}/documents/`,
+        `/api/courses/${courseId}/chapters/${chapterId}/documents/${documentId}`,
         values
       );
       toast.success("PDF updated");
@@ -79,13 +79,13 @@ export const DocumentTitleForm = ({
           Edit title
         </Button>
       </div>
-      {!isEditing && <p className="text-sm">{initialData.name}</p>}
+      {!isEditing && <p className="text-sm">{initialData.title}</p>}
       {isEditing && (
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <FormField
               control={form.control}
-              name="name"
+              name="title"
               render={({ field }) => (
                 <FormItem>
                   <FormControl>

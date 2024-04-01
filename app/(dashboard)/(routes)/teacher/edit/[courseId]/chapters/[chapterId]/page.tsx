@@ -35,15 +35,24 @@ const chapterIdPage = async ({
             orderBy: {
               createdAt: "asc",
             },
+            where: {
+              chapterId: params.chapterId, // Filter documents for the current chapter
+            },
           },
           flashcarddecks: {
             orderBy: {
               createdAt: "asc",
             },
+            where: {
+              chapterId: params.chapterId, // Filter documents for the current chapter
+            },
           },
           questionSet: {
             orderBy: {
               createdAt: "asc",
+            },
+            where: {
+              chapterId: params.chapterId, // Filter documents for the current chapter
             },
           },
         },
@@ -81,19 +90,33 @@ const chapterIdPage = async ({
       </div>
       <div className="w-full justify-center px-6">
         <div className="max-w-[720px] mx-auto justify-center">
-          {course.chapters.map((chapter) => (
-            <div key={chapter.id}>
-              {chapter.documents.map((document) => (
-                <ChapterBox key={document.id} name={document.name} />
-              ))}
-              {chapter.flashcarddecks.map((flashcard) => (
-                <ChapterBox key={flashcard.id} name={flashcard.title} />
-              ))}
-              {chapter.questionSet.map((question) => (
-                <ChapterBox key={question.id} name={question.title} />
-              ))}
-            </div>
-          ))}
+          {course.chapters
+            .filter((chapter) => chapter.id === params.chapterId) // Filter chapters for the current chapter ID
+            .map((chapter) => (
+              <div key={chapter.id}>
+                {chapter.documents.map((document) => (
+                  <ChapterBox
+                    key={document.id}
+                    name={document.title}
+                    link={`/teacher/edit/${params.courseId}/chapters/${params.chapterId}/document/${document.id}`}
+                  />
+                ))}
+                {chapter.flashcarddecks.map((flashcard) => (
+                  <ChapterBox
+                    key={flashcard.id}
+                    name={flashcard.title}
+                    link={`/teacher/edit/${params.courseId}/chapters/${params.chapterId}/flashcard/${flashcard.id}`}
+                  />
+                ))}
+                {chapter.questionSet.map((question) => (
+                  <ChapterBox
+                    key={question.id}
+                    name={question.title}
+                    link={`/teacher/edit/${params.courseId}/chapters/${params.chapterId}/quiz/${question.id}`}
+                  />
+                ))}
+              </div>
+            ))}
           <div className="flex justify-center">
             <CreateAttachment
               courseId={params.courseId}
