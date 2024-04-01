@@ -10,17 +10,16 @@ datasource db {
 }
 
 model Course {
-  id          String    @id @default(uuid())
+  id          String       @id @default(uuid())
   userId      String
-  title       String    @db.Text
-  description String?   @db.Text
-  imageUrl    String?   @db.Text
-  isPublished Boolean   @default(false)
+  title       String       @db.Text
+  description String?      @db.Text
+  imageUrl    String?      @db.Text
+  isPublished Boolean      @default(false)
   categoryId  String?
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  category    Category? @relation(fields: [categoryId], references: [id])
-
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  category    Category?    @relation(fields: [categoryId], references: [id])
   chapters    Chapter[]
   attachments Attachment[]
   enrollments Enrollment[]
@@ -40,24 +39,23 @@ model Attachment {
   name      String
   url       String   @db.Text
   courseId  String
-  course    Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  course    Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
 
   @@index([courseId])
 }
 
 model Chapter {
-  id          String   @id @default(uuid())
-  title       String
-  description String?  @db.Text
-  position    Int
-  isPublished Boolean  @default(false)
-  courseId    String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  course      Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
-
+  id             String          @id @default(uuid())
+  title          String
+  description    String?         @db.Text
+  position       Int
+  isPublished    Boolean         @default(false)
+  courseId       String
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  course         Course          @relation(fields: [courseId], references: [id], onDelete: Cascade)
   userProgress   UserProgress[]
   flashcarddecks Flashcarddeck[]
   documents      Document[]
@@ -70,10 +68,10 @@ model UserProgress {
   id          String   @id @default(uuid())
   userId      String
   chapterId   String
-  chapter     Chapter  @relation(fields: [chapterId], references: [id], onDelete: Cascade)
   isCompleted Boolean  @default(false)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+  chapter     Chapter  @relation(fields: [chapterId], references: [id], onDelete: Cascade)
 
   @@unique([userId, chapterId])
   @@index([chapterId])
@@ -133,39 +131,36 @@ model Question {
   id            String      @id @default(uuid())
   text          String?     @db.Text
   questionSetId String
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
   questionSet   QuestionSet @relation(fields: [questionSetId], references: [id], onDelete: Cascade)
-
-  answers Answer[]
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  answers       Answer[]
 
   @@index([questionSetId])
 }
 
 model QuestionSet {
-  id          String  @id @default(uuid())
-  title       String  @db.Text
-  isPublished Boolean @default(false)
+  id          String     @id @default(uuid())
+  title       String     @db.Text
+  isPublished Boolean    @default(false)
   chapterId   String
-  chapter     Chapter @relation(fields: [chapterId], references: [id], onDelete: Cascade)
-
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
-  Question  Question[]
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  chapter     Chapter    @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+  Question    Question[]
 
   @@index([chapterId])
 }
 
 model Document {
   id          String   @id @default(uuid())
-  title       String   @db.Text
   url         String   @db.Text
-  isPublished Boolean  @default(false)
   chapterId   String
-  chapter     Chapter  @relation(fields: [chapterId], references: [id], onDelete: Cascade)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+  isPublished Boolean  @default(false)
+  title       String   @db.Text
+  chapter     Chapter  @relation(fields: [chapterId], references: [id], onDelete: Cascade)
 
   @@index([chapterId])
 }

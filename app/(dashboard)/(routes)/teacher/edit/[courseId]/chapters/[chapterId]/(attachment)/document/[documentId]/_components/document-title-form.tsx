@@ -1,13 +1,13 @@
-"use client"
+"use client";
 
-import * as z from "zod"
-import axios from "axios"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { Pencil } from "lucide-react"
-import { useState } from "react"
-import toast from "react-hot-toast"
-import { useRouter } from "next/navigation"
+import * as z from "zod";
+import axios from "axios";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { Pencil } from "lucide-react";
+import { useState } from "react";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 import {
   Form,
@@ -15,52 +15,60 @@ import {
   FormField,
   FormItem,
   FormMessage,
-} from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 
-interface TitleFormProps {
+interface DocumentTitleFormProps {
   initialData: {
-    title: string
-  }
-  courseId: string
+    title: string;
+  };
+  chapterId: string;
+  courseId: string;
+  documentId: string;
 }
 
 const formSchema = z.object({
-  title: z.string().min(1, {
-    message: "Title is required",
-  }),
-})
+  title: z.string().min(1),
+});
 
-export const TitleForm = ({ initialData, courseId }: TitleFormProps) => {
-  const [isEditing, setIsEditing] = useState(false)
+export const DocumentTitleForm = ({
+  initialData,
+  chapterId,
+  courseId,
+  documentId,
+}: DocumentTitleFormProps) => {
+  const [isEditing, setIsEditing] = useState(false);
 
-  const toggleEdit = () => setIsEditing((current) => !current)
+  const toggleEdit = () => setIsEditing((current) => !current);
 
-  const router = useRouter()
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: initialData,
-  })
+  });
 
-  const { isSubmitting, isValid } = form.formState
+  const { isSubmitting, isValid } = form.formState;
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      await axios.patch(`/api/courses/${courseId}`, values)
-      toast.success("Course updated")
-      toggleEdit()
-      router.refresh()
+      await axios.patch(
+        `/api/courses/${courseId}/chapters/${chapterId}/documents/${documentId}`,
+        values
+      );
+      toast.success("PDF updated");
+      toggleEdit();
+      router.refresh();
     } catch {
-      toast.error("Something went wrong")
+      toast.error("Something went wrong");
     }
   };
 
   return (
-    <div className="border bg-slate-100 rounded-md p-6 flex flex-col gap-4">
+    <div className="border bg-slate-100 rounded-md p-6 flex flex-col gap-4 w-full">
       <div className="font-medium flex justify-between">
-        Course title
+        PDF Files
         <Button
           onClick={toggleEdit}
           variant="underline"
@@ -83,7 +91,7 @@ export const TitleForm = ({ initialData, courseId }: TitleFormProps) => {
                   <FormControl>
                     <Input
                       disabled={isSubmitting}
-                      placeholder="e.g. 'Advanced web development'"
+                      placeholder="e.g. PDF Files"
                       {...field}
                     />
                   </FormControl>
@@ -113,5 +121,5 @@ export const TitleForm = ({ initialData, courseId }: TitleFormProps) => {
         </Form>
       )}
     </div>
-  )
-}
+  );
+};
