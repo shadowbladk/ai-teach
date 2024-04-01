@@ -248,12 +248,12 @@ export const FlashcardForm = ({
                   <div className="w-full max-w-[440px] h-[280px] mb-4">
                     <TabsContent
                       value="front"
-                      className="w-full bg-[#80489C] bg-opacity-90 h-full rounded-md px-8 pt-6 pb-8"
+                      className="w-full bg-white border-[#4F46E5] border-4 h-full rounded-md px-8 pt-6 pb-8"
                     >
                       <div
                         className={cn(
-                          "text-2xl font-medium text-center text-white place-content-center grid overflow-y-auto h-[208px]",
-                          !(front != null) && "text-lg italic"
+                          "text-2xl font-medium text-center place-content-center grid overflow-y-auto h-[208px]",
+                          !(front != null) && "text-lg text-slate-500 italic"
                         )}
                       >
                         {front || "No front side description"}
@@ -299,14 +299,14 @@ export const FlashcardForm = ({
                   <div className=" h-[280px] w-full max-w-[440px] mb-4">
                     <TabsContent
                       value="front"
-                      className="w-full h-full bg-[#80489C] bg-opacity-90 rounded-md px-8 py-8 "
+                      className="w-full h-full bg-white border-[#4F46E5] border-4 rounded-md px-8 py-8 "
                     >
                       <Textarea
                         // disabled={isSubmitting}
                         placeholder="e.g. 'Flash card'"
                         value={front ? front : ""}
                         onChange={(e) => setFront(e.target.value)}
-                        className="h-full text-center text-2xl bg-transparent border-[#80489C] text-white placeholder:text-white"
+                        className="h-full text-center text-2xl"
                       />
                     </TabsContent>
                     <TabsContent
