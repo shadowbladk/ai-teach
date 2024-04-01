@@ -7,6 +7,17 @@ import toast from "react-hot-toast"
 import { useRouter } from "next/navigation"
 import { Flashcard } from "@prisma/client"
 
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Textarea } from "@/components/ui/textarea"
@@ -31,9 +42,28 @@ export const FlashcardForm = ({
   const [back, setBack] = useState(cards[clickedCard]?.back || null)
   const [isEditing, setIsEditing] = useState(false)
 
+  const [keyword, setKeyword] = useState("")
+
   const router = useRouter()
 
   const toggleEdit = () => setIsEditing((current) => !current)
+
+  const createFlashcard = async (keyword: string) => {
+    try {
+      let value = {
+        message: keyword,
+      }
+      let result = await axios.post(`/api/chat-ai/flashcard`, value)
+      console.log(result.data.back, result.data.front)
+      // setKeyword("")
+      // handleFlashcardAdd()
+      // handleFlashcardSave(cards.length, keyword, result.data.front)
+      toast.success("Flashcard created")
+      router.refresh()
+    } catch {
+      toast.error("Something went wrong")
+    }
+  }
 
   const handleFlashcardAdd = async () => {
     let newCard
@@ -66,6 +96,7 @@ export const FlashcardForm = ({
         front: front,
         back: back,
       }
+      console.log(value)
       let flashcardId = cards[index].id
       let result = await axios.patch(
         `/api/courses/${courseId}/chapters/${chapterId}/flashcarddecks/${flashcarddeckId}/flashcard/${flashcardId}`,
@@ -112,6 +143,43 @@ export const FlashcardForm = ({
   return (
     <div className="flex flex-col-reverse items-center lg:items-start gap-8 lg:flex-row">
       <div className="flex flex-col gap-4 w-full max-w-sm lg:max-w-xs">
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button variant="primary">Create with Keyword by AI </Button>
+          </DialogTrigger>
+          <DialogContent className="sm:max-w-[425px]">
+            <DialogHeader className="gap-2 pt-2">
+              <DialogTitle>Create new flash card by AI</DialogTitle>
+              <DialogDescription>
+                Write a word on the front side to create a new flash card
+              </DialogDescription>
+            </DialogHeader>
+            <div className="grid gap-4 py-4">
+              {/* <div className="grid grid-cols-4 items-center gap-4"> */}
+              <Label htmlFor="name" className="text-left">
+                Front side
+              </Label>
+              <Input
+                id="name"
+                placeholder="e.g. 'Keyword'"
+                className="col-span-3"
+                value={keyword}
+                onChange={(e) => setKeyword(e.target.value)}
+              />
+              {/* </div> */}
+            </div>
+            <DialogFooter>
+              <Button
+                type="submit"
+                variant="primary"
+                size="sm_l"
+                onClick={(e) => createFlashcard(keyword)}
+              >
+                Save
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
         <div className="flex flex-row justify-between">
           <h3 className="text-lg font-medium">Card list</h3>
           <Button
@@ -132,7 +200,6 @@ export const FlashcardForm = ({
               <>
                 <button
                   key={index}
-                  // disabled={isEditing}
                   className={`font-medium p-4 h-[56px] rounded-md ${
                     clickedCard === index
                       ? "bg-[#80489C]/90 text-white"
