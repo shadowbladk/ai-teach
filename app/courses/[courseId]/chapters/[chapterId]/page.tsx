@@ -65,7 +65,7 @@ const chapterIdPage = async ({
           {course.chapters.map((chapter) => (
             <div key={chapter.id}>
               {chapter.documents.map((document) => (
-                <ChapterBox key={document.id} name={document.name} />
+                <ChapterBox key={document.id} name={document.title} />
               ))}
               {chapter.flashcarddecks.map((flashcard) => (
                 <ChapterBox key={flashcard.id} name={flashcard.title} />

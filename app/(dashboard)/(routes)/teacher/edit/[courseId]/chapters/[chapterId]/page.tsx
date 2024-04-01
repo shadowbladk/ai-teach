@@ -91,7 +91,7 @@ const chapterIdPage = async ({
       <div className="w-full justify-center px-6">
         <div className="max-w-[720px] mx-auto justify-center">
           {course.chapters
-            .filter((chapter) => chapter.id === params.chapterId) // Filter chapters for the current chapter ID
+            .filter((chapter) => chapter.id === params.chapterId)
             .map((chapter) => (
               <div key={chapter.id}>
                 {chapter.documents.map((document) => (
