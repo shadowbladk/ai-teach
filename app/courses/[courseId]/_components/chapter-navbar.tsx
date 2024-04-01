@@ -32,15 +32,11 @@ export const ChapterNavbar = ({
         />
       </div>
       <div className="flex max-w-[720px] justify-center mx-auto p-6">
-        {course.chapters.length > 0 ? (
-          <ChapterTitleForm
-            initialData={{
-              title: course.chapters[selectedChapterIndex]?.title,
-            }}
-          />
-        ) : (
-          <p>No chapters created</p>
-        )}
+        <ChapterTitleForm
+          initialData={{
+            title: course.chapters[selectedChapterIndex]?.title,
+          }}
+        />
       </div>
     </div>
   );

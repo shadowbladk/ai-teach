@@ -10,16 +10,22 @@ import { Button } from "@/components/ui/button";
 import { ConfirmModal } from "@/components/modals/confirm-modal";
 import { useConfettiStore } from "@/hooks/use-confetti-store";
 
+import { Question, Answer } from "@prisma/client";
+
 interface ActionsProps {
   disabled: boolean;
   courseId: string;
+  chapterId: string;
+  questionSetId: string;
   isPublished: boolean;
-};
+}
 
 export const Actions = ({
   disabled,
   courseId,
-  isPublished
+  chapterId,
+  questionSetId,
+  isPublished,
 }: ActionsProps) => {
   const router = useRouter();
   const confetti = useConfettiStore();
@@ -30,11 +36,15 @@ export const Actions = ({
       setIsLoading(true);
 
       if (isPublished) {
-        await axios.patch(`/api/courses/${courseId}/unpublish`);
-        toast.success("Course unpublished");
+        await axios.patch(
+          `/api/courses/${courseId}/chapters/${chapterId}/questionset/${questionSetId}/unpublish`
+        );
+        toast.success("Question unpublished");
       } else {
-        await axios.patch(`/api/courses/${courseId}/publish`);
-        toast.success("Course published");
+        await axios.patch(
+          `/api/courses/${courseId}/chapters/${chapterId}/questionset/${questionSetId}/publish`
+        );
+        toast.success("Question published");
         confetti.onOpen();
       }
 
@@ -44,23 +54,25 @@ export const Actions = ({
     } finally {
       setIsLoading(false);
     }
-  }
-  
+  };
+
   const onDelete = async () => {
     try {
       setIsLoading(true);
 
-      await axios.delete(`/api/courses/${courseId}`);
+      await axios.delete(
+        `/api/courses/${courseId}/chapters/${chapterId}/questionset/${questionSetId}`
+      );
 
-      toast.success("Course deleted");
+      toast.success("Question deleted");
       router.refresh();
-      router.push(`/teacher/courses`);
+      router.push(`/teacher/edit/${courseId}/chapters/${chapterId}`);
     } catch {
       toast.error("Something went wrong");
     } finally {
       setIsLoading(false);
     }
-  }
+  };
 
   return (
     <div className="flex items-center gap-x-2">
@@ -78,5 +90,5 @@ export const Actions = ({
         </Button>
       </ConfirmModal>
     </div>
-  )
-}
+  );
+};

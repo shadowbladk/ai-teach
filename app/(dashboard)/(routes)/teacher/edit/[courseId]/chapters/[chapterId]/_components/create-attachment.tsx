@@ -48,7 +48,7 @@ export const CreateAttachment = ({ courseId, chapterId }: AttachmentProps) => {
         endpointType = "document";
       } else if (type === "flashcarddecks") {
         endpointType = "flashcard";
-      } else if (type === "questionSet") {
+      } else if (type === "questionset") {
         endpointType = "quiz";
       }
       router.push(
@@ -102,7 +102,7 @@ export const CreateAttachment = ({ courseId, chapterId }: AttachmentProps) => {
             className="text-center flex flex-col items-center"
             onClick={(e) => {
               e.preventDefault();
-              onSubmit("qeustionSet");
+              onSubmit("questionset");
             }}
           >
             <Card className="w-[60px] h-[60px] rounded-full bg-[#D9D9D9]">

@@ -34,10 +34,14 @@ export const Actions = ({
       setIsLoading(true);
 
       if (isPublished) {
-        await axios.patch(`/api/courses/${courseId}/chapters/${chapterId}/flashcarddecks/${flashcarddeckId}/unpublish`);
+        await axios.patch(
+          `/api/courses/${courseId}/chapters/${chapterId}/flashcarddecks/${flashcarddeckId}/unpublish`
+        );
         toast.success("Flashcard unpublished");
       } else {
-        await axios.patch(`/api/courses/${courseId}/chapters/${chapterId}/flashcarddecks/${flashcarddeckId}/publish`);
+        await axios.patch(
+          `/api/courses/${courseId}/chapters/${chapterId}/flashcarddecks/${flashcarddeckId}/publish`
+        );
         toast.success("Flashcard published");
         confetti.onOpen();
       }
@@ -58,7 +62,7 @@ export const Actions = ({
       );
       toast.success("Flashcarddeck deleted");
       router.refresh();
-      router.push(`/teacher/courses`);
+      router.push(`/teacher/edit/${courseId}/chapters/${chapterId}`);
     } catch {
       toast.error("Something went wrong");
     } finally {
