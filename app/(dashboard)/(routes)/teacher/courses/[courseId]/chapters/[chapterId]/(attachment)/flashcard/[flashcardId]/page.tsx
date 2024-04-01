@@ -55,7 +55,7 @@ const FlashcardPage = async ({
             {/* </div> */}
           </div>
           <Actions
-            // disabled={!isComplete}
+      
             disabled={false}
             courseId={params.courseId}
             chapterId={params.chapterId}

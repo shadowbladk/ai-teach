@@ -11,17 +11,31 @@ export async function POST(
 ) {
   try {
     const { userId } = auth();
-    const { title } = await req.json();
-
+    // const { title } = await req.json();
+    console.log("[QUESTION]", params, userId)
     if (!userId) {
+      return new NextResponse("Unauthorized", { status: 401 });
+    }
+
+    const courseOwner = await db.course.findUnique({
+      where: {
+        id: params.courseId,
+        userId: userId,
+      },
+    });
+
+    if (!courseOwner) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
     const question = await db.question.create({
       data: {
         questionSetId: params.questionsetId,
-        text: title,
+        // text: title,
       },
+    include: {
+      answers: true,
+    },
     });
 
     return NextResponse.json(question);
