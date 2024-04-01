@@ -178,29 +178,33 @@ export const FlashcardForm = ({
             <>
               {!isEditing && (
                 <>
-                  <div className="bg-white border-[#80489C] w-full max-w-[440px] h-[280px] border-4 rounded-md px-8 pt-6 pb-8">
-                    <>
-                      <TabsContent value="front" className="w-full h-full">
-                        <div
-                          className={cn(
-                            "text-2xl font-medium text-center place-content-center grid overflow-y-auto h-[208px]",
-                            !(front != null) && "text-lg text-slate-500 italic"
-                          )}
-                        >
-                          {front || "No front side description"}
-                        </div>
-                      </TabsContent>
-                      <TabsContent value="back" className="w-full">
-                        <div
-                          className={cn(
-                            "text-lg font-medium text-center place-content-center grid overflow-y-auto h-[208px]",
-                            !(back != null) && "text-lg text-slate-500 italic"
-                          )}
-                        >
-                          {back || "No back side description"}
-                        </div>
-                      </TabsContent>
-                    </>
+                  <div className="w-full max-w-[440px] h-[280px] mb-4">
+                    <TabsContent
+                      value="front"
+                      className="w-full bg-[#80489C] bg-opacity-90 h-full rounded-md px-8 pt-6 pb-8"
+                    >
+                      <div
+                        className={cn(
+                          "text-2xl font-medium text-center text-white place-content-center grid overflow-y-auto h-[208px]",
+                          !(front != null) && "text-lg italic"
+                        )}
+                      >
+                        {front || "No front side description"}
+                      </div>
+                    </TabsContent>
+                    <TabsContent
+                      value="back"
+                      className="w-full h-full bg-white border-[#80489C] border-4 rounded-md px-8 pt-6 pb-8 "
+                    >
+                      <div
+                        className={cn(
+                          "text-lg font-medium text-center place-content-center grid overflow-y-auto h-[208px]",
+                          !(back != null) && "text-lg text-slate-500 italic"
+                        )}
+                      >
+                        {back || "No back side description"}
+                      </div>
+                    </TabsContent>
                   </div>
                   <div className="flex flex-row w-full gap-4">
                     <Button
@@ -225,17 +229,23 @@ export const FlashcardForm = ({
               )}
               {isEditing && (
                 <>
-                  <div className="bg-white border-[#80489C] h-[280px] w-full max-w-[440px] border-4 rounded-md px-6 pt-4 pb-8">
-                    <TabsContent value="front" className="w-full h-full">
+                  <div className=" h-[280px] w-full max-w-[440px] mb-4">
+                    <TabsContent
+                      value="front"
+                      className="w-full h-full bg-[#80489C] bg-opacity-90 rounded-md px-8 py-8 "
+                    >
                       <Textarea
                         // disabled={isSubmitting}
                         placeholder="e.g. 'Flash card'"
                         value={front ? front : ""}
                         onChange={(e) => setFront(e.target.value)}
-                        className="h-full text-center text-2xl"
+                        className="h-full text-center text-2xl bg-transparent border-[#80489C] text-white placeholder:text-white"
                       />
                     </TabsContent>
-                    <TabsContent value="back" className="w-full h-full">
+                    <TabsContent
+                      value="back"
+                      className="w-full h-full bg-white border-[#80489C] border-4 rounded-md px-8 py-8 "
+                    >
                       <Textarea
                         // disabled={isSubmitting}
                         placeholder="e.g. 'Flash card'"
