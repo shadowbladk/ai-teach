@@ -1,10 +1,6 @@
 import { NextResponse } from "next/server";
 import { getCompletion } from "@/lib/completion";
-
-interface Flashcard {
-  front: string;
-  back: string;
-}
+import { FlashcardDTO } from "@/dto/flashcardDTO";
 
 export async function POST(req: Request) {
   try {
@@ -21,7 +17,7 @@ export async function POST(req: Request) {
       `create a flashcard with the back side (definition): ${message}`
     );
 
-    const flashcard: Flashcard = {
+    const flashcard: FlashcardDTO = {
       front: frontCompletion,
       back: backCompletion,
     };
