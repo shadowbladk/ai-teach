@@ -25,7 +25,7 @@ const documentPage = async ({
         <div className="flex-grow">
           <section className="flex flex-col w-screen items-center justify-center p-6">
             <h1 className="text-xl md:text-2xl font-extrabold text-black ">
-              {document.name}
+              {document.title}
             </h1>
             <div className="w-[700px] p-6 items-center">
               <PdfViewer url={document.url} />
