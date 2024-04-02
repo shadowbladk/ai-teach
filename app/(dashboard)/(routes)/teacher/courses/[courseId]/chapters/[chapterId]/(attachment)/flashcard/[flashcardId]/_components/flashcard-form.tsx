@@ -1,22 +1,22 @@
-"use client"
+"use client";
 
-import axios from "axios"
-import { PlusCircle } from "lucide-react"
-import { useState } from "react"
-import toast from "react-hot-toast"
-import { useRouter } from "next/navigation"
-import { Flashcard } from "@prisma/client"
+import axios from "axios";
+import { PlusCircle } from "lucide-react";
+import { useState } from "react";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
+import { Flashcard } from "@prisma/client";
 
-import { Button } from "@/components/ui/button"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Textarea } from "@/components/ui/textarea"
-import { cn } from "@/lib/utils"
+import { Button } from "@/components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Textarea } from "@/components/ui/textarea";
+import { cn } from "@/lib/utils";
 
 interface FlashcardFormProps {
-  initialData: Flashcard[]
-  courseId: string
-  chapterId: string
-  flashcarddeckId: string
+  initialData: Flashcard[];
+  courseId: string;
+  chapterId: string;
+  flashcarddeckId: string;
 }
 
 export const FlashcardForm = ({
@@ -25,80 +25,80 @@ export const FlashcardForm = ({
   chapterId,
   flashcarddeckId,
 }: FlashcardFormProps) => {
-  const [cards, setCards] = useState(initialData)
-  const [clickedCard, setClickedCard] = useState(0)
-  const [front, setFront] = useState(cards[clickedCard]?.front || null)
-  const [back, setBack] = useState(cards[clickedCard]?.back || null)
-  const [isEditing, setIsEditing] = useState(false)
+  const [cards, setCards] = useState(initialData);
+  const [clickedCard, setClickedCard] = useState(0);
+  const [front, setFront] = useState(cards[clickedCard]?.front || null);
+  const [back, setBack] = useState(cards[clickedCard]?.back || null);
+  const [isEditing, setIsEditing] = useState(false);
 
-  const router = useRouter()
+  const router = useRouter();
 
-  const toggleEdit = () => setIsEditing((current) => !current)
+  const toggleEdit = () => setIsEditing((current) => !current);
 
   const handleFlashcardAdd = async () => {
-    let newCard
+    let newCard;
     try {
       let result = await axios.post(
         `/api/courses/${courseId}/chapters/${chapterId}/flashcarddecks/${flashcarddeckId}/flashcard`
-      )
-      toast.success("Flashcard created")
-      newCard = await result.data
-      router.refresh()
+      );
+      toast.success("Flashcard created");
+      newCard = await result.data;
+      router.refresh();
     } catch {
-      toast.error("Something went wrong")
+      toast.error("Something went wrong");
     }
-    setCards([...cards, newCard])
-    setClickedCard(cards.length)
-    console.log(newCard.front, newCard.back)
-    setFront(newCard.front)
-    setBack(newCard.back)
-  }
+    setCards([...cards, newCard]);
+    setClickedCard(cards.length);
+    console.log(newCard.front, newCard.back);
+    setFront(newCard.front);
+    setBack(newCard.back);
+  };
 
   const handleFlashcardCancel = () => {
-    setFront(cards[clickedCard].front)
-    setBack(cards[clickedCard].back)
-    toggleEdit()
-  }
+    setFront(cards[clickedCard].front);
+    setBack(cards[clickedCard].back);
+    toggleEdit();
+  };
 
   const handleFlashcardSave = async (index: number, front: any, back: any) => {
     try {
       let value = {
         front: front,
         back: back,
-      }
-      let flashcardId = cards[index].id
+      };
+      let flashcardId = cards[index].id;
       let result = await axios.patch(
         `/api/courses/${courseId}/chapters/${chapterId}/flashcarddecks/${flashcarddeckId}/flashcard/${flashcardId}`,
         value
-      )
+      );
       setCards((prevItems) => {
-        const updatedItems = [...prevItems]
-        updatedItems[index] = result.data
-        return updatedItems
-      })
-      toast.success("Flashcard updated")
-      toggleEdit()
-      router.refresh()
+        const updatedItems = [...prevItems];
+        updatedItems[index] = result.data;
+        return updatedItems;
+      });
+      toast.success("Flashcard updated");
+      toggleEdit();
+      router.refresh();
     } catch {
-      toast.error("Something went wrong")
+      toast.error("Something went wrong");
     }
-  }
+  };
 
   const handleFlashcardRemove = async (index: number) => {
     try {
-      let flashcardId = cards[index].id
+      let flashcardId = cards[index].id;
       await axios.delete(
         `/api/courses/${courseId}/chapters/${chapterId}/flashcarddecks/${flashcarddeckId}/flashcard/${flashcardId}`
-      )
-      toast.success("Flashcard deleted")
-      router.refresh()
+      );
+      toast.success("Flashcard deleted");
+      router.refresh();
     } catch {
-      toast.error("Something went wrong")
+      toast.error("Something went wrong");
     }
-    const items = [...cards]
-    items.splice(index, 1)
+    const items = [...cards];
+    items.splice(index, 1);
 
-    setCards(items)
+    setCards(items);
     items.length == 0
       ? console.log("No cards")
       : index == items.length
@@ -106,8 +106,8 @@ export const FlashcardForm = ({
         setBack(cards[clickedCard - 1].back!),
         setClickedCard(clickedCard - 1))
       : (setFront(cards[clickedCard + 1].front!),
-        setBack(cards[clickedCard + 1].back!))
-  }
+        setBack(cards[clickedCard + 1].back!));
+  };
 
   return (
     <div className="flex flex-col-reverse items-center lg:items-start gap-8 lg:flex-row">
@@ -142,10 +142,12 @@ export const FlashcardForm = ({
                       ? "text-black"
                       : "text-slate-500 italic"
                   }`}
-                  onClick={(e) => {isEditing ? toast.error("Flashcard has not been saved") : (
-                    setClickedCard(index),
-                    setFront(cards[index].front!),
-                    setBack(cards[index].back!))
+                  onClick={(e) => {
+                    isEditing
+                      ? toast.error("Flashcard has not been saved")
+                      : (setClickedCard(index),
+                        setFront(cards[index].front!),
+                        setBack(cards[index].back!));
                   }}
                 >
                   {card.front || card.back || "New card"}
@@ -166,39 +168,43 @@ export const FlashcardForm = ({
             className="w-full max-w-sm lg:max-w-md flex flex-col items-center gap-4"
           >
             <TabsList className="grid grid-cols-2 h-[44px] w-full mb-4">
-              <TabsTrigger value="front" className="h-full" >
+              <TabsTrigger value="front" className="h-full">
                 Front side
               </TabsTrigger>
-              <TabsTrigger value="back" className="h-full" >
+              <TabsTrigger value="back" className="h-full">
                 Back side
               </TabsTrigger>
             </TabsList>
             <>
               {!isEditing && (
                 <>
-                  <div className="bg-white border-[#80489C] w-full max-w-[440px] h-[280px] border-4 rounded-md px-8 pt-6 pb-8">
-                    <>
-                      <TabsContent value="front" className="w-full h-full">
-                        <div
-                          className={cn(
-                            "text-2xl font-medium text-center place-content-center grid overflow-y-auto h-[208px]",
-                            !(front != null) && "text-lg text-slate-500 italic"
-                          )}
-                        >
-                          {front || "No front side description"}
-                        </div>
-                      </TabsContent>
-                      <TabsContent value="back" className="w-full">
-                        <div
-                          className={cn(
-                            "text-lg font-medium text-center place-content-center grid overflow-y-auto h-[208px]",
-                            !(back != null) && "text-lg text-slate-500 italic"
-                          )}
-                        >
-                          {back || "No back side description"}
-                        </div>
-                      </TabsContent>
-                    </>
+                  <div className="w-full max-w-[440px] h-[280px] mb-4">
+                    <TabsContent
+                      value="front"
+                      className="w-full bg-[#80489C] bg-opacity-90 h-full rounded-md px-8 pt-6 pb-8"
+                    >
+                      <div
+                        className={cn(
+                          "text-2xl font-medium text-center text-white place-content-center grid overflow-y-auto h-[208px]",
+                          !(front != null) && "text-lg italic"
+                        )}
+                      >
+                        {front || "No front side description"}
+                      </div>
+                    </TabsContent>
+                    <TabsContent
+                      value="back"
+                      className="w-full h-full bg-white border-[#80489C] border-4 rounded-md px-8 pt-6 pb-8 "
+                    >
+                      <div
+                        className={cn(
+                          "text-lg font-medium text-center place-content-center grid overflow-y-auto h-[208px]",
+                          !(back != null) && "text-lg text-slate-500 italic"
+                        )}
+                      >
+                        {back || "No back side description"}
+                      </div>
+                    </TabsContent>
                   </div>
                   <div className="flex flex-row w-full gap-4">
                     <Button
@@ -223,17 +229,23 @@ export const FlashcardForm = ({
               )}
               {isEditing && (
                 <>
-                  <div className="bg-white border-[#80489C] h-[280px] w-full max-w-[440px] border-4 rounded-md px-6 pt-4 pb-8">
-                    <TabsContent value="front" className="w-full h-full">
+                  <div className=" h-[280px] w-full max-w-[440px] mb-4">
+                    <TabsContent
+                      value="front"
+                      className="w-full h-full bg-[#80489C] bg-opacity-90 rounded-md px-8 py-8 "
+                    >
                       <Textarea
                         // disabled={isSubmitting}
                         placeholder="e.g. 'Flash card'"
                         value={front ? front : ""}
                         onChange={(e) => setFront(e.target.value)}
-                        className="h-full text-center text-2xl"
+                        className="h-full text-center text-2xl bg-transparent border-[#80489C] text-white placeholder:text-white"
                       />
                     </TabsContent>
-                    <TabsContent value="back" className="w-full h-full">
+                    <TabsContent
+                      value="back"
+                      className="w-full h-full bg-white border-[#80489C] border-4 rounded-md px-8 py-8 "
+                    >
                       <Textarea
                         // disabled={isSubmitting}
                         placeholder="e.g. 'Flash card'"
@@ -253,7 +265,10 @@ export const FlashcardForm = ({
                       Cancel
                     </Button>
                     <Button
-                      disabled={cards[clickedCard].front == front && cards[clickedCard].back == back}
+                      disabled={
+                        cards[clickedCard].front == front &&
+                        cards[clickedCard].back == back
+                      }
                       type="submit"
                       variant="primary"
                       size="rectangle"
@@ -271,5 +286,5 @@ export const FlashcardForm = ({
         </div>
       )}
     </div>
-  )
-}
+  );
+};

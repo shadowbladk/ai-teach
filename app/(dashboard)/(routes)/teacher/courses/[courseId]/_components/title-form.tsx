@@ -55,7 +55,7 @@ export const TitleForm = ({ initialData, courseId }: TitleFormProps) => {
     } catch {
       toast.error("Something went wrong")
     }
-  }
+  };
 
   return (
     <div className="border bg-slate-100 rounded-md p-6 flex flex-col gap-4">

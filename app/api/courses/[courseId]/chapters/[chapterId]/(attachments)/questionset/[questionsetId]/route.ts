@@ -47,6 +47,7 @@ export async function PATCH(
     };
   }
 ) {
+  console.log("[QUESTION_ID]", params);
   try {
     const { userId } = auth();
     const value = await req.json();
