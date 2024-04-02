@@ -11,7 +11,7 @@ export async function POST(req: Request) {
     }
 
     const questionCompletion = await getCompletion(
-      `create a question with this message: ${message}`
+      `create a question from this message: ${message}`
     );
 
     const answer1Completion = await getCompletion(
