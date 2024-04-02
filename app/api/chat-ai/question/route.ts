@@ -2,7 +2,7 @@ import { getCompletion } from "@/lib/completion";
 import { NextResponse } from "next/server";
 import { QuestionDTO } from "@/dto/questionDTO";
 
-export default async function POST(req: Request) {
+export async function POST(req: Request) {
   try {
     const { message } = await req.json();
 
