@@ -29,10 +29,10 @@ model Course {
 
 model Category {
   id      String   @id @default(uuid())
-  name    String   @unique
+  name    String   @unique @db.Text
   courses Course[]
 
-  @@fulltext([name])
+  @@index([name])
 }
 
 model Attachment {
