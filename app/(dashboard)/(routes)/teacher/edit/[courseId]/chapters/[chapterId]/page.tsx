@@ -8,6 +8,7 @@ import { TitleForm } from "../../_components/title-form";
 import { DescriptionForm } from "../../_components/description-form";
 import { ChapterNavbar } from "../../_components/chapter-navbar";
 import { CourseActions } from "../../_components/course-actions";
+import { SelectCategory } from "../../_components/select-category";
 
 const chapterIdPage = async ({
   params,
@@ -64,6 +65,8 @@ const chapterIdPage = async ({
     },
   });
 
+  const category = await db.category.findMany();
+
   if (!course) {
     return redirect("/");
   }
@@ -81,6 +84,11 @@ const chapterIdPage = async ({
         <div className="flex flex-col gap-5 max-w-[720px] items-center justify-center px-6 pt-6 lg:items-start">
           <TitleForm initialData={course} courseId={course.id} />
           <DescriptionForm initialData={course} courseId={course.id} />
+          <SelectCategory
+            courseId={course.id}
+            initialCategory={course.categoryId}
+            category={category}
+          />
           <div className="flex flex-row w-full justify-end">
             <CourseActions
               courseId={course.id}
