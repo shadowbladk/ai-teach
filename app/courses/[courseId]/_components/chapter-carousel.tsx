@@ -16,11 +16,13 @@ interface ChapterCarouselProps {
     chapters: Chapter[];
   };
   onSelectChapter: (index: number) => void;
+  selectedChapterIndex: number;
 }
 
 export const ChapterCarousel = ({
   course,
   onSelectChapter,
+  selectedChapterIndex,
 }: ChapterCarouselProps) => {
   return (
     <div>
@@ -33,7 +35,13 @@ export const ChapterCarousel = ({
                   href={`/courses/${chapter.courseId}/chapters/${chapter.id}`}
                   className="text-2xl font-semibold"
                 >
-                  <Card className="w-[55px] h-[55px] rounded-full border-[3px] border-black">
+                  <Card
+                    className={`w-[55px] h-[55px] rounded-full border-[3px] border-black ${
+                      selectedChapterIndex === index
+                        ? "bg-[#80489c] text-white"
+                        : "hover:bg-[#80489c] hover:text-white"
+                    }`}
+                  >
                     <CardContent
                       className="flex items-center justify-center p-2 "
                       onClick={() => onSelectChapter(index)}

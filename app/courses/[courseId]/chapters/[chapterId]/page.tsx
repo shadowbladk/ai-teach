@@ -51,30 +51,44 @@ const chapterIdPage = async ({
   }
   return (
     <>
-      <CourseHero
-        courseName={course.title}
-        courseDescription={course.description!}
-        coursePicture={course.imageUrl!}
-      />
-      <ChapterNavbar
-        course={course}
-        initialChapterIndex={initialChapterIndex}
-      />
-      <div className="w-full justify-center px-6">
-        <div className="max-w-[720px] mx-auto flex flex-wrap justify-center">
-          {course.chapters.map((chapter) => (
-            <div key={chapter.id}>
-              {chapter.documents.map((document) => (
-                <ChapterBox key={document.id} name={document.title} />
-              ))}
-              {chapter.flashcarddecks.map((flashcard) => (
-                <ChapterBox key={flashcard.id} name={flashcard.title} />
-              ))}
-              {chapter.questionSet.map((question) => (
-                <ChapterBox key={question.id} name={question.title} />
-              ))}
-            </div>
-          ))}
+      <div className="flex min-h-screen flex-col overflow-x-hidden">
+        <CourseHero
+          courseName={course.title}
+          courseDescription={course.description!}
+          coursePicture={course.imageUrl!}
+        />
+        <div className="w-full flex-grow justify-center px-6 pt-6 bg-[#F3F4F4]">
+          <ChapterNavbar
+            course={course}
+            initialChapterIndex={initialChapterIndex}
+          />
+          <div className="max-w-[720px] mx-auto justify-center">
+            {course.chapters.map((chapter) => (
+              <div key={chapter.id}>
+                {chapter.documents.map((document) => (
+                  <ChapterBox
+                    key={document.id}
+                    name={document.title}
+                    link={`/courses/${params.courseId}/chapters/${params.chapterId}/document/${document.id}`}
+                  />
+                ))}
+                {chapter.flashcarddecks.map((flashcard) => (
+                  <ChapterBox
+                    key={flashcard.id}
+                    name={flashcard.title}
+                    link={`/courses/${params.courseId}/chapters/${params.chapterId}/document/${flashcard.id}`}
+                  />
+                ))}
+                {chapter.questionSet.map((question) => (
+                  <ChapterBox
+                    key={question.id}
+                    name={question.title}
+                    link={`/courses/${params.courseId}/chapters/${params.chapterId}/document/${question.id}`}
+                  />
+                ))}
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </>
