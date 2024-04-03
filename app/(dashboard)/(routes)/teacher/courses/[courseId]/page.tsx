@@ -1,30 +1,30 @@
-import { auth } from "@clerk/nextjs"
-import { redirect } from "next/navigation"
+import { auth } from "@clerk/nextjs";
+import { redirect } from "next/navigation";
 import {
   CircleDollarSign,
   File,
   LayoutDashboard,
   ListChecks,
-} from "lucide-react"
+} from "lucide-react";
 
-import { db } from "@/lib/db"
-import { IconBadge } from "@/components/icon-badge"
-import { Banner } from "@/components/banner"
+import { db } from "@/lib/db";
+import { IconBadge } from "@/components/icon-badge";
+import { Banner } from "@/components/banner";
 
-import { TitleForm } from "./_components/title-form"
-import { DescriptionForm } from "./_components/description-form"
-import { ImageForm } from "./_components/image-form"
-import { CategoryForm } from "./_components/category-form"
+import { TitleForm } from "./_components/title-form";
+import { DescriptionForm } from "./_components/description-form";
+import { ImageForm } from "./_components/image-form";
+import { CategoryForm } from "./_components/category-form";
 // import { PriceForm } from "./_components/price-form"
 // import { AttachmentForm } from "./_components/attachment-form"
 // import { ChaptersForm } from "./_components/chapters-form"
-import { Actions } from "./_components/actions"
+import { Actions } from "./_components/actions";
 
 const CourseIdPage = async ({ params }: { params: { courseId: string } }) => {
-  const { userId } = auth()
+  const { userId } = auth();
 
   if (!userId) {
-    return redirect("/")
+    return redirect("/");
   }
 
   const course = await db.course.findUnique({
@@ -44,16 +44,16 @@ const CourseIdPage = async ({ params }: { params: { courseId: string } }) => {
         },
       },
     },
-  })
+  });
 
   const categories = await db.category.findMany({
     orderBy: {
       name: "asc",
     },
-  })
+  });
 
   if (!course) {
-    return redirect("/")
+    return redirect("/");
   }
 
   const requiredFields = [
@@ -63,14 +63,14 @@ const CourseIdPage = async ({ params }: { params: { courseId: string } }) => {
     // course.price,
     course.categoryId,
     // course.chapters.some((chapter) => chapter.isPublished),
-  ]
+  ];
 
-  const totalFields = requiredFields.length
-  const completedFields = requiredFields.filter(Boolean).length
+  const totalFields = requiredFields.length;
+  const completedFields = requiredFields.filter(Boolean).length;
 
-  const completionText = `(${completedFields}/${totalFields})`
+  const completionText = `(${completedFields}/${totalFields})`;
 
-  const isComplete = requiredFields.every(Boolean)
+  const isComplete = requiredFields.every(Boolean);
 
   return (
     <>
@@ -131,7 +131,7 @@ const CourseIdPage = async ({ params }: { params: { courseId: string } }) => {
           </div> */}
       </div>
     </>
-  )
-}
+  );
+};
 
-export default CourseIdPage
+export default CourseIdPage;

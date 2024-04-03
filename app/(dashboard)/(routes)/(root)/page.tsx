@@ -1,28 +1,29 @@
-import { auth } from "@clerk/nextjs"
-import { redirect } from "next/navigation"
-import { CheckCircle, Clock } from "lucide-react"
+import { auth } from "@clerk/nextjs";
+import { redirect } from "next/navigation";
+import { CheckCircle, Clock } from "lucide-react";
 
-import Image from "next/image"
-import HeroPic from "./_components/hero.svg"
-import Levelup from "./_components/levelup.svg"
-import Feedback from "./_components/feedback.svg"
-import Quiz from "./_components/quiz.svg"
+import Image from "next/image";
+import HeroPic from "./_components/hero.svg";
+import Levelup from "./_components/levelup.svg";
+import Feedback from "./_components/feedback.svg";
+import Quiz from "./_components/quiz.svg";
 
-import { Slider } from "@/components/slider"
+import { Slider } from "@/components/slider";
 
-import { db } from "@/lib/db"
-import { getCourses } from "@/actions/get-courses"
+import { db } from "@/lib/db";
+import { getCourses } from "@/actions/get-courses";
+import { ChapterBox } from "@/app/courses/[courseId]/chapters/[chapterId]/_components/chapter-box";
 
 export default async function Dashboard() {
-  const { userId } = auth()
+  const { userId } = auth();
 
   if (!userId) {
-    return redirect("/")
+    return redirect("/");
   }
 
   const courses = await getCourses({
     userId,
-  })
+  });
 
   return (
     <>
@@ -98,5 +99,5 @@ export default async function Dashboard() {
         </div>
       </section>
     </>
-  )
+  );
 }
