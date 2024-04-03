@@ -105,7 +105,6 @@ export const QuizForm = ({
   }
 
   const onCancel = (index: number) => {
-
     setQuestions((prevItems: (Question & { answers: Answer[] })[]) => {
       const updatedItems: (Question & { answers: Answer[] })[] = [...prevItems]
       console.log(data)
@@ -284,14 +283,14 @@ export const QuizForm = ({
           </DialogTrigger>
           <DialogContent className="sm:max-w-[425px]">
             <DialogHeader className="gap-2 pt-2">
-              <DialogTitle>Create new flash card by AI</DialogTitle>
-              <DialogDescription>
-                Write a word on the front side to create a new flash card
-              </DialogDescription>
+              <DialogTitle>Create new question by AI</DialogTitle>
+              {/* <DialogDescription>
+                Write a keyword to create a new flash card
+              </DialogDescription> */}
             </DialogHeader>
             <div className="grid gap-4 py-4">
               <Label htmlFor="name" className="text-left">
-                Front side
+                Keyword
               </Label>
               <Input
                 id="name"
