@@ -87,7 +87,6 @@ export const FlashcardForm = ({
     }
     setCards([newCard, ...cards])
     setClickedCard(0)
-    console.log(newCard.front, newCard.back)
     setFront(newCard.front)
     setBack(newCard.back)
   }
