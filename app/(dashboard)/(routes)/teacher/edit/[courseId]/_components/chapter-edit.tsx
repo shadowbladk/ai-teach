@@ -69,11 +69,7 @@ export const ChapterEdit = ({ course }: ChapterEditProps) => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <PlusCircle
-          size={60}
-          strokeWidth={1.2}
-          className="bg-white rounded-full"
-        />
+        <PlusCircle size={60} strokeWidth={1.2} />
       </DialogTrigger>
       <DialogContent>
         <Tabs defaultValue="create">

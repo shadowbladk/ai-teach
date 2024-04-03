@@ -7,6 +7,7 @@ import { ImageForm } from "../../_components/image-form";
 import { TitleForm } from "../../_components/title-form";
 import { DescriptionForm } from "../../_components/description-form";
 import { ChapterNavbar } from "../../_components/chapter-navbar";
+import { CourseActions } from "../../_components/course-actions";
 
 const chapterIdPage = async ({
   params,
@@ -77,9 +78,16 @@ const chapterIdPage = async ({
         <div className="max-w-xs lg:max-w-md">
           <ImageForm initialData={course} courseId={course.id} />
         </div>
-        <div className="flex flex-col gap-5 max-w-[720px] items-center justify-center p-6 lg:items-start">
+        <div className="flex flex-col gap-5 max-w-[720px] items-center justify-center px-6 pt-6 lg:items-start">
           <TitleForm initialData={course} courseId={course.id} />
           <DescriptionForm initialData={course} courseId={course.id} />
+          <div className="flex flex-row w-full justify-end">
+            <CourseActions
+              courseId={course.id}
+              disabled={false}
+              isPublished={course.isPublished}
+            />
+          </div>
         </div>
       </div>
       <div className="w-full flex-grow justify-center px-6 pt-6 bg-[#F3F4F4]">

@@ -37,10 +37,10 @@ export const ChapterCarousel = ({
                   className="text-2xl font-semibold"
                 >
                   <Card
-                    className={`w-[55px] h-[55px] rounded-full border-[3px] border-black ${
+                    className={`w-[55px] h-[55px] rounded-full border-[3px] ${
                       selectedChapterIndex === index
-                        ? "bg-[#80489c] text-white"
-                        : "hover:bg-[#80489c] hover:text-white"
+                        ? "border-[#4F46E5] text-[#4F46E5]"
+                        : "border-slate-500 text-slate-500"
                     }`}
                   >
                     <CardContent
