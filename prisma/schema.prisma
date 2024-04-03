@@ -30,8 +30,10 @@ model Course {
 
 model Category {
   id      String   @id @default(uuid())
-  name    String   @unique @db.Text
+  name    String   @unique
   courses Course[]
+
+  @@fulltext([name])
 }
 
 model Attachment {
