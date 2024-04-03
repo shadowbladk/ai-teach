@@ -44,6 +44,7 @@ export const FlashcardForm = ({
   const [isEditing, setIsEditing] = useState(false)
 
   const [keyword, setKeyword] = useState("")
+  const [open, setOpen] = useState(false)
 
   const router = useRouter()
 
@@ -56,10 +57,10 @@ export const FlashcardForm = ({
       }
       let result = await axios.post(`/api/chat-ai/flashcard`, value)
       console.log("back", result.data.back, "front", result.data.front)
-      // setKeyword("")
+
+      setOpen(false)
+      setKeyword("")
       await handleFlashcardAdd(result.data.front, result.data.back)
-      toast.success("Flashcard created")
-      router.refresh()
     } catch {
       toast.error("Something went wrong")
     }
@@ -156,7 +157,7 @@ export const FlashcardForm = ({
     <div className="flex flex-col-reverse items-center lg:items-start gap-8 lg:flex-row">
       <div className="flex flex-col gap-4 w-full max-w-sm lg:max-w-xs">
         <hr className="lg:hidden mb-2 border-t-2 rounded-md border-gray-200" />
-        <Dialog>
+        <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger asChild>
             <Button variant="primary" disabled={isEditing}>
               Create with Keyword by AI{" "}
@@ -170,7 +171,6 @@ export const FlashcardForm = ({
               </DialogDescription>
             </DialogHeader>
             <div className="grid gap-4 py-4">
-              {/* <div className="grid grid-cols-4 items-center gap-4"> */}
               <Label htmlFor="name" className="text-left">
                 Front side
               </Label>
@@ -181,7 +181,6 @@ export const FlashcardForm = ({
                 value={keyword}
                 onChange={(e) => setKeyword(e.target.value)}
               />
-              {/* </div> */}
             </div>
             <DialogFooter>
               <Button
@@ -304,7 +303,8 @@ export const FlashcardForm = ({
                       <div
                         className={cn(
                           "text-lg font-medium text-center place-content-center grid overflow-y-auto h-[208px]",
-                          !(back != null && back != "") && "text-lg text-slate-500 italic"
+                          !(back != null && back != "") &&
+                            "text-lg text-slate-500 italic"
                         )}
                       >
                         {back != null && back != ""
