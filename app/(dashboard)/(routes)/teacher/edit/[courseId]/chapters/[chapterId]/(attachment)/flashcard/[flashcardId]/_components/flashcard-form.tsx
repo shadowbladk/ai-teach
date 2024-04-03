@@ -160,19 +160,19 @@ export const FlashcardForm = ({
         <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger asChild>
             <Button variant="primary" disabled={isEditing}>
-              Create with Keyword by AI{" "}
+              Create with Keyword by AI
             </Button>
           </DialogTrigger>
           <DialogContent className="sm:max-w-[425px]">
             <DialogHeader className="gap-2 pt-2">
               <DialogTitle>Create new flash card by AI</DialogTitle>
               <DialogDescription>
-                Write a word on the front side to create a new flash card
+                Write a keyword to create a new flash card
               </DialogDescription>
             </DialogHeader>
             <div className="grid gap-4 py-4">
               <Label htmlFor="name" className="text-left">
-                Front side
+                Keyword
               </Label>
               <Input
                 id="name"

@@ -278,7 +278,7 @@ export const QuizForm = ({
         <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger asChild>
             <Button variant="primary" disabled={isEditing}>
-              Create with Keyword by AI{" "}
+              Create with Keyword by AI
             </Button>
           </DialogTrigger>
           <DialogContent className="sm:max-w-[425px]">
