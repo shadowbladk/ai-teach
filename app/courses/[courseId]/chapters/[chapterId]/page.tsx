@@ -1,4 +1,5 @@
 import { db } from "@/lib/db";
+import { auth } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 import ChapterNavbar from "../../_components/chapter-navbar";
 import CourseHero from "../../_components/course-hero";
@@ -9,6 +10,8 @@ const chapterIdPage = async ({
 }: {
   params: { courseId: string; chapterId: string };
 }) => {
+  const { userId } = auth();
+
   const course = await db.course.findUnique({
     where: {
       id: params.courseId,
@@ -52,11 +55,7 @@ const chapterIdPage = async ({
   return (
     <>
       <div className="flex min-h-screen flex-col overflow-x-hidden">
-        <CourseHero
-          courseName={course.title}
-          courseDescription={course.description!}
-          coursePicture={course.imageUrl!}
-        />
+        <CourseHero course={course} userId={userId} />
         <div className="w-full flex-grow justify-center px-6 pt-6 bg-[#F3F4F4]">
           <ChapterNavbar
             course={course}
