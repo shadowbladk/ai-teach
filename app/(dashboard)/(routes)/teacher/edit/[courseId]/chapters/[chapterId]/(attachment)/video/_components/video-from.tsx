@@ -12,10 +12,11 @@
 // import { Button } from "@/components/ui/button";
 // import { FileUpload } from "@/components/file-upload";
 
-// interface ChapterVideoFormProps {
+// interface VideoFormProps {
 //   initialData: Chapter & { muxData?: MuxData | null };
 //   courseId: string;
 //   chapterId: string;
+// } videoId: string;
 // }
 
 // const formSchema = z.object({
@@ -26,7 +27,8 @@
 //   initialData,
 //   courseId,
 //   chapterId,
-// }: ChapterVideoFormProps) => {
+//   videoId,
+// }: VideoFormProps) => {
 //   const [isEditing, setIsEditing] = useState(false);
 
 //   const toggleEdit = () => setIsEditing((current) => !current);
@@ -36,14 +38,28 @@
 //   const onSubmit = async (values: z.infer<typeof formSchema>) => {
 //     try {
 //       await axios.patch(
-//         `/api/courses/${courseId}/chapters/${chapterId}/video`,
+//         `/api/courses/${courseId}/chapters/${chapterId}/video/${videoId}`,
 //         values
 //       );
-//       toast.success("Chapter updated");
+//       toast.success("Video updated");
 //       toggleEdit();
 //       router.refresh();
 //     } catch {
 //       toast.error("Something went wrong");
+//     }
+//   };
+//   const onDelete = async (id: string) => {
+//     try {
+//       setDeletingId(id);
+//       await axios.delete(
+//         `/api/courses/${courseId}/chapters/${chapterId}/video/${videoId}`
+//       );
+//       toast.success("Video deleted");
+//       router.refresh();
+//     } catch {
+//       toast.error("Something went wrong");
+//     } finally {
+//       setDeletingId(null);
 //     }
 //   };
 

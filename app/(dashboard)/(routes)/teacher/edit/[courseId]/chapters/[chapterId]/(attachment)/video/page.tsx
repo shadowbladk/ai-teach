@@ -10,7 +10,7 @@ import { Banner } from "@/components/banner";
 const video = async ({
   params,
 }: {
-  params: { courseId: string; chapterId: string };
+  params: { courseId: string; chapterId: string; videoId: string };
 }) => {
   const { userId } = auth();
 
@@ -48,22 +48,26 @@ const video = async ({
     return redirect("/");
   }
 
+  const requiredFields = [1];
+  const isComplete = requiredFields.every(Boolean);
+
   return (
     <>
       {!course.isPublished && (
-        <Banner label="This course is unpublished. It will not be visible to the students." />
+        <Banner label="This PDF is unpublished. It will not be visible to the students." />
       )}
       <div className="flex flex-col items-center justify-center w-full px-4 py-16 gap-8 ">
         <div className="flex items-center w-4/5 max-w-7xl justify-between">
           <div className="flex flex-row gap-2 items-center justify-center">
             <PencilRuler />
-            <h1 className="text-2xl font-medium">PDF Files</h1>
+            <h1 className="text-2xl font-medium">Videos</h1>
           </div>
 
           <Actions
-            // disabled={!isComplete}
-            disabled={true}
+            disabled={!isComplete}
             courseId={params.courseId}
+            chapterId={params.chapterId}
+            videoId={params.videoId}
             isPublished={course.isPublished}
           />
         </div>

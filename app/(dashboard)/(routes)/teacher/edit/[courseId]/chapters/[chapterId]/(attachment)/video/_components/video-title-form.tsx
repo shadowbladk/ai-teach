@@ -25,7 +25,7 @@
 //   };
 //   courseId: string;
 //   chapterId: string;
-//   // quizId: string
+//   videoId: string;
 // }
 
 // const formSchema = z.object({
@@ -36,7 +36,8 @@
 //   initialData,
 //   courseId,
 //   chapterId,
-// }: // quizId,
+//   videoId,
+// }:
 // VideoTitleFormProps) => {
 //   const [isEditing, setIsEditing] = useState(false);
 
@@ -55,10 +56,10 @@
 //     console.log(values);
 //     try {
 //       await axios.patch(
-//         `/api/courses/${courseId}/chapters/${chapterId}`,
+//         `/api/courses/${courseId}/chapters/${chapterId}/video/${videoId}`,
 //         values
 //       );
-//       toast.success("Course updated");
+//       toast.success("Video updated");
 //       toggleEdit();
 //       router.refresh();
 //     } catch {
