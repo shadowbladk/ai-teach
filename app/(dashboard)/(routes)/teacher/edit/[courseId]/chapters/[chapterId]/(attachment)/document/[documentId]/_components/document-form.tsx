@@ -38,7 +38,7 @@ export const DocumentForm = ({
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      await axios.post(
+      await axios.patch(
         `/api/courses/${courseId}/chapters/${chapterId}/documents/${documentId}`,
         values
       );
@@ -93,7 +93,7 @@ export const DocumentForm = ({
                 className="flex items-center p-3 w-full bg-sky-100 border-sky-200 border text-sky-700 rounded-md"
               >
                 <File className="h-4 w-4 mr-2 flex-shrink-0" />
-                <p className="text-xs line-clamp-1">{initialData.title}</p>
+                <p className="text-xs line-clamp-1">{initialData.url}</p>
                 {deletingId === initialData.id && (
                   <div>
                     <Loader2 className="h-4 w-4 animate-spin" />

@@ -36,6 +36,7 @@ const EditPage = async ({ params }: { params: { courseId: string } }) => {
   if (!course) {
     return redirect("/");
   }
+
   if (course.chapters.length === 0) {
     return (
       <div className="flex min-h-screen flex-col overflow-x-hidden">
@@ -49,7 +50,7 @@ const EditPage = async ({ params }: { params: { courseId: string } }) => {
           </div>
         </div>
         <div className="w-full flex-grow justify-center px-6 pt-6 bg-[#F3F4F4]">
-          <ChapterNavbar course={course} />
+          <ChapterNavbar course={course} initialChapterIndex={0} />
         </div>
       </div>
     );

@@ -18,7 +18,6 @@ const Document = async ({
     return redirect("/");
   }
 
-  console.log(params);
   const document = await db.document.findUnique({
     where: {
       id: params.documentId,

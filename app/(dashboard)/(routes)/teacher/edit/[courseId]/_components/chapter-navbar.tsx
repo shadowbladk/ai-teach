@@ -24,8 +24,8 @@ export const ChapterNavbar = ({
   };
 
   return (
-    <div className="flex-col w-full justify-center">
-      <div className="mx-auto flex flex-wrap justify-center pr-6">
+    <div className="flex-col w-full justify-center pr-12">
+      <div className="mx-auto flex flex-wrap justify-center">
         <ChapterCarousel
           course={course}
           onSelectChapter={handleChapterChange}

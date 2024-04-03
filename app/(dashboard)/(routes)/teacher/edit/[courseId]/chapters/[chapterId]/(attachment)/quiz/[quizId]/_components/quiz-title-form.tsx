@@ -1,13 +1,13 @@
-"use client"
+"use client";
 
-import * as z from "zod"
-import axios from "axios"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { Pencil } from "lucide-react"
-import { useState } from "react"
-import toast from "react-hot-toast"
-import { useRouter } from "next/navigation"
+import * as z from "zod";
+import axios from "axios";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { Pencil } from "lucide-react";
+import { useState } from "react";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 import {
   Form,
@@ -15,16 +15,16 @@ import {
   FormField,
   FormItem,
   FormMessage,
-} from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
-import { QuestionSet } from "@prisma/client"
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { QuestionSet } from "@prisma/client";
 
 interface QuizTitleFormProps {
-  initialData: QuestionSet
-  courseId: string
-  chapterId: string
-  questionsetId: string
+  initialData: QuestionSet;
+  courseId: string;
+  chapterId: string;
+  questionsetId: string;
 }
 
 export const QuizTitleForm = ({
@@ -33,34 +33,34 @@ export const QuizTitleForm = ({
   chapterId,
   questionsetId,
 }: QuizTitleFormProps) => {
-  const [isEditing, setIsEditing] = useState(false)
-  const [title, setTitle] = useState(initialData.title)
+  const [isEditing, setIsEditing] = useState(false);
+  const [title, setTitle] = useState(initialData.title);
 
-  const toggleEdit = () => setIsEditing((current) => !current)
+  const toggleEdit = () => setIsEditing((current) => !current);
 
-  const router = useRouter()
+  const router = useRouter();
 
   const onCancel = () => {
-    setTitle(initialData.title)
-    toggleEdit()
-  }
+    setTitle(initialData.title);
+    toggleEdit();
+  };
 
   const onSubmit = async (newTitle: string) => {
     try {
       let value = {
         title: newTitle,
-      }
+      };
       await axios.patch(
         `/api/courses/${courseId}/chapters/${chapterId}/questionset/${questionsetId}`,
         value
-      )
-      toast.success("Question set updated")
-      toggleEdit()
-      router.refresh()
+      );
+      toast.success("Question set updated");
+      toggleEdit();
+      router.refresh();
     } catch {
-      toast.error("Something went wrong")
+      toast.error("Something went wrong");
     }
-  }
+  };
 
   return (
     <div className="border bg-slate-100 rounded-md p-6 flex flex-col gap-4 w-full">
@@ -87,9 +87,7 @@ export const QuizTitleForm = ({
           />
           <div className="flex justify-end gap-4">
             <Button
-              onClick={(e) =>
-                onCancel()
-              }
+              onClick={(e) => onCancel()}
               variant="underline"
               size="ghost"
               className={isEditing ? "flex" : "hidden"}
@@ -100,9 +98,7 @@ export const QuizTitleForm = ({
               type="submit"
               size="sm_l"
               variant="primary"
-              onClick={(e) =>
-                onSubmit(title)
-              }
+              onClick={(e) => onSubmit(title)}
             >
               Save
             </Button>
@@ -110,5 +106,5 @@ export const QuizTitleForm = ({
         </>
       )}
     </div>
-  )
-}
+  );
+};
