@@ -72,10 +72,12 @@ export const FlashcardForm = ({
       back: back,
     }
     try {
+      toast.loading("Creating card...")
       let result = await axios.post(
         `/api/courses/${courseId}/chapters/${chapterId}/flashcarddecks/${flashcarddeckId}/flashcard`,
         value
       )
+      toast.dismiss()
       toast.success("Flashcard created")
       newCard = await result.data
       router.refresh()
@@ -101,7 +103,7 @@ export const FlashcardForm = ({
         front: front,
         back: back,
       }
-      console.log(value, cards[index])
+      toast.loading("Updating card...")
       let flashcardId = cards[index].id
       let result = await axios.patch(
         `/api/courses/${courseId}/chapters/${chapterId}/flashcarddecks/${flashcarddeckId}/flashcard/${flashcardId}`,
@@ -112,6 +114,7 @@ export const FlashcardForm = ({
         updatedItems[index] = result.data
         return updatedItems
       })
+      toast.dismiss()
       toast.success("Flashcard updated")
       toggleEdit()
       router.refresh()
@@ -122,10 +125,12 @@ export const FlashcardForm = ({
 
   const handleFlashcardRemove = async (index: number) => {
     try {
+      toast.loading("Deleting card...")
       let flashcardId = cards[index].id
       await axios.delete(
         `/api/courses/${courseId}/chapters/${chapterId}/flashcarddecks/${flashcarddeckId}/flashcard/${flashcardId}`
       )
+      toast.dismiss()
       toast.success("Flashcard deleted")
       router.refresh()
     } catch {
@@ -283,10 +288,13 @@ export const FlashcardForm = ({
                       <div
                         className={cn(
                           "text-2xl font-medium text-center place-content-center grid overflow-y-auto h-[208px]",
-                          !(front != null) && "text-lg text-slate-500 italic"
+                          !(front != null && front != "") &&
+                            "text-lg text-slate-500 italic"
                         )}
                       >
-                        {front || "No front side description"}
+                        {front != null && front != ""
+                          ? front
+                          : "No front side description"}
                       </div>
                     </TabsContent>
                     <TabsContent
@@ -296,10 +304,12 @@ export const FlashcardForm = ({
                       <div
                         className={cn(
                           "text-lg font-medium text-center place-content-center grid overflow-y-auto h-[208px]",
-                          !(back != null) && "text-lg text-slate-500 italic"
+                          !(back != null && back != "") && "text-lg text-slate-500 italic"
                         )}
                       >
-                        {back || "No back side description"}
+                        {back != null && back != ""
+                          ? back
+                          : "No back side description"}
                       </div>
                     </TabsContent>
                   </div>

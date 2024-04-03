@@ -83,6 +83,7 @@ export const QuizForm = ({
     let question = questions[index]
     let questionId = question.id
     try {
+      toast.loading("Updating question...")
       let valueQuestion = { text: questions[index].text }
       await axios.patch(
         `/api/courses/${courseId}/chapters/${chapterId}/questionset/${questionsetId}/questions/${questionId}`,
@@ -108,6 +109,7 @@ export const QuizForm = ({
       setData(JSON.parse(JSON.stringify(questions)))
       answers[index] = selectedValue
       setCorrectAnswer(selectedValue)
+      toast.dismiss()
       toast.success("Question updated")
       toggleEdit()
       router.refresh()
@@ -147,11 +149,13 @@ export const QuizForm = ({
 
   const handleQuestionRemove = async (index: number) => {
     try {
+      toast.loading("Deleting question...")
       let questionId = questions[index].id
 
       await axios.delete(
         `/api/courses/${courseId}/chapters/${chapterId}/questionset/${questionsetId}/questions/${questionId}`
       )
+      toast.dismiss()
       toast.success("Question deleted")
       router.refresh()
     } catch {
@@ -194,8 +198,10 @@ export const QuizForm = ({
 
   const handleQuestionAdd = async () => {
     let newQuestion
+    let result
     try {
-      let result = await axios.post(
+      toast.loading("Creating question...")
+      result = await axios.post(
         `/api/courses/${courseId}/chapters/${chapterId}/questionset/${questionsetId}/questions`
       )
 
@@ -206,7 +212,9 @@ export const QuizForm = ({
         )
         newQuestion.answers.push(await answer.data)
       }
+      toast.dismiss()
       toast.success("Question created")
+
       router.refresh()
     } catch {
       toast.error("Something went wrong")
