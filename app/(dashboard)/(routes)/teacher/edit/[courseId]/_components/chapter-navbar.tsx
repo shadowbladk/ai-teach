@@ -3,43 +3,46 @@
 import React, { useState } from "react";
 import { Course, Chapter } from "@prisma/client";
 import { ChapterTitleForm } from "./chapter-title-form";
-import { ChaptersForm } from "./chapters-form";
-import { Button } from "@/components/ui/button";
 import { ChapterCarousel } from "./chapter-carousel";
-import { ArrowUpDown } from "lucide-react";
-import { ChapterEdit } from "./chapter-edit";
-
 
 interface ChapterNavbarProps {
   course: Course & {
     chapters: Chapter[];
   };
+  initialChapterIndex: number; // Add a prop for the initial chapter index
 }
 
-export const ChapterNavbar = ({ course }: ChapterNavbarProps) => {
-  const [selectedChapterIndex, setSelectedChapterIndex] = useState(0);
+export const ChapterNavbar = ({
+  course,
+  initialChapterIndex,
+}: ChapterNavbarProps) => {
+  const [selectedChapterIndex, setSelectedChapterIndex] =
+    useState(initialChapterIndex);
 
   const handleChapterChange = (index: number) => {
     setSelectedChapterIndex(index);
   };
 
   return (
-    <div className="flex-col w-full justify-center px-12">
-      <div className="mx-auto flex flex-wrap justify-center">
+    <div className="flex-col w-full justify-center">
+      <div className="mx-auto flex flex-wrap justify-center pr-6">
         <ChapterCarousel
           course={course}
           onSelectChapter={handleChapterChange}
+          selectedChapterIndex={selectedChapterIndex}
         />
       </div>
       <div className="flex max-w-[720px] justify-between mx-auto pt-6">
-      {course.chapters.length > 0 ? (
-        <ChapterTitleForm
-          initialData={course.chapters[selectedChapterIndex] ? { title: course.chapters[selectedChapterIndex].title } : { title: course.chapters[selectedChapterIndex - 1
-          ].title }}
-          courseId={course.id}
-          chapterId={course.chapters[selectedChapterIndex]?.id}/>
-          ) : (
-        <p>No chapters created</p>
+        {course.chapters.length > 0 ? (
+          <ChapterTitleForm
+            initialData={{
+              title: course.chapters[selectedChapterIndex]?.title,
+            }}
+            courseId={course.id}
+            chapterId={course.chapters[selectedChapterIndex]?.id}
+          />
+        ) : (
+          <p>No chapters created</p>
         )}
       </div>
     </div>

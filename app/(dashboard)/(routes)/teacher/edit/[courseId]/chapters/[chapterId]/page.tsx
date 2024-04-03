@@ -3,10 +3,10 @@ import { redirect } from "next/navigation";
 import { db } from "@/lib/db";
 import { ChapterBox } from "./_components/attachment-box";
 import { CreateAttachment } from "./_components/create-attachment";
-import { ImageForm } from "./_components/image-form";
-import { TitleForm } from "./_components/title-form";
-import { DescriptionForm } from "./_components/description-form";
-import { ChapterNavbar } from "./_components/chapter-navbar";
+import { ImageForm } from "../../_components/image-form";
+import { TitleForm } from "../../_components/title-form";
+import { DescriptionForm } from "../../_components/description-form";
+import { ChapterNavbar } from "../../_components/chapter-navbar";
 
 const chapterIdPage = async ({
   params,
@@ -82,13 +82,13 @@ const chapterIdPage = async ({
           <DescriptionForm initialData={course} courseId={course.id} />
         </div>
       </div>
-      <div className="flex w-screen justify-center item-center">
-        <ChapterNavbar
-          course={course}
-          initialChapterIndex={initialChapterIndex}
-        />
-      </div>
-      <div className="w-full justify-center px-6">
+      <div className="w-full flex-grow justify-center px-6 pt-6 bg-[#F3F4F4]">
+        <div className="flex w-screen justify-center item-center ">
+          <ChapterNavbar
+            course={course}
+            initialChapterIndex={initialChapterIndex}
+          />
+        </div>
         <div className="max-w-[720px] mx-auto justify-center">
           {course.chapters
             .filter((chapter) => chapter.id === params.chapterId)

@@ -17,24 +17,32 @@ interface ChapterCarouselProps {
     chapters: Chapter[];
   };
   onSelectChapter: (index: number) => void;
+  selectedChapterIndex: number;
 }
 
 export const ChapterCarousel = ({
   course,
   onSelectChapter,
+  selectedChapterIndex,
 }: ChapterCarouselProps) => {
   return (
     <div>
       <Carousel className="flex-row max-w-[300px] md:max-w-[600px]">
         <CarouselContent>
           {course.chapters.map((chapter, index) => (
-            <div className="p-1 md:p-3">
+            <div className="pt-1" key={index}>
               <CarouselItem key={index} className="basis-1/3 md:basis-1/4">
                 <Link
                   href={`/teacher/edit/${chapter.courseId}/chapters/${chapter.id}`}
                   className="text-2xl font-semibold"
                 >
-                  <Card className="w-[55px] h-[55px] rounded-full border-[3px] border-black">
+                  <Card
+                    className={`w-[55px] h-[55px] rounded-full border-[3px] border-black ${
+                      selectedChapterIndex === index
+                        ? "bg-[#80489c] text-white"
+                        : "hover:bg-[#80489c] hover:text-white"
+                    }`}
+                  >
                     <CardContent
                       className="flex items-center justify-center p-2 "
                       onClick={() => onSelectChapter(index)}
@@ -46,9 +54,9 @@ export const ChapterCarousel = ({
               </CarouselItem>
             </div>
           ))}
-          <CarouselItem>
+          <div className="pl-3">
             <ChapterEdit course={course} />
-          </CarouselItem>
+          </div>
         </CarouselContent>
         <CarouselPrevious />
         <CarouselNext />
