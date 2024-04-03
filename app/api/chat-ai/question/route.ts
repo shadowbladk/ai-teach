@@ -34,19 +34,19 @@ export async function POST(req: Request) {
       question: questionCompletion,
       answers: [
         {
-          answer: answer1Completion,
+          text: answer1Completion,
           isCorrect: true,
         },
         {
-          answer: answer2Completion,
+          text: answer2Completion,
           isCorrect: false,
         },
         {
-          answer: answer3Completion,
+          text: answer3Completion,
           isCorrect: false,
         },
         {
-          answer: answer4Completion,
+          text: answer4Completion,
           isCorrect: false,
         },
       ],

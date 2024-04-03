@@ -69,7 +69,6 @@ export const QuizForm = ({
   const [keyword, setKeyword] = useState("")
   const [open, setOpen] = useState(false)
 
-
   const router = useRouter()
 
   const toggleEdit = () => setIsEditing((current) => !current)
@@ -105,8 +104,8 @@ export const QuizForm = ({
     })
   }
 
-
   const onCancel = (index: number) => {
+
     setQuestions((prevItems: (Question & { answers: Answer[] })[]) => {
       const updatedItems: (Question & { answers: Answer[] })[] = [...prevItems]
       console.log(data)
@@ -117,7 +116,7 @@ export const QuizForm = ({
     toggleEdit()
   }
 
-  const createFlashcard = async (keyword: string) => {
+  const createQuestion = async (keyword: string) => {
     try {
       let value = {
         message: keyword,
@@ -126,42 +125,58 @@ export const QuizForm = ({
 
       setOpen(false)
       setKeyword("")
-      // await handleFlashcardAdd(result.data.front, result.data.back)
-      console.log(result.data)
+      await handleQuestionAdd(result.data.question, result.data.answers)
     } catch {
       toast.error("Something went wrong")
     }
   }
 
-  const handleQuestionAdd = async () => {
+  const handleQuestionAdd = async (question: any, answerSet: any) => {
     let newQuestion
     let result
+    let valueQ = {
+      question: question,
+    }
+
     try {
       toast.loading("Creating question...")
       result = await axios.post(
-        `/api/courses/${courseId}/chapters/${chapterId}/questionset/${questionsetId}/questions`
+        `/api/courses/${courseId}/chapters/${chapterId}/questionset/${questionsetId}/questions`,
+        valueQ
       )
-
+      // console.log(values.answers)
       newQuestion = await result.data
       for (let i = 0; i < 4; i++) {
+        let valueA = {
+          text: answerSet ? answerSet[i].text : null,
+          isCorrect: answerSet ? answerSet[i].isCorrect : false,
+        }
+
         let answer = await axios.post(
-          `/api/courses/${courseId}/chapters/${chapterId}/questionset/${questionsetId}/questions/${newQuestion.id}/answers`
+          `/api/courses/${courseId}/chapters/${chapterId}/questionset/${questionsetId}/questions/${newQuestion.id}/answers`,
+          valueA
         )
         newQuestion.answers.push(await answer.data)
       }
       toast.dismiss()
       toast.success("Question created")
 
+      setQuestions([newQuestion, ...questions])
+      setData([newQuestion, ...questions])
+      setCount(count + 1)
+      answerSet
+        ? (setAnswers(["0", ...answers]),
+          setSelectedValue("0"),
+          setCorrectAnswer("0"))
+        : (setAnswers(["5", ...answers]),
+          setSelectedValue("5"),
+          setCorrectAnswer("5"))
+      api?.scrollTo(0)
+
       router.refresh()
     } catch {
       toast.error("Something went wrong")
     }
-    setQuestions([newQuestion, ...questions])
-    setCount(count + 1)
-    setAnswers(["5", ...answers])
-    setSelectedValue("5")
-    setCorrectAnswer("5")
-    api?.scrollTo(0)
   }
 
   const handleQuestionRemove = async (index: number) => {
@@ -256,7 +271,6 @@ export const QuizForm = ({
     })
     setSelectedValue(answers[0])
     setCorrectAnswer(answers[0])
-    console.log(answers)
   }, [api])
 
   return (
@@ -292,7 +306,7 @@ export const QuizForm = ({
                 type="submit"
                 variant="primary"
                 size="sm_l"
-                onClick={(e) => createFlashcard(keyword)}
+                onClick={(e) => createQuestion(keyword)}
               >
                 Save
               </Button>
@@ -303,7 +317,7 @@ export const QuizForm = ({
           Question {current} of {count}
         </div>
         <Button
-          onClick={(e) => handleQuestionAdd()}
+          onClick={(e) => handleQuestionAdd(null, null)}
           variant="underline"
           size="ghost"
           className="justify-self-end col-start-3"
