@@ -1,5 +1,5 @@
-import Mux from "@mux/mux-node";
 import { auth } from "@clerk/nextjs";
+import Mux from "@mux/mux-node";
 import { NextResponse } from "next/server";
 
 import { db } from "@/lib/db";
@@ -31,24 +31,40 @@ export async function DELETE(
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
-    const videoData = await db.muxData.findUnique({
+    const selectVideo = await db.video.findUnique({
       where: {
-        chapterId: params.chapterId,
         id: params.videoId,
+        chapterId: params.chapterId,
       },
     });
-    if (!videoData) {
+    if (!selectVideo) {
       return new NextResponse("Not found", { status: 404 });
     }
 
-    await video.assets.delete(videoData.assetId);
-    await db.muxData.delete({
+    if (selectVideo.videoUrl) {
+      const existingMuxData = await db.muxData.findFirst({
+        where: {
+          videoId: params.videoId,
+        },
+      });
+
+      if (existingMuxData) {
+        await video.assets.delete(existingMuxData.assetId);
+        await db.muxData.delete({
+          where: {
+            id: existingMuxData.id,
+          },
+        });
+      }
+    }
+
+    const deleteVideo = await db.video.delete({
       where: {
-        id: videoData.id,
+        id: params.videoId,
       },
     });
 
-    return new NextResponse(null, { status: 204 });
+    return NextResponse.json(deleteVideo);
   } catch (error) {
     console.log("[VIDEO_ID]", error);
     return new NextResponse("Internal server error", { status: 500 });
@@ -63,7 +79,8 @@ export async function PATCH(
 ) {
   try {
     const { userId } = auth();
-    const { values } = await req.json();
+    const { isPublished, ...values } = await req.json();
+
     if (!userId) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
@@ -79,24 +96,48 @@ export async function PATCH(
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
-    const video = await db.muxData.findUnique({
+    const selectVideo = await db.video.update({
       where: {
         id: params.videoId,
+        chapterId: params.chapterId,
+      },
+      data: {
+        ...values,
       },
     });
 
-    if (!video) {
-      return new NextResponse("Not found", { status: 404 });
+    if (values.videoUrl) {
+      const existingMuxData = await db.muxData.findFirst({
+        where: {
+          videoId: params.videoId,
+        },
+      });
+
+      if (existingMuxData) {
+        await video.assets.delete(existingMuxData.assetId);
+        await db.muxData.delete({
+          where: {
+            id: existingMuxData.id,
+          },
+        });
+      }
+
+      const asset = await video.assets.create({
+        input: values.videoUrl,
+        playback_policy: ["public"],
+        test: false,
+      });
+
+      await db.muxData.create({
+        data: {
+          videoId: params.videoId,
+          assetId: asset.id,
+          playbackId: asset.playback_ids?.[0]?.id,
+        },
+      });
     }
 
-    const muxData = await db.muxData.update({
-      where: {
-        id: params.videoId,
-      },
-      data: { ...values },
-    });
-
-    return NextResponse.json(muxData, { status: 200 });
+    return NextResponse.json(selectVideo);
   } catch (error) {
     console.log("[VIDEO_ID]", error);
     return new NextResponse("Internal server error", { status: 500 });
