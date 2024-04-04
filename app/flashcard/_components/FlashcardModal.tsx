@@ -1,133 +1,62 @@
 "use client";
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 
-import { Card, CardContent } from "@/components/ui/card";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import axios from "axios";
-import {
-  ClipboardList,
-  FileText,
-  PlusCircle,
-  Video,
-  WalletCards,
-} from "lucide-react";
-import { useRouter } from "next/navigation";
-import toast from "react-hot-toast";
-
-interface AttachmentProps {
-  courseId: string;
-  chapterId: string;
+interface ScoreModalProps {
+  score: number;
+  isOpen: boolean;
+  onClose: () => void;
+  onRestart: () => void;
 }
 
-export const CreateAttachment = ({ courseId, chapterId }: AttachmentProps) => {
-  const router = useRouter();
-
-  const onSubmit = async (type: string) => {
-    try {
-      let data = {};
-      if (type === "documents") {
-        data = { url: "temp", title: "Untitled" };
-      } else {
-        data = { title: "Untitled" };
-      }
-
-      const response = await axios.post(
-        `/api/courses/${courseId}/chapters/${chapterId}/${type}`,
-        data
-      );
-
-      const createdId = response.data.id;
-
-      let endpointType = type;
-      if (type === "documents") {
-        endpointType = "document";
-      } else if (type === "flashcarddecks") {
-        endpointType = "flashcard";
-      } else if (type === "questionset") {
-        endpointType = "quiz";
-      }
-      router.push(
-        `/teacher/edit/${courseId}/chapters/${chapterId}/${endpointType}/${createdId}`
-      );
-      toast.success("Content created");
-    } catch {
-      toast.error("Something went wrong");
-    }
-  };
-
+const FlashcardModal: React.FunctionComponent<ScoreModalProps> = ({
+  score,
+  isOpen,
+  onClose,
+  onRestart,
+}) => {
   return (
-    <Dialog>
-      <DialogTrigger>
-        <PlusCircle size={40} strokeWidth={1.5} />
-      </DialogTrigger>
-      <DialogContent>
-        <DialogTitle className="text-center font-bold text-xl">
-          Choose Type of Content
+    <Dialog open={isOpen}>
+      <DialogContent className="p-8 text-center text-white">
+        <DialogTitle className="font-bold text-2xl mb-4 text-black">
+          Your Score: {score}
         </DialogTitle>
-        <div className="pt-5 grid grid-cols-2 gap-4 justify-items-center">
-          <div
-            className="text-center flex flex-col items-center"
-            onClick={(e) => {
-              e.preventDefault();
-              onSubmit("documents");
-            }}
+        <div className="relative mt-4 inline-flex justify-center items-center">
+          <span className="score rounded-full text-black font-bold text-2xl px-4 py-2">
+            {score}
+          </span>
+          <div className="absolute rounded-full border-4 border-blue-500 h-16 w-16 animate-spin"></div>
+        </div>
+        <div className="text-xl font-bold mb-4 text-black mt-4">
+          {score === 0
+            ? "Complete!"
+            : score === 1
+            ? "Complete!"
+            : "Congratulations!"}
+        </div>
+        <div className="text-lg mb-4 text-black">
+          {score === 0
+            ? "You can do better! Do you want to restart the quiz?"
+            : score === 1
+            ? "Continue to learn more terms that you missed!"
+            : "You're already done! Great job!"}
+        </div>
+        <div className="flex flex-col justify-center gap-4">
+          <button
+            onClick={onRestart}
+            className="px-4 py-2 bg-blue-500 hover:bg-blue-700 text-white font-bold rounded-md w-full"
           >
-            <Card className="w-[60px] h-[60px] rounded-full bg-[#D9D9D9]">
-              <CardContent className="flex items-center justify-center p-2">
-                <FileText size={40} strokeWidth={1.5} />
-              </CardContent>
-            </Card>
-            <h3 className="pt-2 text-base">PDF Files</h3>
-          </div>
-          <div
-            className="text-center flex flex-col items-center"
-            onClick={(e) => {
-              e.preventDefault();
-              onSubmit("videos");
-            }}
+            Restart flashcard
+          </button>
+          <button
+            onClick={onClose}
+            className="px-4 py-2 bg-red-500 hover:bg-red-700 text-white font-bold rounded-md w-full"
           >
-            <Card className="w-[60px] h-[60px] rounded-full bg-[#D9D9D9]">
-              <CardContent className="flex items-center justify-center p-2">
-                <Video size={40} strokeWidth={1.5} />
-              </CardContent>
-            </Card>
-            <h3 className="pt-2 text-base">Videos</h3>
-          </div>
-          <div
-            className="text-center flex flex-col items-center"
-            onClick={(e) => {
-              e.preventDefault();
-              onSubmit("questionset");
-            }}
-          >
-            <Card className="w-[60px] h-[60px] rounded-full bg-[#D9D9D9]">
-              <CardContent className="flex items-center justify-center p-2">
-                <ClipboardList size={40} strokeWidth={1.5} />
-              </CardContent>
-            </Card>
-            <h3 className="pt-2 text-base">Quizzes</h3>
-          </div>
-          <div
-            className="text-center flex flex-col items-center"
-            onClick={(e) => {
-              e.preventDefault();
-              onSubmit("flashcarddecks");
-            }}
-          >
-            <Card className="w-[60px] h-[60px] rounded-full bg-[#D9D9D9]">
-              <CardContent className="flex items-center justify-center p-2">
-                <WalletCards size={40} strokeWidth={1.5} />
-              </CardContent>
-            </Card>
-            <h3 className="pt-2 text-base">Flashcards</h3>
-          </div>
+            Leave this flashcard
+          </button>
         </div>
       </DialogContent>
     </Dialog>
   );
 };
+
+export default FlashcardModal;

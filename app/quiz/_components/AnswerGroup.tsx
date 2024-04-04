@@ -22,7 +22,9 @@ const AnswerGroup: React.FunctionComponent<AnswerGroupProps> = ({
             key={choice}
             answer={choice}
             selectedChoice={selectedChoice}
-            onClick={() => setSelectedChoice(choice)}
+            onClick={() => {
+              setSelectedChoice(choice);
+            }}
             choice={choice}
           />
         ))}

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import AnswerGroup from "./AnswerGroup";
 import QuestionCard from "./QuestionCard";
+import QuizModal from "./QuizModal";
 
 interface QuizProps {
   title: string;
@@ -23,15 +24,39 @@ type Answer = {
 const Quiz: React.FunctionComponent<QuizProps> = ({ title, questions }) => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState<Answer[]>([]);
+  const [showModal, setShowModal] = useState(false);
 
-  const submitAnswer = (answer: Answer) => {
+  const calculateScore = (answers: Answer[]): number => {
+    let correctAnswers = 0;
+    answers.forEach((answer) => {
+      if (answer.correct) {
+        correctAnswers++;
+      }
+    });
+    return correctAnswers;
+  };
+
+  const submitAnswer = (selectedAnswer: string) => {
+    const answer = {
+      questionId: questions[currentQuestionIndex].id,
+      answer: selectedAnswer,
+      correct: selectedAnswer === questions[currentQuestionIndex].answer,
+    };
+
     setAnswers([...answers, answer]);
 
     if (currentQuestionIndex < questions.length - 1) {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
     } else {
-      console.log("Submit");
+      const score = calculateScore(answers);
+      setShowModal(true);
     }
+  };
+
+  const restartQuiz = () => {
+    setCurrentQuestionIndex(0);
+    setAnswers([]);
+    setShowModal(false);
   };
 
   return (
@@ -45,6 +70,12 @@ const Quiz: React.FunctionComponent<QuizProps> = ({ title, questions }) => {
         choices={questions[currentQuestionIndex].choices}
         answer={questions[currentQuestionIndex].answer}
         submitAnswer={submitAnswer}
+      />
+      <QuizModal
+        score={calculateScore(answers)}
+        isOpen={showModal}
+        onClose={() => setShowModal(false)}
+        onRestart={restartQuiz}
       />
     </section>
   );

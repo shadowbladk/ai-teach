@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import FlashcardGroup from "./FlashcardGroup";
 import WordCard from "./WordCard";
+import FlashcardModal from "./FlashcardModal";
 
 interface FlashcardProps {
   title: string;
@@ -25,9 +26,21 @@ const Flashcard: React.FunctionComponent<FlashcardProps> = ({
 }) => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState<Answer[]>([]);
-  const [isFlipped, setIsFlipped] = useState(false); // Add this state here
+  const [isFlipped, setIsFlipped] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [knownAnswersCount, setKnownAnswersCount] = useState(0);
+
+  const restartFlashcard = () => {
+    setCurrentQuestionIndex(0);
+    setKnownAnswersCount(0);
+    setIsFlipped(false);
+    setShowModal(false);
+  };
 
   const submitAnswer = (userAnswer: string) => {
+    if (userAnswer === "know") {
+      setKnownAnswersCount(knownAnswersCount + 1);
+    }
     const newAnswer: Answer = {
       wordId: words[currentQuestionIndex].id,
       answer: userAnswer,
@@ -40,6 +53,7 @@ const Flashcard: React.FunctionComponent<FlashcardProps> = ({
       setCurrentQuestionIndex(currentQuestionIndex + 1);
       setIsFlipped(false);
     } else {
+      setShowModal(true);
       console.log("Submit all answers:", answers);
     }
   };
@@ -58,6 +72,12 @@ const Flashcard: React.FunctionComponent<FlashcardProps> = ({
         setIsFlipped={setIsFlipped}
       />
       <FlashcardGroup submitAnswer={submitAnswer} />
+      <FlashcardModal
+        score={knownAnswersCount}
+        isOpen={showModal}
+        onClose={() => setShowModal(false)}
+        onRestart={restartFlashcard}
+      />
     </section>
   );
 };
