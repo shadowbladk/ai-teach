@@ -39,6 +39,7 @@ export async function POST(
     const muxData = await db.muxData.create({
       data: {
         chapterId: params.chapterId,
+        title: values.videoUrl,
         assetId: asset.id,
         playbackId: asset.playback_ids?.[0]?.id,
       },
