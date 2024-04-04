@@ -57,7 +57,7 @@ const chapterIdPage = async ({
               chapterId: params.chapterId, // Filter documents for the current chapter
             },
           },
-          muxDatas: {
+          videos: {
             where: {
               chapterId: params.chapterId, // Filter documents for the current chapter
             },
@@ -136,7 +136,7 @@ const chapterIdPage = async ({
                     link={`/teacher/edit/${params.courseId}/chapters/${params.chapterId}/quiz/${question.id}`}
                   />
                 ))}
-                {chapter.muxDatas.map((video) => (
+                {chapter.videos.map((video) => (
                   <ChapterBox
                     key={video.id}
                     name={video.title!}

@@ -20,15 +20,13 @@ interface AttachmentProps {
 export const CreateAttachment = ({ courseId, chapterId }: AttachmentProps) => {
   const router = useRouter();
 
-  const onSubmitVideo = async () => {
-    router.push(`/teacher/edit/${courseId}/chapters/${chapterId}/video`);
-  };
-
   const onSubmit = async (type: string) => {
     try {
       let data = {};
       if (type === "documents") {
         data = { url: "temp", title: "Untitled" };
+      } else if (type === "videos") {
+        data = {};
       } else {
         data = { title: "Untitled" };
       }
@@ -40,14 +38,7 @@ export const CreateAttachment = ({ courseId, chapterId }: AttachmentProps) => {
 
       const createdId = response.data.id;
 
-      let endpointType = type;
-      if (type === "documents") {
-        endpointType = "document";
-      } else if (type === "flashcarddecks") {
-        endpointType = "flashcard";
-      } else if (type === "questionset") {
-        endpointType = "quiz";
-      }
+      let endpointType = type.slice(0, -1);
       router.push(
         `/teacher/edit/${courseId}/chapters/${chapterId}/${endpointType}/${createdId}`
       );
@@ -87,7 +78,7 @@ export const CreateAttachment = ({ courseId, chapterId }: AttachmentProps) => {
             className="text-center flex flex-col items-center"
             onClick={(e) => {
               e.preventDefault();
-              onSubmitVideo();
+              onSubmit("videos");
             }}
           >
             <Card className="w-[60px] h-[60px] rounded-full bg-[#D9D9D9]">

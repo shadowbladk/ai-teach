@@ -35,12 +35,12 @@ export const Actions = ({
 
       if (isPublished) {
         await axios.patch(
-          `/api/courses/${courseId}/chapters/${chapterId}/video/${videoId}/unpublish`
+          `/api/courses/${courseId}/chapters/${chapterId}/videos/${videoId}/unpublish`
         );
         toast.success("Course unpublished");
       } else {
         await axios.patch(
-          `/api/courses/${courseId}/chapters/${chapterId}/video/${videoId}/publish`
+          `/api/courses/${courseId}/chapters/${chapterId}/videos/${videoId}/publish`
         );
         toast.success("Course published");
         confetti.onOpen();

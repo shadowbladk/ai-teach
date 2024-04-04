@@ -18,7 +18,7 @@ const video = async ({
     return redirect("/");
   }
 
-  const video = await db.muxData.findUnique({
+  const video = await db.video.findUnique({
     where: {
       id: params.videoId,
     },
@@ -53,12 +53,12 @@ const video = async ({
         </div>
 
         <div className="flex flex-col gap-8 w-4/5 max-w-7xl justify-center">
-          {/* <VideoTitleForm
+          <VideoTitleForm
             initialData={video}
             courseId={params.courseId}
             chapterId={params.chapterId}
             videoId={params.videoId}
-          /> */}
+          />
           <hr className="border-t-4 rounded-md border-gray-400" />
           <ChapterVideoForm
             initialData={video}

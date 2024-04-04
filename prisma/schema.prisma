@@ -59,8 +59,8 @@ model Chapter {
   course         Course          @relation(fields: [courseId], references: [id], onDelete: Cascade)
   documents      Document[]
   flashcarddecks Flashcarddeck[]
-  muxDatas       MuxData[]
   questionSet    QuestionSet[]
+  userProgress   UserProgress[]
   videos         Video[]
 
   @@index([courseId])
@@ -170,26 +170,22 @@ model MuxData {
   id         String  @id @default(uuid())
   assetId    String
   playbackId String?
-
-  videoId String
-  video   Video  @relation(fields: [videoId], references: [id], onDelete: Cascade)
+  videoId    String
+  video      Video   @relation(fields: [videoId], references: [id], onDelete: Cascade)
 }
 
 model Video {
-  id          String  @id @default(uuid())
-  title       String? @db.Text
-  description String? @db.Text
-  videoUrl         String? @db.Text
-  isPublished Boolean @default(false)
+  id          String    @id @default(uuid())
+  title       String?
+  description String?
+  videoUrl    String?
+  isPublished Boolean   @default(false)
   position    Int
-
-  chapterId String
-  chapter   Chapter @relation(fields: [chapterId], references: [id], onDelete: Cascade)
-
-  muxData MuxData[]
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  chapterId   String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  muxData     MuxData[]
+  chapter     Chapter   @relation(fields: [chapterId], references: [id], onDelete: Cascade)
 
   @@index([chapterId])
 }

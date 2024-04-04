@@ -28,10 +28,6 @@ interface DocumentTitleFormProps {
   documentId: string;
 }
 
-const formSchema = z.object({
-  title: z.string().min(1),
-});
-
 export const DocumentTitleForm = ({
   initialData,
   chapterId,

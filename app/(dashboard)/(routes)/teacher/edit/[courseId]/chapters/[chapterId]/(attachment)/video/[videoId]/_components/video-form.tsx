@@ -3,17 +3,17 @@
 import * as z from "zod";
 import axios from "axios";
 import MuxPlayer from "@mux/mux-player-react";
-import { Loader2, Pencil, PlusCircle, Video, X } from "lucide-react";
+import { Loader2, Pencil, PlusCircle, FileVideo, X } from "lucide-react";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
-import { MuxData } from "@prisma/client";
+import { Video } from "@prisma/client";
 
 import { Button } from "@/components/ui/button";
 import { FileUpload } from "@/components/file-upload";
 
 interface VideoFormProps {
-  initialData: MuxData;
+  initialData: Video;
   courseId: string;
   chapterId: string;
   videoId: string;
@@ -39,7 +39,7 @@ export const ChapterVideoForm = ({
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       await axios.patch(
-        `/api/courses/${courseId}/chapters/${chapterId}/videos`,
+        `/api/courses/${courseId}/chapters/${chapterId}/videos/${videoId}`,
         values
       );
       toast.success("Video updated");
@@ -70,13 +70,13 @@ export const ChapterVideoForm = ({
         Chapter video
         <Button onClick={toggleEdit} variant="ghost">
           {isEditing && <>Cancel</>}
-          {!isEditing && !initialData.assetId && (
+          {!isEditing && !initialData.videoUrl && (
             <>
               <PlusCircle className="h-4 w-4 mr-2" />
               Add a video
             </>
           )}
-          {!isEditing && initialData.assetId && (
+          {!isEditing && initialData.videoUrl && (
             <>
               <Pencil className="h-4 w-4 mr-2" />
               Edit video
@@ -85,26 +85,18 @@ export const ChapterVideoForm = ({
         </Button>
       </div>
       {!isEditing &&
-        (!initialData.assetId ? (
+        (!initialData.videoUrl ? (
           <div className="flex items-center justify-center h-60 bg-slate-200 rounded-md">
-            <Video className="h-10 w-10 text-slate-500" />
+            <FileVideo className="h-10 w-10 text-slate-500" />
             {deletingId === initialData.id && (
               <div>
                 <Loader2 className="h-4 w-4 animate-spin" />
               </div>
             )}
-            {deletingId !== initialData.id && (
-              <button
-                onClick={() => onDelete(initialData.id)}
-                className="ml-auto hover:opacity-75 transition"
-              >
-                <X className="h-4 w-4" />
-              </button>
-            )}
           </div>
         ) : (
           <div className="relative aspect-video mt-2">
-            <MuxPlayer playbackId={initialData?.playbackId || ""} />
+            <MuxPlayer playbackId={initialData?.videoUrl || ""} />
           </div>
         ))}
       {isEditing && (
@@ -122,7 +114,7 @@ export const ChapterVideoForm = ({
           </div>
         </div>
       )}
-      {initialData.assetId && !isEditing && (
+      {initialData.videoUrl && !isEditing && (
         <div className="text-xs text-muted-foreground mt-2">
           Videos can take a few minutes to process. Refresh the page if video
           does not appear.
