@@ -167,11 +167,14 @@ model Document {
 }
 
 model MuxData {
-  id         String  @id @default(uuid())
-  assetId    String
-  playbackId String?
-  chapterId  String
-  chapter    Chapter @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+  id          String  @id @default(uuid())
+  title       String? @db.Text
+  isPublished Boolean @default(false)
+  assetId     String
+  playbackId  String?
+
+  chapterId String
+  chapter   Chapter @relation(fields: [chapterId], references: [id], onDelete: Cascade)
 
   @@index([chapterId])
 }
