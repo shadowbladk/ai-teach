@@ -1,13 +1,7 @@
-import Mux from "@mux/mux-node";
 import { auth } from "@clerk/nextjs";
 import { NextResponse } from "next/server";
 
 import { db } from "@/lib/db";
-
-const { video } = new Mux({
-  tokenId: process.env.MUX_TOKEN_ID,
-  tokenSecret: process.env.MUX_TOKEN_SECRET,
-});
 
 export async function POST(
   req: Request,
@@ -15,7 +9,7 @@ export async function POST(
 ) {
   try {
     const { userId } = auth();
-    const { values } = await req.json();
+    const { title } = await req.json();
     if (!userId) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
@@ -30,22 +24,26 @@ export async function POST(
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
-    const asset = await video.assets.create({
-      input: values.videoUrl,
-      playback_policy: ["public"],
-      test: false,
-    });
-
-    const muxData = await db.muxData.create({
-      data: {
+    const lastVideo = await db.video.findFirst({
+      where: {
         chapterId: params.chapterId,
-        title: values.videoUrl,
-        assetId: asset.id,
-        playbackId: asset.playback_ids?.[0]?.id,
+      },
+      orderBy: {
+        position: "desc",
       },
     });
 
-    return NextResponse.json(muxData, { status: 201 });
+    const position = lastVideo ? lastVideo.position + 1 : 0;
+
+    const video = await db.video.create({
+      data: {
+        chapterId: params.chapterId,
+        title: title,
+        position,
+      },
+    });
+
+    return NextResponse.json(video);
   } catch (error) {
     console.log("[VIDEO]", error);
     return new NextResponse("Internal server error", { status: 500 });
