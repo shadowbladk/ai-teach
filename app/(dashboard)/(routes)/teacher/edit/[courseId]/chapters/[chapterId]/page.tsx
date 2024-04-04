@@ -57,6 +57,11 @@ const chapterIdPage = async ({
               chapterId: params.chapterId, // Filter documents for the current chapter
             },
           },
+          muxDatas: {
+            where: {
+              chapterId: params.chapterId, // Filter documents for the current chapter
+            },
+          },
         },
         orderBy: {
           position: "asc",
@@ -129,6 +134,13 @@ const chapterIdPage = async ({
                     key={question.id}
                     name={question.title}
                     link={`/teacher/edit/${params.courseId}/chapters/${params.chapterId}/quiz/${question.id}`}
+                  />
+                ))}
+                {chapter.muxDatas.map((video) => (
+                  <ChapterBox
+                    key={video.id}
+                    name={video.title!}
+                    link={`/teacher/edit/${params.courseId}/chapters/${params.chapterId}/video/${video.id}`}
                   />
                 ))}
               </div>

@@ -5,7 +5,7 @@ import { PencilRuler } from "lucide-react";
 import { Actions } from "./_components/actions";
 import { Banner } from "@/components/banner";
 // import { VideoTitleForm } from "./_components/video-title-form";
-// import { ChapterVideoForm } from "./_components/video-from";
+import { ChapterVideoForm } from "./_components/video-from";
 
 const video = async ({
   params,
@@ -18,33 +18,13 @@ const video = async ({
     return redirect("/");
   }
 
-  const course = await db.course.findUnique({
+  const video = await db.muxData.findUnique({
     where: {
-      id: params.courseId,
-      userId,
-    },
-    include: {
-      chapters: {
-        orderBy: {
-          position: "asc",
-        },
-      },
-      attachments: {
-        orderBy: {
-          createdAt: "desc",
-        },
-      },
+      id: params.videoId,
     },
   });
 
-  const chapter = await db.chapter.findUnique({
-    where: {
-      id: params.chapterId,
-      courseId: params.courseId,
-    },
-  });
-
-  if (!course) {
+  if (!video) {
     return redirect("/");
   }
 
@@ -53,7 +33,7 @@ const video = async ({
 
   return (
     <>
-      {!course.isPublished && (
+      {!video.isPublished && (
         <Banner label="This PDF is unpublished. It will not be visible to the students." />
       )}
       <div className="flex flex-col items-center justify-center w-full px-4 py-16 gap-8 ">
@@ -68,7 +48,7 @@ const video = async ({
             courseId={params.courseId}
             chapterId={params.chapterId}
             videoId={params.videoId}
-            isPublished={course.isPublished}
+            isPublished={video.isPublished}
           />
         </div>
 
@@ -79,11 +59,12 @@ const video = async ({
             chapterId={params.chapterId}
           /> */}
           <hr className="border-t-4 rounded-md border-gray-400" />
-          {/* <ChapterVideoForm
-            initialData={chapter}
+          <ChapterVideoForm
+            initialData={video}
             chapterId={params.chapterId}
             courseId={params.courseId}
-          /> */}
+            videoId={params.videoId}
+          />
         </div>
       </div>
     </>

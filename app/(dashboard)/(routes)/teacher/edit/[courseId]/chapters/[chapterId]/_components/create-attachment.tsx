@@ -25,6 +25,8 @@ export const CreateAttachment = ({ courseId, chapterId }: AttachmentProps) => {
       let data = {};
       if (type === "documents") {
         data = { url: "temp", title: "Untitled" };
+      } else if (type === "videos") {
+        data = { assetId: "temp", title: "Untitled" };
       } else {
         data = { title: "Untitled" };
       }
@@ -43,6 +45,8 @@ export const CreateAttachment = ({ courseId, chapterId }: AttachmentProps) => {
         endpointType = "flashcard";
       } else if (type === "questionset") {
         endpointType = "quiz";
+      } else if (type === "videos") {
+        endpointType = "videos";
       }
       router.push(
         `/teacher/edit/${courseId}/chapters/${chapterId}/${endpointType}/${createdId}`
