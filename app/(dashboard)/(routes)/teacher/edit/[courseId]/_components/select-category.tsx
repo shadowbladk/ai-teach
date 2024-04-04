@@ -22,7 +22,6 @@ import axios from "axios";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { Category } from "@prisma/client";
-import { on } from "events";
 
 interface SelectCategoryProps {
   courseId: string;
