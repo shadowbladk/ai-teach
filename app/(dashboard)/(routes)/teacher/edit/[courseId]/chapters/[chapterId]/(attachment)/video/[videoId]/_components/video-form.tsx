@@ -39,7 +39,7 @@ export const ChapterVideoForm = ({
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       await axios.patch(
-        `/api/courses/${courseId}/chapters/${chapterId}/video`,
+        `/api/courses/${courseId}/chapters/${chapterId}/videos`,
         values
       );
       toast.success("Video updated");
