@@ -37,6 +37,11 @@ const chapterIdPage = async ({
               createdAt: "asc",
             },
           },
+          videos: {
+            orderBy: {
+              createdAt: "asc",
+            },
+          },
         },
         orderBy: {
           position: "asc",
@@ -83,6 +88,13 @@ const chapterIdPage = async ({
                     key={question.id}
                     name={question.title}
                     link={`/courses/${params.courseId}/chapters/${params.chapterId}/document/${question.id}`}
+                  />
+                ))}
+                {chapter.videos.map((video) => (
+                  <ChapterBox
+                    key={video.id}
+                    name={video.title!}
+                    link={`/courses/${params.courseId}/chapters/${params.chapterId}/video/${video.id}`}
                   />
                 ))}
               </div>

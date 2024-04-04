@@ -10,7 +10,7 @@ const videoPage = async ({
     videoId: string;
   };
 }) => {
-  const video = await db.muxData.findUnique({
+  const video = await db.video.findUnique({
     where: {
       id: params.videoId,
     },

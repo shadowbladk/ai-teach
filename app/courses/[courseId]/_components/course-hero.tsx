@@ -1,7 +1,12 @@
+"use client";
+
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Course } from "@prisma/client";
 import Link from "next/link";
+import axios from "axios";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 interface CourseHeroProps {
   course: Course;
@@ -9,6 +14,17 @@ interface CourseHeroProps {
 }
 
 const CourseHero = ({ course, userId }: CourseHeroProps) => {
+  const router = useRouter();
+
+  const onEnroll = async (value: string) => {
+    try {
+      await axios.post(`/api/courses/${course.id}/checkout`);
+      toast.success("Course enrolled");
+      router.refresh();
+    } catch {
+      toast.error("Something went wrong");
+    }
+  };
   return (
     <div>
       <div className="flex flex-col w-screen items-center justify-center p-6 lg:flex-row bg-white">
@@ -56,7 +72,9 @@ const CourseHero = ({ course, userId }: CourseHeroProps) => {
                 <Button variant="outline">Edit Course</Button>
               </Link>
             )}
-            <Button variant="primary">Enroll course</Button>
+            <Button variant="primary" onClick={() => onEnroll(userId!)}>
+              Enroll course
+            </Button>
           </div>
         </div>
       </div>
