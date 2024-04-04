@@ -9,7 +9,7 @@ const { video } = new Mux({
   tokenSecret: process.env.MUX_TOKEN_SECRET,
 });
 
-export default async function POST(
+export async function POST(
   req: Request,
   { params }: { params: { courseId: string; chapterId: string } }
 ) {
