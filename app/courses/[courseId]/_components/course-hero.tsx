@@ -74,7 +74,7 @@ const CourseHero = ({ course, userId, enroll }: CourseHeroProps) => {
               </Link>
             )}
             {course.isPublished ? ( // Check if course is published
-              enroll === userId ? ( // Check if user is already enrolled
+              enroll === userId && userId != course.userId ? ( // Check if user is already enrolled
                 <Button variant="primary" disabled>
                   Already Enrolled
                 </Button>
