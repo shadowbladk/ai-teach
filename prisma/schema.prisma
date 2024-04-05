@@ -179,7 +179,7 @@ model Video {
   id          String  @id @default(uuid())
   title       String? @db.Text
   description String? @db.Text
-  videoUrl         String? @db.Text
+  videoUrl    String? @db.Text
   isPublished Boolean @default(false)
   position    Int
 
@@ -192,4 +192,13 @@ model Video {
   updatedAt DateTime @updatedAt
 
   @@index([chapterId])
+}
+
+model TakeQuiz {
+  id            String   @id @default(uuid())
+  userId        String
+  score         Int
+  maxScore      Int
+  questionSetId String
+  createdAt     DateTime @default(now())
 }
