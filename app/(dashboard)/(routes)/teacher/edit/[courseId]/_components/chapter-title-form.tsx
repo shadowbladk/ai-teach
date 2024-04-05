@@ -65,50 +65,50 @@ export const ChapterTitleForm = ({
 
   return (
     <div className="flex flex-row">
-    {!isEditing && (
-      <h1 className="text-xl font-extrabold text-blue md:text-2xl">
-        {initialData.title}
-      </h1>
-    )}
-    {isEditing && (
-      <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(onSubmit)}
-          className="space-y-4 mt-4"
-        >
-          <FormField
-            control={form.control}
-            name="title"
-            render={({ field }) => (
-              <FormItem>
-                <FormControl>
-                  <Input
-                    className="text-xl font-extrabold text-blue md:text-2xl"
-                    disabled={isSubmitting}
-                    placeholder="e.g. 'Advanced web development'"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <div className="flex items-center gap-x-2 justify-end">
-            <Button disabled={!isValid || isSubmitting} type="submit">
-              Save
-            </Button>
-            <Button onClick={toggleEdit} variant="ghost">
-              Cancel
-            </Button>
-          </div>
-        </form>
-      </Form>
-    )}
-    {!isEditing && (
-      <Button onClick={toggleEdit} variant="ghost">
-        <Pencil className="h-4 w-4" />
-      </Button>
-    )}
-  </div>
+      {!isEditing && (
+        <h1 className="text-xl font-extrabold text-blue md:text-2xl">
+          {initialData.title}
+        </h1>
+      )}
+      {isEditing && (
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="space-y-4 mt-4"
+          >
+            <FormField
+              control={form.control}
+              name="title"
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Input
+                      className="text-xl font-extrabold text-blue md:text-2xl"
+                      disabled={isSubmitting}
+                      placeholder="e.g. 'Advanced web development'"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <div className="flex items-center gap-x-2 justify-end">
+              <Button disabled={!isValid || isSubmitting} type="submit">
+                Save
+              </Button>
+              <Button onClick={toggleEdit} variant="ghost">
+                Cancel
+              </Button>
+            </div>
+          </form>
+        </Form>
+      )}
+      {!isEditing && (
+        <Button onClick={toggleEdit} variant="ghost">
+          <Pencil className="h-4 w-4" />
+        </Button>
+      )}
+    </div>
   );
 };

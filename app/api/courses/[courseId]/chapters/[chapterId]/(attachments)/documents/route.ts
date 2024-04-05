@@ -10,8 +10,6 @@ export async function POST(
   try {
     const { userId } = auth();
     const { url } = await req.json();
-    const { title } = await req.json();
-
     if (!userId) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
@@ -30,7 +28,7 @@ export async function POST(
     const document = await db.document.create({
       data: {
         url: url,
-        title: title,
+        title: url.split("/").pop(),
         chapterId: params.chapterId,
       },
     });

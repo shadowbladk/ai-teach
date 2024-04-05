@@ -9,6 +9,8 @@ const CoursePage = async ({
 }: {
   params: { courseId: string; chapterId: string };
 }) => {
+  const { userId } = auth();
+
   const course = await db.course.findUnique({
     where: {
       id: params.courseId,
@@ -35,11 +37,7 @@ const CoursePage = async ({
   if (course.chapters.length === 0) {
     return (
       <>
-        <CourseHero
-          courseName={course.title}
-          courseDescription={course.description!}
-          coursePicture={course.imageUrl!}
-        />
+        <CourseHero course={course} userId={userId} />
         <ChapterNavbar
           initialChapterIndex={initialChapterIndex}
           course={course}

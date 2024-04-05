@@ -1,21 +1,14 @@
 "use client";
-
+import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
 import axios from "axios";
-import {
-  ClipboardList,
-  FileText,
-  PlusCircle,
-  Video,
-  WalletCards,
-} from "lucide-react";
+import { ClipboardList, FileText, Video, WalletCards } from "lucide-react";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 
@@ -32,6 +25,8 @@ export const CreateAttachment = ({ courseId, chapterId }: AttachmentProps) => {
       let data = {};
       if (type === "documents") {
         data = { url: "temp", title: "Untitled" };
+      } else if (type === "videos") {
+        data = {};
       } else {
         data = { title: "Untitled" };
       }
@@ -43,14 +38,7 @@ export const CreateAttachment = ({ courseId, chapterId }: AttachmentProps) => {
 
       const createdId = response.data.id;
 
-      let endpointType = type;
-      if (type === "documents") {
-        endpointType = "document";
-      } else if (type === "flashcarddecks") {
-        endpointType = "flashcard";
-      } else if (type === "questionset") {
-        endpointType = "quiz";
-      }
+      let endpointType = type.slice(0, -1);
       router.push(
         `/teacher/edit/${courseId}/chapters/${chapterId}/${endpointType}/${createdId}`
       );
@@ -63,7 +51,9 @@ export const CreateAttachment = ({ courseId, chapterId }: AttachmentProps) => {
   return (
     <Dialog>
       <DialogTrigger>
-        <PlusCircle size={40} strokeWidth={1.5} />
+        <div className="inline-flex items-center justify-center h-10 px-4 py-2 whitespace-nowrap rounded-md text-sm bg-[#4F46E5] text-white font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50">
+          Create Content
+        </div>
       </DialogTrigger>
       <DialogContent>
         <DialogTitle className="text-center font-bold text-xl">
