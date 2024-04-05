@@ -11,9 +11,10 @@ import { useRouter } from "next/navigation";
 interface CourseHeroProps {
   course: Course;
   userId: string | null;
+  enroll: string | null;
 }
 
-const CourseHero = ({ course, userId }: CourseHeroProps) => {
+const CourseHero = ({ course, userId, enroll }: CourseHeroProps) => {
   const router = useRouter();
 
   const onEnroll = async (value: string) => {
@@ -72,9 +73,17 @@ const CourseHero = ({ course, userId }: CourseHeroProps) => {
                 <Button variant="outline">Edit Course</Button>
               </Link>
             )}
-            <Button variant="primary" onClick={() => onEnroll(userId!)}>
-              Enroll course
-            </Button>
+            {course.isPublished ? ( // Check if course is published
+              enroll === userId && userId != course.userId ? ( // Check if user is already enrolled
+                <Button variant="primary" disabled>
+                  Already Enrolled
+                </Button>
+              ) : (
+                <Button variant="primary" onClick={() => onEnroll(userId!)}>
+                  Enroll Course
+                </Button>
+              )
+            ) : null}
           </div>
         </div>
       </div>
