@@ -198,3 +198,8 @@ model TakeQuiz {
   questionSetId String
   createdAt     DateTime @default(now())
 }
+
+model UserProfile {
+  userId      String  @id
+  description String?
+}
