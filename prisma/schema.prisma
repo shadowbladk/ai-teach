@@ -175,11 +175,11 @@ model MuxData {
 }
 
 model Video {
-  id          String    @id @default(uuid())
-  title       String?
-  description String?
-  videoUrl    String?
-  isPublished Boolean   @default(false)
+  id          String  @id @default(uuid())
+  title       String? @db.Text
+  description String? @db.Text
+  videoUrl    String? @db.Text
+  isPublished Boolean @default(false)
   position    Int
   chapterId   String
   createdAt   DateTime  @default(now())
@@ -188,4 +188,13 @@ model Video {
   chapter     Chapter   @relation(fields: [chapterId], references: [id], onDelete: Cascade)
 
   @@index([chapterId])
+}
+
+model TakeQuiz {
+  id            String   @id @default(uuid())
+  userId        String
+  score         Int
+  maxScore      Int
+  questionSetId String
+  createdAt     DateTime @default(now())
 }
