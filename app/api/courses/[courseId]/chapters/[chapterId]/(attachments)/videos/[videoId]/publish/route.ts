@@ -3,13 +3,14 @@ import { NextResponse } from "next/server";
 
 import { db } from "@/lib/db";
 
-export async function POST(
+export async function PATCH(
   req: Request,
-  { params }: { params: { courseId: string; chapterId: string } }
+  {
+    params,
+  }: { params: { courseId: string; chapterId: string; videoId: string } }
 ) {
   try {
     const { userId } = auth();
-    const { url } = await req.json();
     if (!userId) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
@@ -20,22 +21,23 @@ export async function POST(
         userId: userId,
       },
     });
-
     if (!courseOwner) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
-    const document = await db.document.create({
-      data: {
-        url: url,
-        title: url.split("/").pop(),
+    const publishVideo = await db.video.update({
+      where: {
+        id: params.videoId,
         chapterId: params.chapterId,
+      },
+      data: {
+        isPublished: true,
       },
     });
 
-    return NextResponse.json(document);
+    return NextResponse.json(publishVideo);
   } catch (error) {
-    console.log("[DOCUMENT]", error);
-    return new NextResponse("Internal Error", { status: 500 });
+    console.log("[VIDEO_ID]", error);
+    return new NextResponse("Internal server error", { status: 500 });
   }
 }

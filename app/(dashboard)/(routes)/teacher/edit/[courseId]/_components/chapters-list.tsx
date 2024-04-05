@@ -19,10 +19,7 @@ interface ChaptersListProps {
   onReorder: (updateData: { id: string; position: number }[]) => void;
 }
 
-export const ChaptersList = ({
-  items,
-  onReorder,
-}: ChaptersListProps) => {
+export const ChaptersList = ({ items, onReorder }: ChaptersListProps) => {
   const [isMounted, setIsMounted] = useState(false);
   const [chapters, setChapters] = useState(items);
 
@@ -92,12 +89,14 @@ export const ChaptersList = ({
                       <Grip className="h-5 w-5" />
                     </div>
                     {chapter.title}
-                  <div className="ml-auto pr-2 flex items-center gap-x-2">
-                  <ChapterActions
-                      courseId={chapter.courseId}
-                      chapterId={chapter.id}
-                    />
-                  </div>
+                    <div className="ml-auto pr-2 flex items-center gap-x-2">
+                      <ChapterActions
+                        disabled={false}
+                        courseId={chapter.courseId}
+                        chapterId={chapter.id}
+                        isPublished={chapter.isPublished}
+                      />
+                    </div>
                   </div>
                 )}
               </Draggable>

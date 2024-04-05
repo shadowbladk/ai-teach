@@ -87,7 +87,11 @@ export const TitleForm = ({ initialData, courseId }: TitleFormProps) => {
               )}
             />
             <div className="flex items-center gap-x-2 justify-end">
-              <Button disabled={!isValid || isSubmitting} type="submit" variant="primary">
+              <Button
+                disabled={!isValid || isSubmitting}
+                type="submit"
+                variant="primary"
+              >
                 Save
               </Button>
               <Button onClick={toggleEdit} variant="ghost">

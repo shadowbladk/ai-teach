@@ -2,33 +2,33 @@
 
 import * as z from "zod";
 import axios from "axios";
-import { Pencil, PlusCircle, ImageIcon, File, Loader2, X } from "lucide-react";
+import MuxPlayer from "@mux/mux-player-react";
+import { Loader2, Pencil, PlusCircle, FileVideo, X } from "lucide-react";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
-import { Chapter, Document } from "@prisma/client";
-import Image from "next/image";
+import { Video } from "@prisma/client";
 
 import { Button } from "@/components/ui/button";
 import { FileUpload } from "@/components/file-upload";
 
-interface DocumentFormProps {
-  initialData: Document;
+interface VideoFormProps {
+  initialData: Video;
   courseId: string;
   chapterId: string;
-  documentId: string;
+  videoId: string;
 }
 
 const formSchema = z.object({
-  url: z.string().min(1),
+  videoUrl: z.string().min(1),
 });
 
-export const DocumentForm = ({
+export const ChapterVideoForm = ({
   initialData,
   courseId,
   chapterId,
-  documentId,
-}: DocumentFormProps) => {
+  videoId,
+}: VideoFormProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const [deletingId, setDeletingId] = useState<string | null>(null);
 
@@ -39,24 +39,23 @@ export const DocumentForm = ({
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       await axios.patch(
-        `/api/courses/${courseId}/chapters/${chapterId}/documents/${documentId}`,
+        `/api/courses/${courseId}/chapters/${chapterId}/videos/${videoId}`,
         values
       );
-      toast.success("Course updated");
+      toast.success("Video updated");
       toggleEdit();
       router.refresh();
     } catch {
       toast.error("Something went wrong");
     }
   };
-
   const onDelete = async (id: string) => {
     try {
       setDeletingId(id);
       await axios.delete(
-        `/api/courses/${courseId}/chapters/${chapterId}/documents/${documentId}`
+        `/api/courses/${courseId}/chapters/${chapterId}/video/${videoId}`
       );
-      toast.success("Attachment deleted");
+      toast.success("Video deleted");
       router.refresh();
     } catch {
       toast.error("Something went wrong");
@@ -68,16 +67,16 @@ export const DocumentForm = ({
   return (
     <div className="mt-6 border bg-slate-100 rounded-md p-4">
       <div className="font-medium flex items-center justify-between">
-        Course attachments
+        Chapter video
         <Button onClick={toggleEdit} variant="ghost">
           {isEditing && <>Cancel</>}
-          {!isEditing && !initialData.url && (
+          {!isEditing && !initialData.videoUrl && (
             <>
               <PlusCircle className="h-4 w-4 mr-2" />
-              Add a file
+              Add a video
             </>
           )}
-          {!isEditing && initialData.url && (
+          {!isEditing && initialData.videoUrl && (
             <>
               <Pencil className="h-4 w-4 mr-2" />
               Edit video
@@ -85,48 +84,40 @@ export const DocumentForm = ({
           )}
         </Button>
       </div>
-      {!isEditing && (
-        <>
-          {initialData && (
-            <div className="space-y-2">
-              <div
-                key={initialData.id}
-                className="flex items-center p-3 w-full bg-sky-100 border-sky-200 border text-sky-700 rounded-md"
-              >
-                <File className="h-4 w-4 mr-2 flex-shrink-0" />
-                <p className="text-xs line-clamp-1">{initialData.url}</p>
-                {deletingId === initialData.id && (
-                  <div>
-                    <Loader2 className="h-4 w-4 animate-spin" />
-                  </div>
-                )}
-                {deletingId !== initialData.id && (
-                  <button
-                    onClick={() => onDelete(initialData.id)}
-                    className="ml-auto hover:opacity-75 transition"
-                  >
-                    <X className="h-4 w-4" />
-                  </button>
-                )}
+      {!isEditing &&
+        (!initialData.videoUrl ? (
+          <div className="flex items-center justify-center h-60 bg-slate-200 rounded-md">
+            <FileVideo className="h-10 w-10 text-slate-500" />
+            {deletingId === initialData.id && (
+              <div>
+                <Loader2 className="h-4 w-4 animate-spin" />
               </div>
-            </div>
-          )}
-        </>
-      )}
-
+            )}
+          </div>
+        ) : (
+          <div className="relative aspect-video mt-2">
+            <MuxPlayer playbackId={initialData?.videoUrl || ""} />
+          </div>
+        ))}
       {isEditing && (
         <div>
           <FileUpload
-            endpoint="courseAttachment"
+            endpoint="chapterVideo"
             onChange={(url) => {
               if (url) {
-                onSubmit({ url: url });
+                onSubmit({ videoUrl: url });
               }
             }}
           />
           <div className="text-xs text-muted-foreground mt-4">
-            Add anything your students might need to complete the course.
+            Upload this chapter&apos;s video
           </div>
+        </div>
+      )}
+      {initialData.videoUrl && !isEditing && (
+        <div className="text-xs text-muted-foreground mt-2">
+          Videos can take a few minutes to process. Refresh the page if video
+          does not appear.
         </div>
       )}
     </div>

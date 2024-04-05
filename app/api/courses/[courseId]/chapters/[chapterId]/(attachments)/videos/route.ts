@@ -9,7 +9,7 @@ export async function POST(
 ) {
   try {
     const { userId } = auth();
-    const { url } = await req.json();
+    const { title } = await req.json();
     if (!userId) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
@@ -20,22 +20,32 @@ export async function POST(
         userId: userId,
       },
     });
-
     if (!courseOwner) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
-    const document = await db.document.create({
-      data: {
-        url: url,
-        title: url.split("/").pop(),
+    const lastVideo = await db.video.findFirst({
+      where: {
         chapterId: params.chapterId,
+      },
+      orderBy: {
+        position: "desc",
       },
     });
 
-    return NextResponse.json(document);
+    const position = lastVideo ? lastVideo.position + 1 : 0;
+
+    const video = await db.video.create({
+      data: {
+        chapterId: params.chapterId,
+        title: title,
+        position,
+      },
+    });
+
+    return NextResponse.json(video);
   } catch (error) {
-    console.log("[DOCUMENT]", error);
-    return new NextResponse("Internal Error", { status: 500 });
+    console.log("[VIDEO]", error);
+    return new NextResponse("Internal server error", { status: 500 });
   }
 }
