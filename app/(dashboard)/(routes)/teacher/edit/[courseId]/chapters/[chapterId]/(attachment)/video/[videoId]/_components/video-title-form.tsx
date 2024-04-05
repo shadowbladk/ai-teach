@@ -18,21 +18,22 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { QuestionSet } from "@prisma/client";
 
-interface QuizTitleFormProps {
-  initialData: QuestionSet;
+interface VideoTitleFormProps {
+  initialData: {
+    title: string | null;
+  };
   courseId: string;
   chapterId: string;
-  questionsetId: string;
+  videoId: string;
 }
 
-export const QuizTitleForm = ({
+export const VideoTitleForm = ({
   initialData,
   courseId,
   chapterId,
-  questionsetId,
-}: QuizTitleFormProps) => {
+  videoId,
+}: VideoTitleFormProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const [title, setTitle] = useState(initialData.title);
 
@@ -51,10 +52,10 @@ export const QuizTitleForm = ({
         title: newTitle,
       };
       await axios.patch(
-        `/api/courses/${courseId}/chapters/${chapterId}/questionset/${questionsetId}`,
+        `/api/courses/${courseId}/chapters/${chapterId}/videos/${videoId}`,
         value
       );
-      toast.success("Question set updated");
+      toast.success("Video updated");
       toggleEdit();
       router.refresh();
     } catch {
@@ -65,7 +66,11 @@ export const QuizTitleForm = ({
   return (
     <div className="border bg-slate-100 rounded-md p-6 flex flex-col gap-4 w-full">
       {!isEditing && (
-        <div className="font-medium flex justify-between">
+        <div
+          className={`font-medium flex ${
+            initialData.title === null ? "justify-end" : "justify-between"
+          }`}
+        >
           {title}
           <Button
             onClick={toggleEdit}
@@ -82,7 +87,7 @@ export const QuizTitleForm = ({
         <>
           <Input
             placeholder="e.g. 'Advanced web development quiz'"
-            value={title}
+            value={title!}
             onChange={(e) => setTitle(e.target.value)}
           />
           <div className="flex justify-end gap-4">
@@ -98,7 +103,7 @@ export const QuizTitleForm = ({
               type="submit"
               size="sm_l"
               variant="primary"
-              onClick={(e) => onSubmit(title)}
+              onClick={(e) => onSubmit(title!)}
             >
               Save
             </Button>

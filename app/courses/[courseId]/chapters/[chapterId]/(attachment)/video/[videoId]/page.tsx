@@ -1,46 +1,43 @@
 import { db } from "@/lib/db";
 import { VideoPlayer } from "./_components/video-player";
+import { redirect } from "next/navigation";
 const videoPage = async ({
   params,
 }: {
-  params: { courseId: string; chapterId: string };
+  params: {
+    courseId: string;
+    chapterId: string;
+    videoId: string;
+  };
 }) => {
-  const course = await db.course.findUnique({
+  const video = await db.video.findUnique({
     where: {
-      id: params.courseId,
+      id: params.videoId,
     },
     include: {
-      chapters: {
-        where: {
-          isPublished: true,
-        },
-        orderBy: {
-          position: "asc",
-        },
-      },
+      muxData: true,
     },
   });
 
-  const chapter = await db.chapter.findUnique({
-    where: {
-      id: params.chapterId,
-      courseId: params.courseId,
-    },
-  });
+  if (!video) {
+    return redirect("/");
+  }
+
+  const playbackId = video.muxData[0]?.playbackId;
   return (
     <div className="flex min-h-screen flex-col overflow-x-hidden">
       <div className="flex-grow">
         <section className="flex flex-col w-screen items-center justify-center p-6">
           <h1 className="text-xl md:text-2xl font-extrabold text-black ">
-            Keywords and Identifiers
+            {video.title}
           </h1>
           <div className="w-[700px] p-6 items-center">
-            {/* <VideoPlayer
-              playbackId={}
-              courseId={}
-              chapterId={}
+            <VideoPlayer
+              playbackId={playbackId!}
+              courseId={params.courseId}
+              chapterId={params.chapterId}
               completeOnEnd={false}
-            /> */}
+            />
           </div>
         </section>
       </div>

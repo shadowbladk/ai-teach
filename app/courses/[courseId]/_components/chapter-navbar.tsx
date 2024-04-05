@@ -29,6 +29,7 @@ export const ChapterNavbar = ({
         <ChapterCarousel
           course={course}
           onSelectChapter={handleChapterChange}
+          selectedChapterIndex={selectedChapterIndex}
         />
       </div>
       <div className="flex max-w-[720px] justify-center mx-auto p-6">

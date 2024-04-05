@@ -1,22 +1,13 @@
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+
 import {
-    Tabs,
-    TabsContent,
-    TabsList,
-    TabsTrigger,
-  } from "@/components/ui/tabs"
+  Dialog,
+  DialogContent,
+  DialogTrigger,
+  DialogHeader,
+} from "@/components/ui/dialog";
 
-  import {
-    Dialog,
-    DialogContent,
-    DialogTrigger,
-  } from "@/components/ui/dialog";
-
-  import {
-    Form,
-    FormControl,
-    FormField,
-    FormItem,
-  } from "@/components/ui/form";
+import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -34,102 +25,90 @@ import { useRouter } from "next/navigation";
 import { Pencil, PlusCircle } from "lucide-react";
 
 interface ChapterEditProps {
-    course: Course & {
-      chapters: Chapter[];
-    };
-  }
-  
-  const formSchema = z.object({
-    title: z.string().min(1),
+  course: Course & {
+    chapters: Chapter[];
+  };
+}
+
+const formSchema = z.object({
+  title: z.string().min(1),
+});
+
+export const ChapterEdit = ({ course }: ChapterEditProps) => {
+  const [isCreating, setIsCreating] = useState(false);
+
+  const toggleCreating = () => {
+    setIsCreating((current) => !current);
+  };
+
+  const router = useRouter();
+
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      title: "",
+    },
   });
 
-export const ChapterEdit = ({course} : ChapterEditProps) => {
+  const { isSubmitting, isValid } = form.formState;
 
-    const [isCreating, setIsCreating] = useState(false);
-    const [isLoading, setIsLoading] = useState(false);
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    try {
+      const response = await axios.post(
+        `/api/courses/${course.id}/chapters`,
+        values
+      );
+      toast.success("Chapter created");
+      toggleCreating();
+      router.refresh();
+    } catch {
+      toast.error("Something went wrong");
+    }
+  };
 
-    const toggleCreating = () => {
-      setIsCreating((current) => !current);
-    };
-
-    const router = useRouter();
-
-    const form = useForm<z.infer<typeof formSchema>>({
-      resolver: zodResolver(formSchema),
-      defaultValues: {
-        title: "",
-      },
-    });
-  
-    const { isSubmitting, isValid } = form.formState;
-  
-    const onSubmit = async (values: z.infer<typeof formSchema>) => {
-      try {
-        const response = await axios.post(
-          `/api/courses/${course.id}/chapters`,
-          values
-        );
-        toast.success("Chapter created");
-        toggleCreating();
-        router.refresh();
-      } catch {
-        toast.error("Something went wrong");
-      }
-    };
-
-    return (
-        
-          <Dialog>
-            <DialogTrigger asChild> 
-            {course.chapters.length === 0 ? (
-              <PlusCircle size={40} strokeWidth={1.5} />
-            ) : (
-            <div className="px-auto pt-5 md:pt-8">
-              <Pencil size={20} />
-            </div>
-            )}   
-            </DialogTrigger>
-            <DialogContent>
-              <Tabs defaultValue="create">
-                <TabsList className="grid w-full grid-cols-2">
-                  <TabsTrigger value="create">Create</TabsTrigger>
-                  <TabsTrigger value="Edit">Modify</TabsTrigger>
-                </TabsList>
-                <TabsContent value="create">
-                  <Form {...form}>
-                    <form
-                      onSubmit={form.handleSubmit(onSubmit)}
-                      className="space-y-4 mt-4"
-                      >
-                      <FormField
-                        control={form.control}
-                        name="title"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormControl>
-                              <Input
-                                disabled={isSubmitting}
-                                placeholder="e.g. 'Introduction to the course'"
-                                {...field}
-                                />
-                            </FormControl>
-                          </FormItem>
-                          )}
-                      />
-                      <Button
-                        disabled={!isValid || isSubmitting}
-                        type="submit"
-                        >
-                          Create
-                        </Button>
-                    </form>
-                  </Form>
-                </TabsContent>
-                <TabsContent value="Edit">
-                  <ChaptersForm initialData={course} courseId={course.id} />
-                </TabsContent>
-              </Tabs>
-            </DialogContent>
-          </Dialog>
-    )
-}
+  return (
+    <Dialog>
+      <DialogTrigger asChild>
+        <PlusCircle size={60} strokeWidth={1.2} />
+      </DialogTrigger>
+      <DialogContent>
+        <Tabs defaultValue="create">
+          <TabsList className="grid w-full grid-cols-2">
+            <TabsTrigger value="create">Create</TabsTrigger>
+            <TabsTrigger value="Edit">Modify</TabsTrigger>
+          </TabsList>
+          <TabsContent value="create">
+            <Form {...form}>
+              <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="space-y-4 mt-4"
+              >
+                <FormField
+                  control={form.control}
+                  name="title"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <Input
+                          disabled={isSubmitting}
+                          placeholder="e.g. 'Introduction to the course'"
+                          {...field}
+                        />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+                <Button disabled={!isValid || isSubmitting} type="submit">
+                  Create
+                </Button>
+              </form>
+            </Form>
+          </TabsContent>
+          <TabsContent value="Edit">
+            <ChaptersForm initialData={course} courseId={course.id} />
+          </TabsContent>
+        </Tabs>
+      </DialogContent>
+    </Dialog>
+  );
+};

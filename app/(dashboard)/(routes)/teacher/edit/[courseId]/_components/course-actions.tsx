@@ -8,21 +8,19 @@ import { useRouter } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
 import { ConfirmModal } from "@/components/modals/confirm-modal";
-import { useConfettiStore } from "@/hooks/use-confetti-store";
 
-interface ActionsProps {
+interface CourseActionsProps {
   disabled: boolean;
   courseId: string;
   isPublished: boolean;
-};
+}
 
-export const Actions = ({
+export const CourseActions = ({
   disabled,
   courseId,
-  isPublished
-}: ActionsProps) => {
+  isPublished,
+}: CourseActionsProps) => {
   const router = useRouter();
-  const confetti = useConfettiStore();
   const [isLoading, setIsLoading] = useState(false);
 
   const onClick = async () => {
@@ -31,11 +29,10 @@ export const Actions = ({
 
       if (isPublished) {
         await axios.patch(`/api/courses/${courseId}/unpublish`);
-        toast.success("Course unpublished");
+        toast.success("Chapter unpublished");
       } else {
         await axios.patch(`/api/courses/${courseId}/publish`);
-        toast.success("Course published");
-        confetti.onOpen();
+        toast.success("Chapter published");
       }
 
       router.refresh();
@@ -44,26 +41,25 @@ export const Actions = ({
     } finally {
       setIsLoading(false);
     }
-  }
-  
+  };
+
   const onDelete = async () => {
     try {
       setIsLoading(true);
 
-      await axios.delete(`/api/courses/${courseId}`);
-
+      await axios.delete(`/api/courses/${courseId}}`);
       toast.success("Course deleted");
+      router.push(`/teacher/edit/${courseId}/`);
       router.refresh();
-      router.push(`/teacher/courses`);
     } catch {
       toast.error("Something went wrong");
     } finally {
       setIsLoading(false);
     }
-  }
+  };
 
   return (
-    <div className="flex items-center gap-x-2">
+    <div className="flex justify-end items-center gap-x-2">
       <Button
         onClick={onClick}
         disabled={disabled || isLoading}
@@ -73,10 +69,8 @@ export const Actions = ({
         {isPublished ? "Unpublish" : "Publish"}
       </Button>
       <ConfirmModal onConfirm={onDelete}>
-        <Button size="sm" disabled={isLoading}>
-          <Trash className="h-4 w-4" />
-        </Button>
+        <Trash className="h-4 w-4" />
       </ConfirmModal>
     </div>
-  )
-}
+  );
+};

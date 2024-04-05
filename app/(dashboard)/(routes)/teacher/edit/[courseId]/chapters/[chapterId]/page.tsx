@@ -3,10 +3,12 @@ import { redirect } from "next/navigation";
 import { db } from "@/lib/db";
 import { ChapterBox } from "./_components/attachment-box";
 import { CreateAttachment } from "./_components/create-attachment";
-import { ImageForm } from "./_components/image-form";
-import { TitleForm } from "./_components/title-form";
-import { DescriptionForm } from "./_components/description-form";
-import { ChapterNavbar } from "./_components/chapter-navbar";
+import { ImageForm } from "../../_components/image-form";
+import { TitleForm } from "../../_components/title-form";
+import { DescriptionForm } from "../../_components/description-form";
+import { ChapterNavbar } from "../../_components/chapter-navbar";
+import { CourseActions } from "../../_components/course-actions";
+import { SelectCategory } from "../../_components/select-category";
 
 const chapterIdPage = async ({
   params,
@@ -55,6 +57,11 @@ const chapterIdPage = async ({
               chapterId: params.chapterId, // Filter documents for the current chapter
             },
           },
+          videos: {
+            where: {
+              chapterId: params.chapterId, // Filter documents for the current chapter
+            },
+          },
         },
         orderBy: {
           position: "asc",
@@ -62,6 +69,8 @@ const chapterIdPage = async ({
       },
     },
   });
+
+  const category = await db.category.findMany();
 
   if (!course) {
     return redirect("/");
@@ -77,18 +86,30 @@ const chapterIdPage = async ({
         <div className="max-w-xs lg:max-w-md">
           <ImageForm initialData={course} courseId={course.id} />
         </div>
-        <div className="flex flex-col gap-5 max-w-[720px] items-center justify-center p-6 lg:items-start">
+        <div className="flex flex-col gap-5 max-w-[720px] items-center justify-center px-6 pt-6 lg:items-start">
           <TitleForm initialData={course} courseId={course.id} />
           <DescriptionForm initialData={course} courseId={course.id} />
+          <SelectCategory
+            courseId={course.id}
+            initialCategory={course.categoryId}
+            category={category}
+          />
+          <div className="flex flex-row w-full justify-end">
+            <CourseActions
+              courseId={course.id}
+              disabled={false}
+              isPublished={course.isPublished}
+            />
+          </div>
         </div>
       </div>
-      <div className="flex w-screen justify-center item-center">
-        <ChapterNavbar
-          course={course}
-          initialChapterIndex={initialChapterIndex}
-        />
-      </div>
-      <div className="w-full justify-center px-6">
+      <div className="w-full flex-grow justify-center px-6 pt-6 bg-[#F3F4F4]">
+        <div className="flex w-screen justify-center item-center ">
+          <ChapterNavbar
+            course={course}
+            initialChapterIndex={initialChapterIndex}
+          />
+        </div>
         <div className="max-w-[720px] mx-auto justify-center">
           {course.chapters
             .filter((chapter) => chapter.id === params.chapterId)
@@ -113,6 +134,13 @@ const chapterIdPage = async ({
                     key={question.id}
                     name={question.title}
                     link={`/teacher/edit/${params.courseId}/chapters/${params.chapterId}/quiz/${question.id}`}
+                  />
+                ))}
+                {chapter.videos.map((video) => (
+                  <ChapterBox
+                    key={video.id}
+                    name={video.title!}
+                    link={`/teacher/edit/${params.courseId}/chapters/${params.chapterId}/video/${video.id}`}
                   />
                 ))}
               </div>
