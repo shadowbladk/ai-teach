@@ -4,9 +4,9 @@ generator client {
 }
 
 datasource db {
-  provider     = "mysql"
-  url          = env("DATABASE_URL")
-  relationMode = "prisma"
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 model Course {
@@ -25,15 +25,14 @@ model Course {
   enrollments Enrollment[]
 
   @@index([categoryId])
-  @@fulltext([title])
 }
 
 model Category {
   id      String   @id @default(uuid())
-  name    String   @unique
+  name    String   @unique @db.Text
   courses Course[]
 
-  @@fulltext([name])
+  @@index([name])
 }
 
 model Attachment {
@@ -62,6 +61,7 @@ model Chapter {
   flashcarddecks Flashcarddeck[]
   documents      Document[]
   questionSet    QuestionSet[]
+  videos         Video[]
 
   @@index([courseId])
 }
@@ -89,7 +89,6 @@ model Flashcard {
   flashcarddeck   Flashcarddeck @relation(fields: [flashcarddeckId], references: [id], onDelete: Cascade)
 
   @@index([flashcarddeckId])
-  @@fulltext([front, back])
 }
 
 model Flashcarddeck {
@@ -163,6 +162,34 @@ model Document {
   isPublished Boolean  @default(false)
   title       String   @db.Text
   chapter     Chapter  @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+
+  @@index([chapterId])
+}
+
+model MuxData {
+  id         String  @id @default(uuid())
+  assetId    String
+  playbackId String?
+
+  videoId String
+  video   Video  @relation(fields: [videoId], references: [id], onDelete: Cascade)
+}
+
+model Video {
+  id          String  @id @default(uuid())
+  title       String? @db.Text
+  description String? @db.Text
+  videoUrl         String? @db.Text
+  isPublished Boolean @default(false)
+  position    Int
+
+  chapterId String
+  chapter   Chapter @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+
+  muxData MuxData[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([chapterId])
 }
