@@ -80,14 +80,14 @@ const chapterIdPage = async ({
                   <ChapterBox
                     key={flashcard.id}
                     name={flashcard.title}
-                    link={`/courses/${params.courseId}/chapters/${params.chapterId}/document/${flashcard.id}`}
+                    link={`/courses/${params.courseId}/chapters/${params.chapterId}/flashcard/${flashcard.id}`}
                   />
                 ))}
                 {chapter.questionSet.map((question) => (
                   <ChapterBox
                     key={question.id}
                     name={question.title}
-                    link={`/courses/${params.courseId}/chapters/${params.chapterId}/document/${question.id}`}
+                    link={`/courses/${params.courseId}/chapters/${params.chapterId}/quiz/${question.id}`}
                   />
                 ))}
                 {chapter.videos.map((video) => (

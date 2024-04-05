@@ -30,7 +30,12 @@ const quizPage = async ({ params }: { params: { quizId: string } }) => {
   return (
     <div className="flex min-h-screen flex-col">
       <div className="flex-grow">
-        <div className="container mx-auto justify-center max-w-[900px] ">
+        <div className="container mx-auto justify-center max-w-[900px]">
+          <div className="flex flex-col items-center justify-center px-24 py-12 gap-12">
+            <h1 className="text-[32px] font-extrabold text-center text-black">
+              Quiz
+            </h1>
+          </div>
           <Quiz
             title={quiz.title}
             questions={quiz.Question.map((question) => ({

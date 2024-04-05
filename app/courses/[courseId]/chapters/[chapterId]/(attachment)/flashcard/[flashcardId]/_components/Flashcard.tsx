@@ -1,3 +1,4 @@
+"use client";
 import React, { useState } from "react";
 import FlashcardGroup from "./FlashcardGroup";
 import WordCard from "./WordCard";

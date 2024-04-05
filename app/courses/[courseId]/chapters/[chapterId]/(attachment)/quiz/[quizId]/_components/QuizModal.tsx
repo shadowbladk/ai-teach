@@ -1,5 +1,6 @@
 "use client";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
+import { useRouter } from "next/navigation";
 
 interface ScoreModalProps {
   score: number;
@@ -14,6 +15,8 @@ const QuizModal: React.FunctionComponent<ScoreModalProps> = ({
   onClose,
   onRestart,
 }) => {
+  const router = useRouter();
+
   return (
     <Dialog open={isOpen}>
       <DialogContent className="p-8 text-center text-white">
@@ -48,7 +51,10 @@ const QuizModal: React.FunctionComponent<ScoreModalProps> = ({
             Restart Quiz
           </button>
           <button
-            onClick={onClose}
+            onClick={() => {
+              onClose();
+              router.back(); // Go back to the previous page
+            }}
             className="px-4 py-2 bg-red-500 hover:bg-red-700 text-white font-bold rounded-md w-full"
           >
             Leave this quiz
