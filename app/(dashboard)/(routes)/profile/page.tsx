@@ -1,4 +1,4 @@
-import { auth } from "@clerk/nextjs"
+import { auth, currentUser } from "@clerk/nextjs"
 import { redirect } from "next/navigation"
 import { CheckCircle, Clock } from "lucide-react"
 
@@ -13,8 +13,12 @@ import Profile from "./_components/user.svg"
 
 export default async function Dashboard() {
   const { userId } = auth()
-
-  if (!userId) {
+  const user = await currentUser()
+  const img = user?.imageUrl
+  // console.log(user?.firstName)
+  // console.log(user?.lastName)
+  // console.log(user?.imageUrl)
+  if (!userId || !user) {
     return redirect("/")
   }
 
@@ -27,19 +31,21 @@ export default async function Dashboard() {
     isPublished: undefined,
   })
 
-
   return (
     <>
       <section className="flex flex-col-reverse items-center bg-[#F3F4F4] justify-center px-12 py-24 gap-4 lg:gap-14 lg:flex-row">
         <div className="flex flex-col lg:flex-row gap-4 lg:gap-12 justify-center items-center lg:items-start">
-          <Image
-            className="h-[200px] w-[200px] md:h-[240px] md:w-[240px]"
-            src={Profile}
+          <img
+            // className="h-[200px] w-[200px] md:h-[240px] md:w-[240px]"
+            className="rounded-full"
+            width={200}
+            height={200}
+            src={img ? img : Profile}
             alt={"Profile"}
           />
           <div className="flex flex-col items-center lg:items-start gap-4 max-w-[600px]">
             <h1 className="text-[32px] font-extrabold text-primary">
-              Mary Jane
+              {user?.firstName} {user?.lastName}
             </h1>
             <p className="text-center lg:text-left">
               Lorem ipsum dolor sit, amet consectetur adipisicing elit. Debitis
