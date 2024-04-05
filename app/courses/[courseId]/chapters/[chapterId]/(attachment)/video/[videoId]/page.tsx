@@ -14,10 +14,16 @@ const videoPage = async ({
     where: {
       id: params.videoId,
     },
+    include: {
+      muxData: true,
+    },
   });
+
   if (!video) {
     return redirect("/");
   }
+
+  const playbackId = video.muxData[0]?.playbackId;
   return (
     <div className="flex min-h-screen flex-col overflow-x-hidden">
       <div className="flex-grow">
@@ -27,7 +33,7 @@ const videoPage = async ({
           </h1>
           <div className="w-[700px] p-6 items-center">
             <VideoPlayer
-              playbackId={params.videoId}
+              playbackId={playbackId!}
               courseId={params.courseId}
               chapterId={params.chapterId}
               completeOnEnd={false}
