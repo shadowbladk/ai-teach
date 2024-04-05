@@ -31,7 +31,7 @@ const CourseHero = ({ course, userId, enroll }: CourseHeroProps) => {
       <div className="flex flex-col w-screen items-center justify-center p-6 lg:flex-row bg-white">
         <div className="max-w-xs lg:max-w-md">
           <Image
-            src={course.imageUrl!}
+            src={course.imageUrl ?? "./_componets/default.svg"}
             alt={"${course.title} Image"}
             className="rounded-xl"
             width={200}
