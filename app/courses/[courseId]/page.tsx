@@ -27,6 +27,15 @@ const CoursePage = async ({
     },
   });
 
+  const enroll = await db.enrollment.findUnique({
+    where: {
+      userId_courseId: {
+        userId: userId!,
+        courseId: params.courseId,
+      },
+    },
+  });
+
   const initialChapterIndex = course!.chapters.findIndex(
     (ch) => ch.id === params.chapterId
   );
@@ -37,7 +46,7 @@ const CoursePage = async ({
   if (course.chapters.length === 0) {
     return (
       <>
-        <CourseHero course={course} userId={userId} />
+        <CourseHero course={course} userId={userId} enroll={enroll?.userId!} />
         <ChapterNavbar
           initialChapterIndex={initialChapterIndex}
           course={course}
