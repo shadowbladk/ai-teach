@@ -11,7 +11,7 @@ import Quiz from "./_components/quiz.svg";
 import { Slider } from "@/components/slider";
 
 import { db } from "@/lib/db";
-import { getRecommendCourses } from "@/actions/get-recomment-course";
+import { getRecommendCourses } from "@/actions/get-recommended-course";
 import { ChapterBox } from "@/app/courses/[courseId]/chapters/[chapterId]/_components/chapter-box";
 
 export default async function Dashboard() {
