@@ -11,7 +11,7 @@ import Quiz from "./_components/quiz.svg";
 import { Slider } from "@/components/slider";
 
 import { db } from "@/lib/db";
-import { getCourses } from "@/actions/get-courses";
+import { getRecommendCourses } from "@/actions/get-recomment-course";
 import { ChapterBox } from "@/app/courses/[courseId]/chapters/[chapterId]/_components/chapter-box";
 
 export default async function Dashboard() {
@@ -21,7 +21,7 @@ export default async function Dashboard() {
     return redirect("/");
   }
 
-  const courses = await getCourses({
+  const courses = await getRecommendCourses({
     userId,
   });
 
