@@ -35,11 +35,6 @@ export default async function Dashboard() {
           <h2 className="text-2xl font-medium">
             Explore course and level up your skill
           </h2>
-          {/* <Link href="/register"> */}
-          {/* <div className="rounded-md border-primary border-2 px-11 py-2 text-base font-bold text-primary shadow-sm">
-            Join Us
-          </div> */}
-          {/* </Link> */}
         </div>
         <div className="max-w-xs xl:max-w-md">
           <Image src={HeroPic} alt={"Hero Pic"} />
@@ -50,9 +45,7 @@ export default async function Dashboard() {
         <h1 className="text-[32px] text-[#4F46E5] font-extrabold text-center">
           Recommended Course
         </h1>
-        {/* <div className="w-full"> */}
         <Slider items={courses} />
-        {/* </div> */}
       </section>
 
       <section className="flex flex-col items-center justify-center bg-[#F3F4F4] px-24 py-20 gap-12">
