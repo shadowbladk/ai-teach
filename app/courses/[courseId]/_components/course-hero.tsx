@@ -28,7 +28,7 @@ const CourseHero = ({ course, userId, enroll }: CourseHeroProps) => {
   }
   return (
     <div>
-      <div className="flex flex-col w-screen items-center justify-center px-12 py-16 lg:flex-row bg-white">
+      <div className="flex flex-col w-screen items-center justify-center px-12 py-12 lg:flex-row bg-white">
         <div className="flex flex-col gap-6">
           <div className="flex flex-col lg:flex-row items-center justify-center h-full gap-6 lg:items-start">
             <div className="w-[270px] h-[200px]">
