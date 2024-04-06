@@ -86,7 +86,7 @@ const chapterIdPage = async ({
         <div className="w-[270px] h-[200px]">
           <ImageForm initialData={course} courseId={course.id} />
         </div>
-        <div className="flex flex-col max-w-[720px] items-center justify-center lg:items-start">
+        <div className="flex flex-col max-w-[720px] items-center justify-center lg:items-start pt-6 lg:pt-0">
           <TitleForm initialData={course} courseId={course.id} />
           <DescriptionForm initialData={course} courseId={course.id} />
           <div className="flex flex-row w-full justify-between pt-8 items-center">

@@ -42,14 +42,14 @@ export const ImageForm = ({ initialData, courseId }: ImageFormProps) => {
   }
 
   return (
-    <div className="max-w-xs lg:max-w-md ">
+    <div className="w-[270px] h-[240px]">
       {!isEditing &&
         (!initialData.imageUrl ? (
-          <div className="flex items-center justify-center h-60 bg-slate-200 rounded-md">
+          <div className="flex items-center justify-center h-[200px] bg-slate-200 rounded-md">
             <ImageIcon className="h-10 w-10 text-slate-500" />
           </div>
         ) : (
-          <div className="relative aspect-video">
+          <div className="relative h-[200px]">
             <Image
               alt="Upload"
               fill
@@ -59,7 +59,7 @@ export const ImageForm = ({ initialData, courseId }: ImageFormProps) => {
           </div>
         ))}
       {isEditing && (
-        <div>
+        <div className="h-[200px]">
           <FileUpload
             endpoint="courseImage"
             onChange={(url) => {
@@ -68,12 +68,12 @@ export const ImageForm = ({ initialData, courseId }: ImageFormProps) => {
               }
             }}
           />
-          <div className="text-xs text-muted-foreground mt-4">
+          {/* <div className="text-xs text-muted-foreground text-center mt-1">
             16:9 aspect ratio recommended
-          </div>
+          </div> */}
         </div>
       )}
-      <div className="font-medium flex items-center justify-center pt-4">
+      <div className="font-medium flex items-center justify-center pt-2">
         <Button onClick={toggleEdit} variant="underline" size="ghost">
           {isEditing && <>Cancel</>}
           {!isEditing && !initialData.imageUrl && (
