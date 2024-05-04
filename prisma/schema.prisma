@@ -1,0 +1,205 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["fullTextIndex", "fullTextSearch"]
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model Course {
+  id          String       @id @default(uuid())
+  userId      String
+  title       String
+  description String?
+  imageUrl    String?
+  isPublished Boolean      @default(false)
+  categoryId  String?
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  attachments Attachment[]
+  chapters    Chapter[]
+  category    Category?    @relation(fields: [categoryId], references: [id])
+  enrollments Enrollment[]
+
+  @@index([categoryId])
+}
+
+model Category {
+  id      String   @id @default(uuid())
+  name    String   @unique
+  courses Course[]
+
+  @@index([name])
+}
+
+model Attachment {
+  id        String   @id @default(uuid())
+  name      String
+  url       String
+  courseId  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  course    Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
+  @@index([courseId])
+}
+
+model Chapter {
+  id             String          @id @default(uuid())
+  title          String
+  description    String?
+  position       Int
+  isPublished    Boolean         @default(false)
+  courseId       String
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  course         Course          @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  documents      Document[]
+  flashcarddecks Flashcarddeck[]
+  questionSet    QuestionSet[]
+  userProgress   UserProgress[]
+  videos         Video[]
+
+  @@index([courseId])
+}
+
+model UserProgress {
+  id          String   @id @default(uuid())
+  userId      String
+  chapterId   String
+  isCompleted Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  chapter     Chapter  @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, chapterId])
+  @@index([chapterId])
+}
+
+model Flashcard {
+  id              String        @id @default(uuid())
+  front           String?
+  back            String?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  flashcarddeckId String
+  flashcarddeck   Flashcarddeck @relation(fields: [flashcarddeckId], references: [id], onDelete: Cascade)
+
+  @@index([flashcarddeckId])
+}
+
+model Flashcarddeck {
+  id         String      @id @default(uuid())
+  title      String
+  isPublic   Boolean     @default(false)
+  chapterId  String
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+  flashcards Flashcard[]
+  chapter    Chapter     @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+
+  @@index([chapterId])
+}
+
+model Answer {
+  id         String   @id @default(uuid())
+  text       String?
+  isCorrect  Boolean
+  questionId String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+
+  @@index([questionId])
+}
+
+model Enrollment {
+  id        String   @id @default(uuid())
+  userId    String
+  courseId  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  course    Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, courseId])
+  @@index([courseId])
+}
+
+model Question {
+  id            String      @id @default(uuid())
+  text          String?
+  questionSetId String
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  answers       Answer[]
+  questionSet   QuestionSet @relation(fields: [questionSetId], references: [id], onDelete: Cascade)
+
+  @@index([questionSetId])
+}
+
+model QuestionSet {
+  id          String     @id @default(uuid())
+  title       String
+  isPublished Boolean    @default(false)
+  chapterId   String
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  Question    Question[]
+  chapter     Chapter    @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+
+  @@index([chapterId])
+}
+
+model Document {
+  id          String   @id @default(uuid())
+  title       String
+  url         String
+  isPublished Boolean  @default(false)
+  chapterId   String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  chapter     Chapter  @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+
+  @@index([chapterId])
+}
+
+model MuxData {
+  id         String  @id @default(uuid())
+  assetId    String
+  playbackId String?
+  videoId    String
+  video      Video   @relation(fields: [videoId], references: [id], onDelete: Cascade)
+}
+
+model Video {
+  id          String    @id @default(uuid())
+  title       String?
+  description String?
+  videoUrl    String?
+  isPublished Boolean   @default(false)
+  position    Int
+  chapterId   String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  muxData     MuxData[]
+  chapter     Chapter   @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+
+  @@index([chapterId])
+}
+
+model TakeQuiz {
+  id            String   @id @default(uuid())
+  userId        String
+  score         Int
+  maxScore      Int
+  questionSetId String
+  createdAt     DateTime @default(now())
+}
+
+model UserProfile {
+  userId      String  @id
+  description String?
+}
